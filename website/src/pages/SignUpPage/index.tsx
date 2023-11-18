@@ -1,10 +1,10 @@
 import { FC } from "react";
 import "./index.sass";
-const LoginPage: FC = () => {
+const SignupPage: FC = () => {
   return (
-    <section className="login-page">
+    <section className="signup-page">
       <div className="inputs-wrapper">
-        <h1>Login</h1>
+        <h1>Sign Up</h1>
         <input placeholder="email" />
         <input placeholder="password" />
       </div>
@@ -12,4 +12,4 @@ const LoginPage: FC = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
