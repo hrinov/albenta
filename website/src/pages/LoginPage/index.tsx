@@ -7,6 +7,7 @@ const LoginPage: FC = () => {
         <h1>Login</h1>
         <input placeholder="email" />
         <input placeholder="password" />
+        <div className="ok-btn">NEXT</div>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 const cors = require('cors')
 const path = require("path")
 const express = require("express");
-const { router: userRouter } = require("./routes/userRoute.js")
+const { router: signupRouter } = require("./routes/signupRouter.js")
 const cookieParser = require("cookie-parser")
 const app = express()
 const PORT = 3000;
@@ -10,7 +10,7 @@ app.use(cors())
 app.use(cookieParser())
 app.use(express.json());
 app.use("/", express.static(path.join(__dirname)))
-app.use("/", userRouter);
+app.use("/api", signupRouter);
 
 
 
