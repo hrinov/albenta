@@ -2,11 +2,13 @@ const url = import.meta.env.VITE_URL;
 import { FC, useState } from "react";
 import "./index.sass";
 const SignupPage: FC = () => {
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const registerUser = async () => {
     const data = {
+      name: name,
       email: email,
       password: password,
     };
@@ -30,6 +32,11 @@ const SignupPage: FC = () => {
     <section className="signup-page">
       <div className="inputs-wrapper">
         <h1>Sign Up</h1>
+        <input
+          value={name}
+          placeholder="name"
+          onChange={(e) => setName(e.target.value)}
+        />
         <input
           value={email}
           placeholder="email"

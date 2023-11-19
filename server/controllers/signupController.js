@@ -2,16 +2,53 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 const jwt = require('jsonwebtoken');
+const { getUserByEmail, createUser } = require("../db/queries/userQueries")
 
-const addUser = (req, res) => {
-    let { email, password } = req.body
+const addUser = async (req, res) => {
+    let { name, email, password } = req.body
 
-    if (!email || !password) {
-        return res.status(400).json({ "message": "email and password are required" })
+    if (!name || !email || !password) {
+        return res.status(400).json({ "message": "name, email and password are required" })
     }
 
-    function generateAccessToken(payload) {
-        return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '15m' });
+    //validate name
+    name = name.trim()
+    const matchRegExp = () => {
+        return /^[a-zA-Z\s]+$/.test(name);
+    }
+    if (!name || !matchRegExp() || name.length < 3) {
+        return res.status(400).json({ "message": "invalid name, name should contain at list 3 letters" })
+    }
+
+    //validate password
+    const validatePassword = (password) => {
+        const disallowedSymbolsAndSpaces = /[!@#$%^&*()_+={}[\]\\|:;"'<>,.?/~\s]/
+        return password.length >= 8 && !disallowedSymbolsAndSpaces.test(password)
+    }
+    if (!validatePassword(password)) {
+        return res.status(400).json({ "message": "invalid password" })
+    }
+    password = bcrypt.hashSync(password, 10)
+
+    // validate email
+    email = email.trim();
+    const validateEmail = () => {
+        // Regular expression for basic email validation
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    if (!email || !validateEmail()) {
+        return res.status(400).json({ "message": "invalid email" });
+    }
+
+    //validate user
+    const user = await getUserByEmail(email)
+    if (user) { return res.status(400).json({ "message": "user already exists" }) }
+
+
+    //create date
+    function generateAccessToken(email) {
+        return jwt.sign(email, process.env.TOKEN_SECRET, { expiresIn: '15m' });
     }
 
     function generateRefreshToken() {
@@ -21,13 +58,23 @@ const addUser = (req, res) => {
     const data = {
         email: email,
         password: bcrypt.hashSync(password, 10),
-        accessToken: generateAccessToken({ email }),
-        refreshToken: generateRefreshToken()
+        access_token: generateAccessToken({ email }),
+        refresh_token: generateRefreshToken(),
+        name: name
     }
 
-    console.log(data)
+    //create new user
+    try {
+        const result = await createUser(data)
+        if (result) {
+            return res.status(200).json({ "success": true, data: result })
+        } else {
+            return res.status(500).json({ "success": false })
+        }
 
-    return res.status(200).json({ "success": true })
+    } catch (error) {
+        return res.status(500).json({ "success": false })
+    }
 }
 
 
