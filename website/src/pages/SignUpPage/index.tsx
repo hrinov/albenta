@@ -1,15 +1,25 @@
 const url = import.meta.env.VITE_URL;
-import { FC } from "react";
+import { FC, useState } from "react";
 import "./index.sass";
 const SignupPage: FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const registerUser = async () => {
-    const response = await fetch(`${url}/api/register`, {
+    const data = {
+      email: email,
+      password: password,
+    };
+    let response = await fetch(`${url}/api/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify(userData),
+      body: JSON.stringify(data),
     });
+
+    response = await response.json();
+    console.log(response);
   };
 
   const handleClick = () => {
@@ -20,8 +30,16 @@ const SignupPage: FC = () => {
     <section className="signup-page">
       <div className="inputs-wrapper">
         <h1>Sign Up</h1>
-        <input placeholder="email" />
-        <input placeholder="password" />
+        <input
+          value={email}
+          placeholder="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          value={password}
+          placeholder="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <div className="ok-btn" onClick={handleClick}>
           NEXT
         </div>
