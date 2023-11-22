@@ -1,4 +1,3 @@
-const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 const jwt = require('jsonwebtoken');
@@ -33,7 +32,6 @@ const addUser = async (req, res) => {
     // validate email
     email = email.trim();
     const validateEmail = () => {
-        // Regular expression for basic email validation
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
 
@@ -48,11 +46,11 @@ const addUser = async (req, res) => {
 
     //create date
     function generateAccessToken(email) {
-        return jwt.sign(email, process.env.TOKEN_SECRET, { expiresIn: '15m' });
+        return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '15m' });
     }
 
     function generateRefreshToken() {
-        return uuidv4();
+        return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '1d' });
     }
 
     const data = {
