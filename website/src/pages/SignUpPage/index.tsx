@@ -1,10 +1,12 @@
 const url = import.meta.env.VITE_URL;
 import { FC, useState } from "react";
 import "./index.sass";
+import { useNavigate } from "react-router-dom";
 const SignupPage: FC = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
 
   const registerUser = async () => {
     const data = {
@@ -12,7 +14,8 @@ const SignupPage: FC = () => {
       email: email,
       password: password,
     };
-    let response = await fetch(`${url}/api/register`, {
+
+    let responseJSON = await fetch(`${url}/api/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,8 +23,11 @@ const SignupPage: FC = () => {
       body: JSON.stringify(data),
     });
 
-    response = await response.json();
-    console.log(response);
+    const response = (await responseJSON.json()) as { success: boolean };
+
+    if (response?.success) {
+      navigate("/account");
+    }
   };
 
   const handleClick = () => {

@@ -2,6 +2,7 @@ import { RouteObject } from "react-router-dom";
 import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
 import SignupPage from "./SignUpPage";
+import AccountMainPage from "./accountPages/mainPage";
 
 const guestRoutes: RouteObject[] = [
   {
@@ -12,6 +13,10 @@ const guestRoutes: RouteObject[] = [
   {
     Component: SignupPage,
     path: "/signup",
+  },
+  {
+    Component: AccountMainPage,
+    path: "/account",
   },
   {
     Component: NotFoundPage,
