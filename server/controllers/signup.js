@@ -65,6 +65,8 @@ const addUser = async (req, res) => {
     try {
         const result = await createUser(data)
         if (result) {
+            delete result.password;
+            delete result.id;
             return res.status(200).json({ "success": true, data: result })
         } else {
             return res.status(500).json({ "success": false })
