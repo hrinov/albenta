@@ -20,5 +20,17 @@ const createUser = async (data) => {
     }
 };
 
-module.exports = { getUserByEmail, createUser }
+const updateUser = async (newData) => {
+    try {
+        const updatedUser = await db('users')
+            .where('id', newData.id)
+            .update(newData)
+            .returning('*');
+        return updatedUser[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
+module.exports = { getUserByEmail, createUser, updateUser }
 

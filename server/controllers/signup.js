@@ -45,7 +45,7 @@ const addUser = async (req, res) => {
 
 
     //create date
-    function generateAccessToken(email) {
+    function generateAccessToken() {
         return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '15m' });
     }
 
@@ -56,7 +56,7 @@ const addUser = async (req, res) => {
     const data = {
         email: email,
         password: bcrypt.hashSync(password, 10),
-        access_token: generateAccessToken({ email }),
+        access_token: generateAccessToken(),
         refresh_token: generateRefreshToken(),
         name: name
     }
