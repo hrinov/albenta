@@ -2,7 +2,12 @@ const url = import.meta.env.VITE_URL;
 import { FC, useState } from "react";
 import "./index.sass";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateTokens, updateUser } from "../../../redux/slice";
+import { LoginSignupResponse } from "../../../types";
+
 const SignupPage: FC = () => {
+  const dispatch = useDispatch();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -23,9 +28,20 @@ const SignupPage: FC = () => {
       body: JSON.stringify(data),
     });
 
-    const response = (await responseJSON.json()) as { success: boolean };
-
+    const response = (await responseJSON.json()) as LoginSignupResponse;
     if (response?.success) {
+      dispatch(
+        updateTokens({
+          accessToken: response?.data?.access_token,
+          refreshToken: response?.data?.refresh_token,
+        })
+      );
+      dispatch(
+        updateUser({
+          email: response?.data?.email,
+          name: response?.data?.name,
+        })
+      );
       navigate("/account");
     }
   };

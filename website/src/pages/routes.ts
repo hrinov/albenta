@@ -15,6 +15,13 @@ const guestRoutes: RouteObject[] = [
     path: "/signup",
   },
   {
+    Component: NotFoundPage,
+    path: "*",
+  },
+];
+
+const accountRoutes: RouteObject[] = [
+  {
     Component: AccountMainPage,
     path: "/account",
   },
@@ -24,4 +31,4 @@ const guestRoutes: RouteObject[] = [
   },
 ];
 
-export default guestRoutes;
+export { guestRoutes, accountRoutes };
