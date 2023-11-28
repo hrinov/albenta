@@ -3,6 +3,7 @@ import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
 import SignupPage from "./SignUpPage";
 import AccountMainPage from "./accountPages/mainPage";
+import Redirect from "./redirect";
 
 const guestRoutes: RouteObject[] = [
   {
@@ -15,6 +16,10 @@ const guestRoutes: RouteObject[] = [
     path: "/signup",
   },
   {
+    Component: Redirect,
+    path: "/",
+  },
+  {
     Component: NotFoundPage,
     path: "*",
   },
@@ -24,6 +29,10 @@ const accountRoutes: RouteObject[] = [
   {
     Component: AccountMainPage,
     path: "/account",
+  },
+  {
+    Component: Redirect,
+    path: "/",
   },
   {
     Component: NotFoundPage,

@@ -8,14 +8,15 @@ const cookieParser = require("cookie-parser")
 const app = express()
 const PORT = 3000;
 
-app.use(cors())
-app.use(cookieParser())
-app.use(express.json());
-app.use("/", express.static(path.join(__dirname)))
-app.use("/api", signup);
-app.use("/api", login);
-app.use("/api", refreshToken);
+const apiRouter = express.Router();
+app.use('/api', apiRouter);
 
+apiRouter.use(cors());
+apiRouter.use(cookieParser());
+apiRouter.use(express.json());
+apiRouter.use('/signup', signup);
+apiRouter.use('/login', login);
+apiRouter.use('/refreshToken', refreshToken);
 
 
 app.listen(PORT, () => console.log(`server running on port ${PORT}`))
