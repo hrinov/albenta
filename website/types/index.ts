@@ -5,5 +5,6 @@ export interface LoginSignupResponse {
     refresh_token: string;
     email: string;
     name: string;
+    balance: number;
   };
 }

@@ -32,12 +32,9 @@ const updateTokens = async (req, res) => {
     return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, { expiresIn: '1d' });
   }
   const data = {
-    id: user.id,
-    email: user.email,
-    password: user.password,
+    ...user,
     access_token: generateAccessToken(),
     refresh_token: generateRefreshToken(),
-    name: user.name,
   };
   //update user
   try {

@@ -1,5 +1,5 @@
 const url = import.meta.env.VITE_URL;
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import "./index.sass";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -11,7 +11,11 @@ const LoginPage: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
-
+  const el1 = useRef<HTMLDivElement>(null);
+  const el2 = useRef<HTMLDivElement>(null);
+  const el3 = useRef<HTMLDivElement>(null);
+  const el4 = useRef<HTMLDivElement>(null);
+  const el5 = useRef<HTMLDivElement>(null);
   const loginUser = async () => {
     const data = {
       email: email,
@@ -29,16 +33,19 @@ const LoginPage: FC = () => {
     const response = (await responseJSON.json()) as LoginSignupResponse;
 
     if (response?.success) {
+      const { access_token, refresh_token, email, name, balance } =
+        response?.data;
       dispatch(
         updateTokens({
-          accessToken: response?.data?.access_token,
-          refreshToken: response?.data?.refresh_token,
+          accessToken: access_token,
+          refreshToken: refresh_token,
         })
       );
       dispatch(
         updateUser({
-          email: response?.data?.email,
-          name: response?.data?.name,
+          email: email,
+          name: name,
+          balance: balance,
         })
       );
       navigate("/account");
@@ -52,7 +59,15 @@ const LoginPage: FC = () => {
   return (
     <section className="login-page">
       <div className="inputs-wrapper">
-        <h1>Login</h1>
+        <h1>
+          <div className="title-wrapper">
+            <div ref={el1}>L</div>
+            <div ref={el2}>o</div>
+            <div ref={el3}>g</div>
+            <div ref={el4}>i</div>
+            <div ref={el5}>n</div>
+          </div>
+        </h1>
         <input
           value={email}
           placeholder="email"

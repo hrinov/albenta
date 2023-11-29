@@ -58,7 +58,8 @@ const addUser = async (req, res) => {
         password: bcrypt.hashSync(password, 10),
         access_token: generateAccessToken(),
         refresh_token: generateRefreshToken(),
-        name: name
+        name: name,
+        balance: 1000
     }
 
     //create new user

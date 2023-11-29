@@ -1,5 +1,5 @@
 const url = import.meta.env.VITE_URL;
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import "./index.sass";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,12 @@ const SignupPage: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
+  const el1 = useRef<HTMLDivElement>(null);
+  const el2 = useRef<HTMLDivElement>(null);
+  const el3 = useRef<HTMLDivElement>(null);
+  const el4 = useRef<HTMLDivElement>(null);
+  const el5 = useRef<HTMLDivElement>(null);
+  const el6 = useRef<HTMLDivElement>(null);
 
   const registerUser = async () => {
     const data = {
@@ -20,7 +26,7 @@ const SignupPage: FC = () => {
       password: password,
     };
 
-    let responseJSON = await fetch(`${url}/api/register`, {
+    let responseJSON = await fetch(`${url}/api/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,16 +36,19 @@ const SignupPage: FC = () => {
 
     const response = (await responseJSON.json()) as LoginSignupResponse;
     if (response?.success) {
+      const { access_token, refresh_token, email, name, balance } =
+        response?.data;
       dispatch(
         updateTokens({
-          accessToken: response?.data?.access_token,
-          refreshToken: response?.data?.refresh_token,
+          accessToken: access_token,
+          refreshToken: refresh_token,
         })
       );
       dispatch(
         updateUser({
-          email: response?.data?.email,
-          name: response?.data?.name,
+          email: email,
+          name: name,
+          balance: balance,
         })
       );
       navigate("/account");
@@ -53,7 +62,17 @@ const SignupPage: FC = () => {
   return (
     <section className="signup-page">
       <div className="inputs-wrapper">
-        <h1>Sign Up</h1>
+        <h1>
+          <div className="title-wrapper">
+            <div>S</div>
+            <div>i</div>
+            <div>g</div>
+            <div>n</div>
+            <div className="space" />
+            <div>U</div>
+            <div>p</div>
+          </div>
+        </h1>
         <input
           value={name}
           placeholder="name"

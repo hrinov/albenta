@@ -6,6 +6,7 @@ export interface RootStateInterface {
   user: {
     name: string | null;
     email: string | null;
+    balance: number | null;
   };
 }
 
@@ -15,6 +16,7 @@ const initialState: RootStateInterface = {
   user: {
     name: null,
     email: null,
+    balance: null,
   },
 };
 
@@ -41,12 +43,14 @@ const slice = createSlice({
         payload: {
           name: string;
           email: string;
+          balance: number;
         };
       }
     ) => {
       state.user = {
         name: action.payload.name,
         email: action.payload.email,
+        balance: action.payload.balance,
       };
     },
 
@@ -56,6 +60,7 @@ const slice = createSlice({
       state.user = {
         email: null,
         name: null,
+        balance: null,
       };
     },
   },

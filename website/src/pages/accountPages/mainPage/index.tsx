@@ -15,12 +15,17 @@ const AccountMainPage: FC = () => {
     dispatch(clearStates());
     navigate("/login");
   };
+  console.log(user);
   return (
     <section className="main-page">
       <header>
         <div className="logo">ALBENTA</div>
         <div className="logout-block">
           {user.name}
+          <div className="balance">
+            Balance:
+            {user.balance}$
+          </div>
           <button className="logout" onClick={handleLogout}>
             Logout
           </button>
