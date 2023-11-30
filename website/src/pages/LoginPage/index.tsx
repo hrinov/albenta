@@ -13,7 +13,9 @@ const LoginPage: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
+
   const loginUser = async () => {
+    setLoading(true);
     const data = {
       email: email,
       password: password,
@@ -45,7 +47,10 @@ const LoginPage: FC = () => {
           balance: balance,
         })
       );
+      setLoading(false);
       navigate("/account");
+    } else {
+      setLoading(false);
     }
   };
 
@@ -54,7 +59,7 @@ const LoginPage: FC = () => {
   };
 
   return (
-    <section className="login-page" onClick={() => setLoading(!loading)}>
+    <section className="login-page">
       <div className="inputs-wrapper">
         <AnimatedTitle loading={loading} />
         <input
@@ -76,35 +81,51 @@ const LoginPage: FC = () => {
 };
 
 const AnimatedTitle: FC<{ loading: boolean }> = ({ loading }) => {
-  const changeColor = (dalay: number, animationColor: string) => {
+  const changeColor = () => {
+    const baseColor = "#db5aa1";
+    const animationColor = "#0510ab";
     return useSpring({
-      from: { color: "#db5aa1" },
-      to: async (next) => {
-        await next({ color: animationColor });
-        await next({ color: "#db5aa1" });
+      from: {
+        color1: baseColor,
+        color2: baseColor,
+        color3: baseColor,
+        color4: baseColor,
+        color5: baseColor,
       },
-      config: { duration: 300 },
-      delay: dalay,
+      to: async (next) => {
+        await next({ color1: animationColor });
+        await next({ color1: baseColor });
+        await next({ color2: animationColor });
+        await next({ color2: baseColor });
+        await next({ color3: animationColor });
+        await next({ color3: baseColor });
+        await next({ color4: animationColor });
+        await next({ color4: baseColor });
+        await next({ color5: animationColor });
+        await next({ color5: baseColor });
+      },
+      loop: { reverse: true },
+      config: { duration: 250 },
     });
   };
 
-  const springs = loading
-    ? [
-        changeColor(0, "#3464eb"),
-        changeColor(300, "#8d2be3"),
-        changeColor(600, "#0319a3"),
-        changeColor(900, "#8000ab"),
-        changeColor(1200, "#290469"),
-      ]
-    : [];
-
   return (
     <div className="title-wrapper">
-      <animated.div style={loading ? springs[0] : {}}>L</animated.div>
-      <animated.div style={loading ? springs[1] : {}}>o</animated.div>
-      <animated.div style={loading ? springs[2] : {}}>g</animated.div>
-      <animated.div style={loading ? springs[3] : {}}>i</animated.div>
-      <animated.div style={loading ? springs[4] : {}}>n</animated.div>
+      <animated.div style={loading ? { color: changeColor().color1 } : {}}>
+        L
+      </animated.div>
+      <animated.div style={loading ? { color: changeColor().color2 } : {}}>
+        o
+      </animated.div>
+      <animated.div style={loading ? { color: changeColor().color3 } : {}}>
+        g
+      </animated.div>
+      <animated.div style={loading ? { color: changeColor().color4 } : {}}>
+        i
+      </animated.div>
+      <animated.div style={loading ? { color: changeColor().color5 } : {}}>
+        n
+      </animated.div>
     </div>
   );
 };
