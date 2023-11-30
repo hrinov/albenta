@@ -12,12 +12,6 @@ const SignupPage: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
-  const el1 = useRef<HTMLDivElement>(null);
-  const el2 = useRef<HTMLDivElement>(null);
-  const el3 = useRef<HTMLDivElement>(null);
-  const el4 = useRef<HTMLDivElement>(null);
-  const el5 = useRef<HTMLDivElement>(null);
-  const el6 = useRef<HTMLDivElement>(null);
 
   const registerUser = async () => {
     const data = {
@@ -63,15 +57,7 @@ const SignupPage: FC = () => {
     <section className="signup-page">
       <div className="inputs-wrapper">
         <h1>
-          <div className="title-wrapper">
-            <div>S</div>
-            <div>i</div>
-            <div>g</div>
-            <div>n</div>
-            <div className="space" />
-            <div>U</div>
-            <div>p</div>
-          </div>
+          <AnimatedTitle />
         </h1>
         <input
           value={name}
@@ -93,6 +79,26 @@ const SignupPage: FC = () => {
         </div>
       </div>
     </section>
+  );
+};
+
+const AnimatedTitle = () => {
+  const el1 = useRef<HTMLDivElement>(null);
+  const el2 = useRef<HTMLDivElement>(null);
+  const el3 = useRef<HTMLDivElement>(null);
+  const el4 = useRef<HTMLDivElement>(null);
+  const el5 = useRef<HTMLDivElement>(null);
+  const el6 = useRef<HTMLDivElement>(null);
+  return (
+    <div className="title-wrapper">
+      <div ref={el1}>S</div>
+      <div ref={el2}>i</div>
+      <div ref={el3}>g</div>
+      <div ref={el4}>n</div>
+      <div className="space" />
+      <div ref={el5}>U</div>
+      <div ref={el6}>p</div>
+    </div>
   );
 };
 
