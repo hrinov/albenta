@@ -1,12 +1,14 @@
 const url = import.meta.env.VITE_URL;
-import { FC, useRef, useState } from "react";
+import { FC, useState } from "react";
 import "./index.sass";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateTokens, updateUser } from "../../../redux/slice";
 import { LoginSignupResponse } from "../../../types";
+import { useSpring, animated } from "react-spring";
 
 const SignupPage: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -14,6 +16,7 @@ const SignupPage: FC = () => {
   const navigate = useNavigate();
 
   const registerUser = async () => {
+    setLoading(true);
     const data = {
       name: name,
       email: email,
@@ -45,7 +48,10 @@ const SignupPage: FC = () => {
           balance: balance,
         })
       );
+      setLoading(false);
       navigate("/account");
+    } else {
+      setLoading(false);
     }
   };
 
@@ -57,7 +63,7 @@ const SignupPage: FC = () => {
     <section className="signup-page">
       <div className="inputs-wrapper">
         <h1>
-          <AnimatedTitle />
+          <AnimatedTitle loading={loading} />
         </h1>
         <input
           value={name}
@@ -82,22 +88,59 @@ const SignupPage: FC = () => {
   );
 };
 
-const AnimatedTitle = () => {
-  const el1 = useRef<HTMLDivElement>(null);
-  const el2 = useRef<HTMLDivElement>(null);
-  const el3 = useRef<HTMLDivElement>(null);
-  const el4 = useRef<HTMLDivElement>(null);
-  const el5 = useRef<HTMLDivElement>(null);
-  const el6 = useRef<HTMLDivElement>(null);
+const AnimatedTitle: FC<{ loading: boolean }> = ({ loading }) => {
+  const changeColor = () => {
+    const baseColor = "#db5aa1";
+    const animationColor = "#0510ab";
+    return useSpring({
+      from: {
+        color1: baseColor,
+        color2: baseColor,
+        color3: baseColor,
+        color4: baseColor,
+        color5: baseColor,
+        color6: baseColor,
+      },
+      to: async (next) => {
+        await next({ color1: animationColor });
+        await next({ color1: baseColor });
+        await next({ color2: animationColor });
+        await next({ color2: baseColor });
+        await next({ color3: animationColor });
+        await next({ color3: baseColor });
+        await next({ color4: animationColor });
+        await next({ color4: baseColor });
+        await next({ color5: animationColor });
+        await next({ color5: baseColor });
+        await next({ color6: animationColor });
+        await next({ color6: baseColor });
+      },
+      loop: { reverse: true },
+      config: { duration: 250 },
+    });
+  };
+
   return (
     <div className="title-wrapper">
-      <div ref={el1}>S</div>
-      <div ref={el2}>i</div>
-      <div ref={el3}>g</div>
-      <div ref={el4}>n</div>
+      <animated.div style={loading ? { color: changeColor().color1 } : {}}>
+        S
+      </animated.div>
+      <animated.div style={loading ? { color: changeColor().color2 } : {}}>
+        i
+      </animated.div>
+      <animated.div style={loading ? { color: changeColor().color3 } : {}}>
+        g
+      </animated.div>
+      <animated.div style={loading ? { color: changeColor().color4 } : {}}>
+        n
+      </animated.div>
       <div className="space" />
-      <div ref={el5}>U</div>
-      <div ref={el6}>p</div>
+      <animated.div style={loading ? { color: changeColor().color5 } : {}}>
+        U
+      </animated.div>
+      <animated.div style={loading ? { color: changeColor().color6 } : {}}>
+        p
+      </animated.div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 const url = import.meta.env.VITE_URL;
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import "./index.sass";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
