@@ -1,0 +1,40 @@
+
+section.deposits
+    margin-top: 100px
+    display: grid
+    width: 100%
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr
+    gap: 18px
+
+    .block
+        position: relative
+        display: flex
+        flex-direction: column
+        background-color: white
+        outline: 1px solid #eecee0
+        border-radius: 4px
+        padding: 14px
+        font-weight: 300
+
+        .percent
+            position: absolute
+            left: 50%
+            top: -36px
+            transform: translateX(-50%)
+            font-size: 20px
+            font-weight: 300
+
+        .configurator
+            margin-top: 8px
+            display: flex
+            align-items: center
+            justify-content: space-between
+            font-weight: 200
+
+        input
+            color: #7d7a7a
+            font-size: 14px
+            font-weight: 200
+
+        .name
+            margin-right: 14px
