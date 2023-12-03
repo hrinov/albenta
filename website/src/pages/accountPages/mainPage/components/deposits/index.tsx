@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { RootStateInterface } from "../../../../../../redux/slice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -14,14 +14,22 @@ const Deposits: FC = () => {
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
-
-  const chartDataGenerator = (body: number, profit: number) => {
+  const [values, setValues] = useState<{ amount: number; hours: number }[]>(
+    Array(5).fill({ amount: 10, hours: 1 })
+  );
+  const percents = [5, 10, 15, 20, 25];
+  const chartDataGenerator = (inputIndex: number) => {
     return {
       labels: ["Body", "Profit"],
       datasets: [
         {
           label: " ",
-          data: [body, profit],
+          data: [
+            values[inputIndex].amount,
+            (values[inputIndex].amount / 100) *
+              percents[inputIndex] *
+              values[inputIndex].hours,
+          ],
           backgroundColor: [
             "rgba(255, 206, 86, 0.2)",
             "rgba(75, 192, 192, 0.2)",
@@ -32,26 +40,31 @@ const Deposits: FC = () => {
       ],
     };
   };
-  const charts = [
-    chartDataGenerator(10, 0.5),
-    chartDataGenerator(10, 1),
-    chartDataGenerator(10, 1.5),
-    chartDataGenerator(10, 2),
-    chartDataGenerator(10, 2.5),
-  ];
+  const charts = Array.from({ length: 5 }, (_, index) =>
+    chartDataGenerator(index)
+  );
+
+  const updateValues = (value: number, input: number, isAmount?: boolean) => {
+    const newValues = [...values];
+    newValues[input] = {
+      amount: isAmount ? value : newValues[input].amount,
+      hours: !isAmount ? value : newValues[input].hours,
+    };
+    setValues(newValues);
+  };
 
   return (
     <section className="deposits">
       <div className="block">
         Calculate profit
-        <div className="percent">5%/hour</div>
+        <div className="percent">{percents[0]}%/hour</div>
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
             min={10}
             max={100000}
             defaultValue={10}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 0, true)}
           />
         </div>
         <div className="configurator">
@@ -60,7 +73,7 @@ const Deposits: FC = () => {
             min={1}
             max={100}
             defaultValue={1}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 0)}
           />
         </div>
         <Doughnut data={charts[0]} />
@@ -68,14 +81,14 @@ const Deposits: FC = () => {
       </div>
       <div className="block">
         Calculate profit
-        <div className="percent">10%/hour</div>
+        <div className="percent">{percents[1]}%/hour</div>
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
             min={10}
             max={100000}
             defaultValue={10}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 1, true)}
           />
         </div>
         <div className="configurator">
@@ -84,7 +97,7 @@ const Deposits: FC = () => {
             min={1}
             max={100}
             defaultValue={1}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 1)}
           />
         </div>
         <Doughnut data={charts[1]} />
@@ -92,14 +105,14 @@ const Deposits: FC = () => {
       </div>
       <div className="block">
         Calculate profit
-        <div className="percent">15%/hour</div>
+        <div className="percent">{percents[2]}%/hour</div>
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
             min={0}
             max={100000}
             defaultValue={0}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 2, true)}
           />
         </div>
         <div className="configurator">
@@ -108,7 +121,7 @@ const Deposits: FC = () => {
             min={1}
             max={100}
             defaultValue={1}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 2)}
           />
         </div>
         <Doughnut data={charts[2]} />
@@ -116,14 +129,14 @@ const Deposits: FC = () => {
       </div>
       <div className="block">
         Calculate profit
-        <div className="percent">20%/hour</div>
+        <div className="percent">{percents[3]}%/hour</div>
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
             min={10}
             max={100000}
             defaultValue={10}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 3, true)}
           />
         </div>
         <div className="configurator">
@@ -132,7 +145,7 @@ const Deposits: FC = () => {
             min={1}
             max={100}
             defaultValue={1}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 3)}
           />
         </div>
         <Doughnut data={charts[3]} />
@@ -140,14 +153,14 @@ const Deposits: FC = () => {
       </div>
       <div className="block">
         Calculate profit
-        <div className="percent">25%/hour</div>
+        <div className="percent">{percents[40]}%/hour</div>
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
             min={10}
             max={100000}
             defaultValue={10}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 4, true)}
           />
         </div>
         <div className="configurator">
@@ -156,7 +169,7 @@ const Deposits: FC = () => {
             min={1}
             max={100}
             defaultValue={1}
-            // onChange={onChange}
+            onChange={(value) => updateValues(value!, 4)}
           />
         </div>
         <Doughnut data={charts[4]} />
