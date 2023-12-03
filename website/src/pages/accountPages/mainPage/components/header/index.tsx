@@ -21,10 +21,7 @@ const Header: FC = () => {
       <div className="logo">ALBENTA</div>
       <div className="logout-block">
         {user.name}
-        <div className="balance">
-          Balance:
-          {user.balance}$
-        </div>
+        <div className="balance">Balance: {user.balance}$</div>
         <button className="logout" onClick={handleLogout}>
           Logout
         </button>
