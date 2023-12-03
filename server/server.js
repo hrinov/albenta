@@ -4,6 +4,7 @@ const express = require("express");
 const { router: signup } = require("./routes/signup.js")
 const { router: login } = require("./routes/login.js")
 const { router: refreshToken } = require("./routes/refreshToken.js")
+const { router: me } = require("./routes/me.js")
 const cookieParser = require("cookie-parser")
 const app = express()
 const PORT = 3000;
@@ -17,6 +18,7 @@ apiRouter.use(express.json());
 apiRouter.use('/signup', signup);
 apiRouter.use('/login', login);
 apiRouter.use('/refreshToken', refreshToken);
+apiRouter.use('/me', me);
 
 
 app.listen(PORT, () => console.log(`server running on port ${PORT}`))

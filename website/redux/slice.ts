@@ -4,39 +4,22 @@ export interface RootStateInterface {
   accessToken: string | null;
   refreshToken: string | null;
   user: {
-    name: string | null;
-    email: string | null;
-    balance: number | null;
-  };
+    name: string;
+    email: string;
+    balance: number;
+  } | null;
 }
 
 const initialState: RootStateInterface = {
   accessToken: null,
   refreshToken: null,
-  user: {
-    name: null,
-    email: null,
-    balance: null,
-  },
+  user: null,
 };
 
 const slice = createSlice({
   name: "slice",
   initialState,
   reducers: {
-    updateTokens: (
-      state,
-      action: {
-        payload: {
-          accessToken: string;
-          refreshToken: string;
-        };
-      }
-    ) => {
-      state.accessToken = action.payload?.accessToken;
-      state.refreshToken = action.payload?.refreshToken;
-    },
-
     updateUser: (
       state,
       action: {
@@ -57,15 +40,11 @@ const slice = createSlice({
     clearStates: (state) => {
       state.accessToken = null;
       state.refreshToken = null;
-      state.user = {
-        email: null,
-        name: null,
-        balance: null,
-      };
+      state.user = null;
     },
   },
 });
 
 const { actions, reducer } = slice;
 export default reducer;
-export const { updateTokens, updateUser, clearStates } = actions;
+export const { updateUser, clearStates } = actions;

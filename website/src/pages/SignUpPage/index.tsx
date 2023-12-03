@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import "./index.sass";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { updateTokens, updateUser } from "../../../redux/slice";
+import { updateUser } from "../../../redux/slice";
 import { LoginSignupResponse } from "../../../types";
 import { useSpring, animated } from "react-spring";
 
@@ -35,12 +35,10 @@ const SignupPage: FC = () => {
     if (response?.success) {
       const { access_token, refresh_token, email, name, balance } =
         response?.data;
-      dispatch(
-        updateTokens({
-          accessToken: access_token,
-          refreshToken: refresh_token,
-        })
-      );
+
+      window.localStorage.setItem("accessToken", access_token);
+      window.localStorage.setItem("refreshToken", refresh_token);
+
       dispatch(
         updateUser({
           email: email,
