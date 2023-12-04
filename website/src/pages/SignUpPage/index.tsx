@@ -4,7 +4,7 @@ import "./index.sass";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../redux/slice";
-import { LoginSignupResponse } from "../../../types";
+import { MeResponse } from "../../../types";
 import { useSpring, animated } from "react-spring";
 
 const SignupPage: FC = () => {
@@ -31,7 +31,7 @@ const SignupPage: FC = () => {
       body: JSON.stringify(data),
     });
 
-    const response = (await responseJSON.json()) as LoginSignupResponse;
+    const response = (await responseJSON.json()) as MeResponse;
     if (response?.success) {
       const { access_token, refresh_token, email, name, balance } =
         response?.data;

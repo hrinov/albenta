@@ -4,8 +4,9 @@ import "./index.sass";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../redux/slice";
-import { LoginSignupResponse } from "../../../types";
+import { MeResponse } from "../../../types";
 import { useSpring, animated } from "react-spring";
+import { requestHandler } from "../../utils";
 
 const LoginPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,15 +22,7 @@ const LoginPage: FC = () => {
       password: password,
     };
 
-    let responseJSON = await fetch(`${url}/api/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    const response = (await responseJSON.json()) as LoginSignupResponse;
+    const response: MeResponse = await requestHandler("login", "POST", data);
 
     if (response?.success) {
       const { access_token, refresh_token, email, name, balance } =

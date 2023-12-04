@@ -1,4 +1,4 @@
-export interface LoginSignupResponse {
+export interface MeResponse {
   success: boolean;
   data: {
     access_token: string;

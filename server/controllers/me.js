@@ -3,7 +3,15 @@ const jwt = require("jsonwebtoken");
 
 const getUser = async (req, res) => {
   const access_token = req?.headers?.authorization
-  const decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
+  } catch (error) {
+    // handle wrong or expired token error
+    if (error.message == "jwt expired") { return res.status(400).json({ "message": "token has expired" }) }
+    return res.status(400).json({ "message": "wrong token" })
+  }
+
   const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
 
   if (decodedToken.exp < currentTime) {

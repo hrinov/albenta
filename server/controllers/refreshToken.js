@@ -4,7 +4,15 @@ const { getUserByEmail, updateUser } = require("../db/queries/userQueries");
 
 const updateTokens = async (req, res) => {
   const { refreshToken } = req.body;
-  const decodedToken = jwt.verify(refreshToken, process.env.TOKEN_SECRET);
+  let decodedToken;
+
+  try {
+    decodedToken = jwt.verify(refreshToken, process.env.TOKEN_SECRET)
+  } catch (error) {
+    // handle wrong or expired token error
+    if (error.message == "jwt expired") { return res.status(400).json({ "message": "token has expired" }) }
+    return res.status(400).json({ "message": "wrong token" })
+  }
   const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
 
   if (decodedToken.exp < currentTime) {
