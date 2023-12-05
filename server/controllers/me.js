@@ -2,7 +2,7 @@ const { getUserByEmail } = require("../db/queries/userQueries");
 const jwt = require("jsonwebtoken");
 
 const getUser = async (req, res) => {
-  const access_token = req?.headers?.authorization
+  const access_token = req?.headers?.authorization?.substring(7)
   let decodedToken;
   try {
     decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);

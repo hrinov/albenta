@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { updateUser } from "../../../redux/slice";
 import { MeResponse } from "../../../types";
 import { useSpring, animated } from "react-spring";
+import { requestHandler } from "../../utils";
 
 const SignupPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,15 +24,8 @@ const SignupPage: FC = () => {
       password: password,
     };
 
-    let responseJSON = await fetch(`${url}/api/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const response: MeResponse = await requestHandler("signup", "POST", data);
 
-    const response = (await responseJSON.json()) as MeResponse;
     if (response?.success) {
       const { access_token, refresh_token, email, name, balance } =
         response?.data;
