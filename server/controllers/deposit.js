@@ -1,11 +1,28 @@
-const { getUserByEmail } = require("../db/queries/userQueries");
+const { getUserByEmail, updateUser } = require("../db/queries/userQueries");
+const { open } = require("../db/queries/depositQueries");
 const jwt = require("jsonwebtoken");
 
 const openDeposit = async (req, res) => {
-    const { amount } = req.body;
-    if (!amount) {
-        // handle not amount
-        return res.status(400).json({ "message": "amount is required" })
+    const { amount, hours, percent } = req.body;
+    if (!amount || !hours || !percent) {
+        // handle not all parametres
+        return res.status(400).json({ "message": "amount, hours and percent are required" })
+    }
+
+    if (amount < 10) {
+        // handle low amount
+        return res.status(400).json({ "message": "please ensure the amount is greater than 10" })
+    }
+
+    if (hours > 100) {
+        // handle bad hours input
+        return res.status(400).json({ "message": "you can't use more than 100 hours" })
+    }
+
+    const allowedPercentRates = [5, 10, 15, 20, 25]
+    if (!allowedPercentRates.includes(percent)) {
+        // handle bad percent input
+        return res.status(400).json({ message: `invalid percent, valid percents are: ${allowedPercentRates.join(", ")}` })
     }
 
     const access_token = req?.headers?.authorization?.substring(7)
@@ -27,6 +44,7 @@ const openDeposit = async (req, res) => {
         return res.status(400).json({ "message": "token has expired" })
     }
 
+    const userEmail = decodedToken.email;
     const user = await getUserByEmail(userEmail)
 
     if (!user) {
@@ -46,17 +64,23 @@ const openDeposit = async (req, res) => {
 
     const newUserData = {
         ...user,
-        balance: balance - amount
+        balance: (+user.balance - +amount)
     };
 
     const updatedUser = await updateUser(newUserData);
 
+    const depositOptions = {
+        amount: +amount,
+        hours: +hours,
+        percent: +percent,
+        user_id: user.id
+    }
+    console.log(depositOptions)
+    const newDeposit = await open(depositOptions)
 
-
-
-
-    return res.status(200).json({ success: true, data: { user: updatedUser } });
+    return res.status(200).json({ success: true, data: { user: updatedUser, deposit: newDeposit } });
 
 };
 
 module.exports = { openDeposit };
+
