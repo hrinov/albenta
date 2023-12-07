@@ -1,22 +1,20 @@
 import { FC, useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { guestRoutes, accountRoutes } from "./pages/routes";
-import { useSelector } from "react-redux";
 import { Provider } from "react-redux";
 import store from "../redux/store";
-import { RootStateInterface } from "../redux/slice";
 import { MeResponse } from "../types";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../redux/slice";
 import { requestHandler } from "./utils";
 
 const Router: FC = () => {
-  const { user } = useSelector(
-    (state: { slice: RootStateInterface }) => state.slice
-  );
   const dispatch = useDispatch();
   let routes;
-  routes = user ? accountRoutes : guestRoutes;
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+  const isUserAuthorized = accessToken && refreshToken;
+  routes = isUserAuthorized ? accountRoutes : guestRoutes;
   const router = createBrowserRouter(routes!);
 
   const handleUserUpdate = async () => {

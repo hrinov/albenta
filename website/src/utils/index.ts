@@ -5,7 +5,7 @@ export const requestHandler = async (
   method: string,
   body?: any
 ) => {
-  const makeRequest = async () => {
+  const makeRequest: () => any = async () => {
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
 
@@ -22,6 +22,8 @@ export const requestHandler = async (
     if (responseJSON.status == 200) {
       return response;
     } else if ((response.message = "token has expired")) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       let responseJSON = await fetch(`${url}/api/refreshToken`, {
         method: "POST",
         headers: {
