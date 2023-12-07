@@ -6,16 +6,18 @@ import { InputNumber } from "antd";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import "./index.sass";
+import { requestHandler } from "../../../../../utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Deposits: FC = () => {
+  const [loading, setLoading] = useState<null | number>(null);
+  const [values, setValues] = useState<{ amount: number; hours: number }[]>(
+    Array(5).fill({ amount: 10, hours: 1 })
+  );
   const dispatch = useDispatch();
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
-  );
-  const [values, setValues] = useState<{ amount: number; hours: number }[]>(
-    Array(5).fill({ amount: 10, hours: 1 })
   );
   const percents = [5, 10, 15, 20, 25];
   const chartDataGenerator = (inputIndex: number) => {
@@ -53,6 +55,17 @@ const Deposits: FC = () => {
     setValues(newValues);
   };
 
+  const openDeposit = async (
+    value: { amount: number; hours: number },
+    percent: number
+  ) => {
+    setLoading(1);
+    const { amount, hours } = value;
+    const data = { amount, hours, percent };
+    const response = await requestHandler("deposit", "POST", data);
+    setLoading(null);
+  };
+
   return (
     <section className="deposits">
       <div className="block">
@@ -63,7 +76,7 @@ const Deposits: FC = () => {
           <InputNumber
             min={10}
             max={100000}
-            defaultValue={10}
+            value={values[0]?.amount}
             onChange={(value) => updateValues(value!, 0, true)}
           />
         </div>
@@ -72,12 +85,14 @@ const Deposits: FC = () => {
           <InputNumber
             min={1}
             max={100}
-            defaultValue={1}
+            value={values[0]?.hours}
             onChange={(value) => updateValues(value!, 0)}
           />
         </div>
         <Doughnut data={charts[0]} />
-        <button>OPEN DEPOSIT</button>
+        <button onClick={() => openDeposit(values[0], percents[0])}>
+          OPEN DEPOSIT
+        </button>
       </div>
       <div className="block">
         Calculate profit
@@ -87,7 +102,7 @@ const Deposits: FC = () => {
           <InputNumber
             min={10}
             max={100000}
-            defaultValue={10}
+            value={values[1]?.amount}
             onChange={(value) => updateValues(value!, 1, true)}
           />
         </div>
@@ -96,12 +111,14 @@ const Deposits: FC = () => {
           <InputNumber
             min={1}
             max={100}
-            defaultValue={1}
+            value={values[1]?.hours}
             onChange={(value) => updateValues(value!, 1)}
           />
         </div>
         <Doughnut data={charts[1]} />
-        <button>OPEN DEPOSIT</button>
+        <button onClick={() => openDeposit(values[1], percents[1])}>
+          OPEN DEPOSIT
+        </button>
       </div>
       <div className="block">
         Calculate profit
@@ -109,9 +126,9 @@ const Deposits: FC = () => {
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
-            min={0}
+            min={10}
             max={100000}
-            defaultValue={0}
+            value={values[2]?.amount}
             onChange={(value) => updateValues(value!, 2, true)}
           />
         </div>
@@ -120,12 +137,14 @@ const Deposits: FC = () => {
           <InputNumber
             min={1}
             max={100}
-            defaultValue={1}
+            value={values[2]?.hours}
             onChange={(value) => updateValues(value!, 2)}
           />
         </div>
         <Doughnut data={charts[2]} />
-        <button>OPEN DEPOSIT</button>
+        <button onClick={() => openDeposit(values[2], percents[2])}>
+          OPEN DEPOSIT
+        </button>
       </div>
       <div className="block">
         Calculate profit
@@ -135,7 +154,7 @@ const Deposits: FC = () => {
           <InputNumber
             min={10}
             max={100000}
-            defaultValue={10}
+            value={values[3]?.amount}
             onChange={(value) => updateValues(value!, 3, true)}
           />
         </div>
@@ -144,22 +163,24 @@ const Deposits: FC = () => {
           <InputNumber
             min={1}
             max={100}
-            defaultValue={1}
+            value={values[3]?.hours}
             onChange={(value) => updateValues(value!, 3)}
           />
         </div>
         <Doughnut data={charts[3]} />
-        <button>OPEN DEPOSIT</button>
+        <button onClick={() => openDeposit(values[3], percents[3])}>
+          OPEN DEPOSIT
+        </button>
       </div>
       <div className="block">
         Calculate profit
-        <div className="percent">{percents[40]}%/hour</div>
+        <div className="percent">{percents[4]}%/hour</div>
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
             min={10}
             max={100000}
-            defaultValue={10}
+            value={values[4]?.amount}
             onChange={(value) => updateValues(value!, 4, true)}
           />
         </div>
@@ -168,12 +189,14 @@ const Deposits: FC = () => {
           <InputNumber
             min={1}
             max={100}
-            defaultValue={1}
+            value={values[4]?.hours}
             onChange={(value) => updateValues(value!, 4)}
           />
         </div>
         <Doughnut data={charts[4]} />
-        <button>OPEN DEPOSIT</button>
+        <button onClick={() => openDeposit(values[4], percents[4])}>
+          OPEN DEPOSIT
+        </button>
       </div>
     </section>
   );
