@@ -1,20 +1,24 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { guestRoutes, accountRoutes } from "./pages/routes";
 import { Provider } from "react-redux";
 import store from "../redux/store";
 import { MeResponse } from "../types";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../redux/slice";
+import { RootStateInterface, updateUser } from "../redux/slice";
 import { requestHandler } from "./utils";
+import { useSelector } from "react-redux";
 
 const Router: FC = () => {
-  const dispatch = useDispatch();
-  let routes;
+  const [isUserAuthorized, setIsUserAuthorized] = useState(false);
+  const { user } = useSelector(
+    (state: { slice: RootStateInterface }) => state.slice
+  );
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  const isUserAuthorized = accessToken && refreshToken;
-  routes = isUserAuthorized ? accountRoutes : guestRoutes;
+  const dispatch = useDispatch();
+  let routes;
+  routes = accessToken && refreshToken ? accountRoutes : guestRoutes;
   const router = createBrowserRouter(routes!);
 
   const handleUserUpdate = async () => {
@@ -32,12 +36,11 @@ const Router: FC = () => {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (accessToken && refreshToken) {
+    if (accessToken && refreshToken && !user) {
+      setIsUserAuthorized(true);
       handleUserUpdate();
     }
-  }, []);
+  }, [user, accessToken, refreshToken]);
 
   return <RouterProvider router={router} />;
 };
