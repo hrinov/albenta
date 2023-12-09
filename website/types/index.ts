@@ -8,3 +8,12 @@ export interface MeResponse {
     balance: number;
   };
 }
+
+export interface DepositInterface {
+  amount: number;
+  created_at: Date;
+  hours: number;
+  id: number;
+  percent: number;
+  user_id: number;
+}

@@ -37,8 +37,8 @@ export const requestHandler = async (
         const { access_token, refresh_token } = response?.data;
         window.localStorage.setItem("accessToken", access_token);
         window.localStorage.setItem("refreshToken", refresh_token);
+        return makeRequest();
       }
-      return makeRequest();
     } else return;
   };
 
