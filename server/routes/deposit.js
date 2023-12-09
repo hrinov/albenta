@@ -5,6 +5,6 @@ const deposit = require("../controllers/deposit.js");
 router
     .route("/")
     .post(deposit.openDeposit)
-
+    .get(deposit.getDeposits)
 
 module.exports = { router };
