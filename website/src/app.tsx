@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { guestRoutes, accountRoutes } from "./pages/routes";
 import { Provider } from "react-redux";
@@ -10,7 +10,6 @@ import { requestHandler } from "./utils";
 import { useSelector } from "react-redux";
 
 const Router: FC = () => {
-  const [isUserAuthorized, setIsUserAuthorized] = useState(false);
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
@@ -37,7 +36,6 @@ const Router: FC = () => {
 
   useEffect(() => {
     if (accessToken && refreshToken && !user) {
-      setIsUserAuthorized(true);
       handleUserUpdate();
     }
   }, [user, accessToken, refreshToken]);

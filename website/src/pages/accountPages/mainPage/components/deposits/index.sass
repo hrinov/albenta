@@ -17,7 +17,7 @@ section.deposits
         font-weight: 300
 
         &.active
-            background-color: #e9ffee
+            background-color: #effffe
 
         .percent
             position: absolute
@@ -39,12 +39,36 @@ section.deposits
             font-size: 14px
             font-weight: 200
 
+        .input-active
+            background-color: white
+
         .name
             margin-right: 14px
 
         canvas
             margin: 22px auto 10px auto
             width: 100% !important
+
+        .white-circle
+            position: absolute
+            width: 105px
+            height: 105px
+            border-radius: 100%
+            background-color: white
+            left: 50%
+            transform: translateX(-50%)
+            bottom: 144px
+
+        img
+            display: block
+            position: absolute
+            width: 130px
+            bottom: 132px
+            left: 50%
+            transform: translateX(-50%)
+            z-index: 10
+            opacity: 0.95
+            transition-duration: 300ms
 
         button
             margin-top: 18px
@@ -67,4 +91,7 @@ section.deposits
 
         button[disabled]
             background-color: white
-            color: #02914c
+            color: #5a78db
+
+            &:hover
+                border: 1px solid black
