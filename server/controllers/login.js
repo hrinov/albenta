@@ -21,7 +21,7 @@ const auth = async (req, res) => {
         return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, { expiresIn: "15m" });
     }
     function generateRefreshToken() {
-        return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, { expiresIn: '1d' });
+        return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, { expiresIn: '30d' });
     }
     const data = {
         ...user,

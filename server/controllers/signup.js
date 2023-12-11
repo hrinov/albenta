@@ -50,7 +50,7 @@ const addUser = async (req, res) => {
     }
 
     function generateRefreshToken() {
-        return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '1d' });
+        return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '30d' });
     }
 
     const data = {

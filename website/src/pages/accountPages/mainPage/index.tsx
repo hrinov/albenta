@@ -13,12 +13,14 @@ const AccountMainPage: FC = () => {
   const getDeposits = async () => {
     let response = await requestHandler("deposit", "GET");
     if (response?.success) {
-      const deposits = response.data.map((deposit: DepositInterface) => ({
-        amount: +deposit.amount,
-        created_at: deposit.created_at,
-        hours: +deposit.hours,
-        percent: +deposit.percent,
-      }));
+      const deposits = response.data.active.map(
+        (deposit: DepositInterface) => ({
+          amount: +deposit.amount,
+          created_at: deposit.created_at,
+          hours: +deposit.hours,
+          percent: +deposit.percent,
+        })
+      );
       dispatch(updateDeposits(deposits));
     }
   };
