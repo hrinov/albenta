@@ -1,11 +1,12 @@
 import { FC, useEffect } from "react";
 import Header from "./components/header";
-import Deposits from "./components/deposits";
+import Plans from "./components/plans";
 import { requestHandler } from "../../../utils";
 import { DepositInterface } from "../../../../types";
 import { useDispatch } from "react-redux";
 import { updateDeposits } from "../../../../redux/slice";
 import "./index.sass";
+import Deposits from "./components/deposits";
 
 const AccountMainPage: FC = () => {
   const dispatch = useDispatch();
@@ -13,14 +14,7 @@ const AccountMainPage: FC = () => {
   const getDeposits = async () => {
     let response = await requestHandler("deposit", "GET");
     if (response?.success) {
-      const deposits = response.data.active.map(
-        (deposit: DepositInterface) => ({
-          amount: +deposit.amount,
-          created_at: deposit.created_at,
-          hours: +deposit.hours,
-          percent: +deposit.percent,
-        })
-      );
+      const deposits = response.data;
       dispatch(updateDeposits(deposits));
     }
   };
@@ -33,6 +27,7 @@ const AccountMainPage: FC = () => {
     <main className="main-page">
       <div className="container">
         <Header />
+        <Plans />
         <Deposits />
       </div>
     </main>

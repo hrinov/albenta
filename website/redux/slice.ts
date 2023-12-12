@@ -9,7 +9,11 @@ export interface RootStateInterface {
     email: string;
     balance: number;
   } | null;
-  deposits: DepositInterface[] | [] | null;
+  deposits: {
+    active: DepositInterface[] | [];
+    ready: DepositInterface[] | [];
+    closed: DepositInterface[] | [];
+  } | null;
 }
 
 const initialState: RootStateInterface = {
@@ -41,12 +45,21 @@ const slice = createSlice({
     },
 
     updateDeposits: (state, action) => {
-      if (state.deposits && !Array.isArray(action.payload)) {
-        let newDeposits = state.deposits as DepositInterface[];
-        newDeposits.push(action.payload as DepositInterface);
-        state.deposits = newDeposits;
+      if (state.deposits && !action.payload.active) {
+        let activeDeposits = state.deposits.active as DepositInterface[];
+        const newDeposit = action.payload as DepositInterface;
+        activeDeposits.push(newDeposit);
+        state.deposits = {
+          active: activeDeposits,
+          ready: state.deposits.ready,
+          closed: state.deposits.closed,
+        };
       } else {
-        state.deposits = action.payload as DepositInterface[];
+        state.deposits = action.payload as {
+          active: DepositInterface[];
+          ready: DepositInterface[] | [];
+          closed: DepositInterface[] | [];
+        };
       }
     },
 

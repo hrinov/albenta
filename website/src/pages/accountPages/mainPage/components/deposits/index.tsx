@@ -1,121 +1,62 @@
-import { FC, useState } from "react";
-import { InputNumber } from "antd";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import { FC } from "react";
 import "./index.sass";
-import { requestHandler } from "../../../../../utils";
-import { useSelector } from "react-redux";
+import { RootStateInterface, clearStates } from "../../../../../../redux/slice";
 import { useDispatch } from "react-redux";
-import { updateDeposits } from "../../../../../../redux/slice";
-import { RootStateInterface } from "../../../../../../redux/slice";
-import loadingAnimation from "../../../../../icons/deposit-loading.svg";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import { useSelector } from "react-redux";
 
 const Deposits: FC = () => {
-  const [loading, setLoading] = useState<null | number>(null);
-  const [values, setValues] = useState<{ amount: number; hours: number }[]>(
-    Array(5).fill({ amount: 10, hours: 1 })
-  );
   const dispatch = useDispatch();
   const { deposits } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
 
-  const percents = [5, 10, 15, 20, 25];
-  const openDeposits: any = percents.map(
-    (percent) => deposits?.find((deposit) => deposit.percent == percent)
-  );
+  function formatDate(inputDate: string) {
+    const date = new Date(inputDate);
 
-  const chartDataGenerator = (inputIndex: number) => {
-    return {
-      labels: ["Body", "Profit"],
-      datasets: [
-        {
-          label: " ",
-          data: [
-            values[inputIndex].amount,
-            (values[inputIndex].amount / 100) *
-              percents[inputIndex] *
-              values[inputIndex].hours,
-          ],
-          backgroundColor: [
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-          ],
-          borderColor: ["rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)"],
-          borderWidth: 1,
-        },
-      ],
-    };
-  };
-  const charts = Array.from({ length: 5 }, (_, index) =>
-    chartDataGenerator(index)
-  );
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
 
-  const updateValues = (value: number, input: number, isAmount?: boolean) => {
-    const newValues = [...values];
-    newValues[input] = {
-      amount: isAmount ? value : newValues[input].amount,
-      hours: !isAmount ? value : newValues[input].hours,
-    };
-    setValues(newValues);
-  };
+    const formattedDay = day < 10 ? `0${day}` : `${day}`;
+    const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
 
-  const openDeposit = async (
-    value: { amount: number; hours: number },
-    percent: number,
-    index: number
-  ) => {
-    setLoading(index);
-    const { amount, hours } = value;
-    const data = { amount, hours, percent };
-    const response = await requestHandler("deposit", "POST", data);
-    setLoading(null);
-    dispatch(updateDeposits(response.data.deposit));
-  };
-
-  const blocks = [];
-  for (let i = 0; i < 5; i++) {
-    blocks.push(
-      <div key={i} className={`block ${openDeposits[i] && "active"}`}>
-        Calculate profit
-        <div className="percent">{percents[i]}%/hour</div>
-        <div className="configurator">
-          <div className="name">amount:</div>
-          <InputNumber
-            className={`input-${!!openDeposits[i] ? "active" : ""}`}
-            disabled={!!openDeposits[i]}
-            min={10}
-            max={100000}
-            value={openDeposits[i]?.amount || values[i]?.amount}
-            onChange={(value) => updateValues(value!, i, true)}
-          />
-        </div>
-        <div className="configurator">
-          <div className="name">hours:</div>
-          <InputNumber
-            className={`input-${!!openDeposits[i] ? "active" : ""}`}
-            disabled={!!openDeposits[i]}
-            min={1}
-            max={100}
-            value={openDeposits[i]?.hours || values[i]?.hours}
-            onChange={(value) => updateValues(value!, i)}
-          />
-        </div>
-        <Doughnut data={charts[i]} />
-        <button
-          disabled={!!openDeposits[i]}
-          onClick={() => openDeposit(values[i], percents[i], i)}
-        >
-          {openDeposits[i] ? "ACTIVE" : "OPEN DEPOSIT"}
-        </button>
-        <img src={loadingAnimation} style={{ opacity: loading == i ? 1 : 0 }} />
-        <div className="white-circle" />
-      </div>
-    );
+    return `${formattedDay}.${formattedMonth}.${year} ${formattedHours}:${formattedMinutes}`;
   }
-  return <section className="deposits">{deposits && blocks}</section>;
+
+  return (
+    <section>
+      <div className="blocks-wrapper">
+        {deposits?.active &&
+          deposits.active.map((deposit) => (
+            <div className="block">
+              <div className="data">
+                <span>Amount</span>
+                {deposit.amount}$
+              </div>
+
+              <div className="data">
+                <span>Hours</span>
+                {deposit.hours}
+              </div>
+
+              <div className="data">
+                <span>Percent</span>
+                {deposit.percent}%
+              </div>
+
+              <div className="data">
+                <span>Open Date</span>
+                {formatDate(deposit.created_at)}
+              </div>
+            </div>
+          ))}
+      </div>
+    </section>
+  );
 };
 
 export default Deposits;

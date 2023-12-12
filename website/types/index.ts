@@ -11,7 +11,7 @@ export interface MeResponse {
 
 export interface DepositInterface {
   amount: number;
-  created_at: Date;
+  created_at: string;
   hours: number;
   id: number;
   percent: number;
