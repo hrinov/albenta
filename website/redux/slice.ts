@@ -44,23 +44,17 @@ const slice = createSlice({
       };
     },
 
-    updateDeposits: (state, action) => {
-      if (state.deposits && !action.payload.active) {
-        let activeDeposits = state.deposits.active as DepositInterface[];
-        const newDeposit = action.payload as DepositInterface;
-        activeDeposits.push(newDeposit);
-        state.deposits = {
-          active: activeDeposits,
-          ready: state.deposits.ready,
-          closed: state.deposits.closed,
-        };
-      } else {
-        state.deposits = action.payload as {
-          active: DepositInterface[];
+    updateDeposits: (
+      state,
+      action: {
+        payload: {
+          active: DepositInterface[] | [];
           ready: DepositInterface[] | [];
           closed: DepositInterface[] | [];
         };
       }
+    ) => {
+      state.deposits = action.payload;
     },
 
     clearStates: (state) => {

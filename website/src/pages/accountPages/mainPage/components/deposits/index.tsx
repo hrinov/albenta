@@ -3,6 +3,7 @@ import "./index.sass";
 import { RootStateInterface, clearStates } from "../../../../../../redux/slice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { DepositInterface } from "../../../../../../types";
 
 const Deposits: FC = () => {
   const dispatch = useDispatch();
@@ -27,30 +28,77 @@ const Deposits: FC = () => {
     return `${formattedDay}.${formattedMonth}.${year} ${formattedHours}:${formattedMinutes}`;
   }
 
+  const createDepositData = (deposit: DepositInterface) => (
+    <>
+      <div className="data">
+        <span>Amount</span>
+        {deposit.amount}$
+      </div>
+
+      <div className="data">
+        <span>Profit</span>
+        {deposit.profit}$
+      </div>
+
+      <div className="data">
+        <span>Total Sum</span>
+        {deposit.total_sum}$
+      </div>
+
+      <div className="data">
+        <span>Hours</span>
+        {deposit.hours}
+      </div>
+
+      <div className="data">
+        <span>Percent</span>
+        {deposit.percent}%
+      </div>
+
+      <div className="data">
+        <span>Open Date</span>
+        {formatDate(deposit.created_at)}
+      </div>
+
+      <div className="data">
+        <span>End Date</span>
+        {formatDate(deposit.end_date)}
+      </div>
+    </>
+  );
+
   return (
     <section>
       <div className="blocks-wrapper">
         {deposits?.active &&
           deposits.active.map((deposit) => (
-            <div className="block">
+            <div className="block active">
+              {createDepositData(deposit)}
               <div className="data">
-                <span>Amount</span>
-                {deposit.amount}$
+                <span>DEPOSIT STATUS</span>
+                ACTIVE
               </div>
+            </div>
+          ))}
 
+        {deposits?.ready &&
+          deposits.ready.map((deposit) => (
+            <div className="block ready">
+              {createDepositData(deposit)}
               <div className="data">
-                <span>Hours</span>
-                {deposit.hours}
+                <span>DEPOSIT STATUS</span>
+                <button>WITHDRAW NOW</button>
               </div>
+            </div>
+          ))}
 
+        {deposits?.closed &&
+          deposits.closed.map((deposit) => (
+            <div className="block closed">
+              {createDepositData(deposit)}
               <div className="data">
-                <span>Percent</span>
-                {deposit.percent}%
-              </div>
-
-              <div className="data">
-                <span>Open Date</span>
-                {formatDate(deposit.created_at)}
+                <span>DEPOSIT STATUS</span>
+                <button>CLOSED</button>
               </div>
             </div>
           ))}

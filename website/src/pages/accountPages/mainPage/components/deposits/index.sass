@@ -14,13 +14,22 @@ section
         .block
             box-sizing: border-box
             width: 100%
-            height: 86px
+            height: 92px
             border-radius: 8px
             display: flex
             align-items: center
             justify-content: space-between
             padding: 0 34px 0 34px
             border: 1px solid #eecee0
+
+            &.active
+                background-color: #effffe
+
+            &.ready
+                background-color: #caffe9
+
+            &.closed
+                background-color: #e6e6e6
 
             .data
                 height: 100%
@@ -34,3 +43,21 @@ section
 
                 span
                     font-weight: 400
+
+            button
+                height: 36px
+                width: 119px
+                display: flex
+                align-items: center
+                justify-content: center
+                background-color: transparent
+                color: #e62d93
+                font-weight: 200
+                font-size: 13px
+                border: 1px solid black
+                border-radius: 4px
+                cursor: pointer
+                box-shadow: none
+
+                &:hover
+                    border: 1px solid #e62d93

@@ -14,7 +14,7 @@ const open = async (data) => {
 const findAll = async (userId) => {
     try {
         const deposits = db('deposits')
-            .select('id', 'user_id', 'amount', 'percent', 'hours', 'created_at')
+            .select('id', 'user_id', 'amount', 'percent', 'hours', 'created_at', 'closed')
             .where('user_id', userId)
 
         return deposits

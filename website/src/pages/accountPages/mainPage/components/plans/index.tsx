@@ -63,6 +63,14 @@ const Plans: FC = () => {
     setValues(newValues);
   };
 
+  const getDeposits = async () => {
+    let response = await requestHandler("deposit", "GET");
+    if (response?.success) {
+      const deposits = response.data;
+      dispatch(updateDeposits(deposits));
+    }
+  };
+
   const openDeposit = async (
     value: { amount: number; hours: number },
     percent: number,
@@ -71,9 +79,9 @@ const Plans: FC = () => {
     setLoading(index);
     const { amount, hours } = value;
     const data = { amount, hours, percent };
-    const response = await requestHandler("deposit", "POST", data);
+    await requestHandler("deposit", "POST", data);
+    await getDeposits();
     setLoading(null);
-    dispatch(updateDeposits(response.data.deposit));
   };
 
   const blocks = [];

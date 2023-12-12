@@ -120,9 +120,17 @@ const getDeposits = async (req, res) => {
         return res.status(400).json({ message: "wrong token" });
     }
 
-    const deposits = await findAll(user.id)
+    let deposits = await findAll(user.id)
 
-    //return only active deposits
+    //create deposits info
+    deposits = deposits.map(deposit => ({
+        ...deposit,
+        profit: ((+deposit.amount / 100) * +deposit.percent * +deposit.hours).toFixed(2),
+        total_sum: ((+deposit.amount / 100) * +deposit.percent * +deposit.hours + +deposit.amount).toFixed(2),
+        end_date: new Date(new Date(deposit.created_at).getTime() + deposit.hours * 60 * 60 * 1000)
+    }))
+
+    //check deposit types
     const currendDate = new Date()
     const activeDeposits = deposits.filter(deposit => {
         const createdAt = new Date(deposit.created_at);
@@ -135,6 +143,7 @@ const getDeposits = async (req, res) => {
         const endDate = new Date(createdAt.getTime() + deposit.hours * 60 * 60 * 1000);
         return endDate.getTime() < currendDate.getTime()
     })
+
 
     readyDeposits = expiredDeposits.filter(deposit => !deposit.closed)
 
