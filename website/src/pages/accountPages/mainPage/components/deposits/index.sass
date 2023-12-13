@@ -23,13 +23,19 @@ section
             border: 1px solid #eecee0
 
             &.active
-                background-color: #effffe
+                border-color: #5a78db
+                .status
+                    color: #5a78db
 
             &.ready
-                background-color: #caffe9
+                border-color: #10dd51
+                .status
+                    color: #10dd51
 
             &.closed
-                background-color: #e6e6e6
+                background-color: #4e4d4d
+                .status
+                    color: black
 
             .data
                 height: 100%
@@ -51,10 +57,9 @@ section
                 align-items: center
                 justify-content: center
                 background-color: transparent
-                color: #e62d93
                 font-weight: 200
                 font-size: 13px
-                border: 1px solid black
+                border: 1px solid #10dd51
                 border-radius: 4px
                 cursor: pointer
                 box-shadow: none

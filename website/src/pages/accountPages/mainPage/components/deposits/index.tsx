@@ -1,12 +1,14 @@
 import { FC } from "react";
 import "./index.sass";
-import { RootStateInterface, clearStates } from "../../../../../../redux/slice";
-import { useDispatch } from "react-redux";
+import { RootStateInterface } from "../../../../../../redux/slice";
 import { useSelector } from "react-redux";
 import { DepositInterface } from "../../../../../../types";
 
-const Deposits: FC = () => {
-  const dispatch = useDispatch();
+interface PropsInterface {
+  handleModal: (type: boolean, amount: number | null) => void;
+}
+
+const Deposits: FC<PropsInterface> = ({ handleModal }) => {
   const { deposits } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
@@ -76,7 +78,7 @@ const Deposits: FC = () => {
               {createDepositData(deposit)}
               <div className="data">
                 <span>DEPOSIT STATUS</span>
-                ACTIVE
+                <div className="status">ACTIVE</div>
               </div>
             </div>
           ))}
@@ -87,7 +89,9 @@ const Deposits: FC = () => {
               {createDepositData(deposit)}
               <div className="data">
                 <span>DEPOSIT STATUS</span>
-                <button>WITHDRAW NOW</button>
+                <button onClick={() => handleModal(true, deposit.total_sum)}>
+                  WITHDRAW NOW
+                </button>
               </div>
             </div>
           ))}
