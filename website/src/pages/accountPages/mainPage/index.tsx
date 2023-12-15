@@ -13,10 +13,19 @@ const AccountMainPage: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<{
     type: boolean;
     amount: number | null;
-  }>({ type: false, amount: null });
+    depositId: number | null;
+  }>({ type: false, amount: null, depositId: null });
 
-  const handleModal = (type: boolean, amount: number | null) => {
-    setIsModalOpen({ type: type, amount: amount || null });
+  const handleModal = (
+    type: boolean,
+    amount: number | null,
+    depositId: number | null
+  ) => {
+    setIsModalOpen({
+      type: type,
+      amount: amount || null,
+      depositId: depositId || null,
+    });
   };
 
   const getDeposits = async () => {

@@ -23,6 +23,35 @@ const findAll = async (userId) => {
     }
 };
 
+const getActiveDeposit = async (depositId, userId) => {
+    try {
+        const deposit = db('deposits')
+            .select('id', 'user_id', 'amount', 'percent', 'hours', 'created_at', 'closed')
+            .where('id', depositId)
+            .where('closed', false)
+            .where('user_id', userId)
 
-module.exports = { open, findAll }
+        return deposit
+    } catch (error) {
+        throw error;
+    }
+};
+
+const closeDeposit = async (deposit) => {
+    try {
+        let closedDeposit = deposit
+        closedDeposit.closed = true
+        const updatedDeposit = await db('deposits')
+            .where('id', deposit.id)
+            .update(closedDeposit)
+            .returning('*');
+        return updatedDeposit[0];
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+module.exports = { open, findAll, getActiveDeposit, closeDeposit }
 

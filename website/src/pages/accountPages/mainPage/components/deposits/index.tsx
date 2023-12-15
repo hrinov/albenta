@@ -89,7 +89,11 @@ const Deposits: FC<PropsInterface> = ({ handleModal }) => {
               {createDepositData(deposit)}
               <div className="data">
                 <span>DEPOSIT STATUS</span>
-                <button onClick={() => handleModal(true, deposit.total_sum)}>
+                <button
+                  onClick={() =>
+                    handleModal(true, deposit.total_sum, depositId)
+                  }
+                >
                   WITHDRAW NOW
                 </button>
               </div>
@@ -102,7 +106,7 @@ const Deposits: FC<PropsInterface> = ({ handleModal }) => {
               {createDepositData(deposit)}
               <div className="data">
                 <span>DEPOSIT STATUS</span>
-                <button>CLOSED</button>
+                CLOSED
               </div>
             </div>
           ))}
