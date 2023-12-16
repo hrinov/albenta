@@ -87,13 +87,20 @@ const Plans: FC = () => {
   const blocks = [];
   for (let i = 0; i < 5; i++) {
     blocks.push(
-      <div key={i} className={`block ${openDeposits[i] && "active"}`}>
+      <div
+        key={i}
+        className={`block ${openDeposits[i] && "active"} ${
+          deposits ? "skeleton" : "skeleton"
+        }`}
+      >
         Calculate profit
         <div className="percent">{percents[i]}%/hour</div>
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
-            className={`input-${!!openDeposits[i] ? "active" : ""}`}
+            className={`input-${!!openDeposits[i] ? "active" : ""} ${
+              deposits ? "hide" : "hide"
+            }`}
             disabled={!!openDeposits[i]}
             min={10}
             max={100000}
@@ -104,7 +111,9 @@ const Plans: FC = () => {
         <div className="configurator">
           <div className="name">hours:</div>
           <InputNumber
-            className={`input-${!!openDeposits[i] ? "active" : ""}`}
+            className={`input-${!!openDeposits[i] ? "active" : ""} ${
+              deposits ? "hide" : "hide"
+            }`}
             disabled={!!openDeposits[i]}
             min={1}
             max={100}
@@ -112,10 +121,14 @@ const Plans: FC = () => {
             onChange={(value) => updateValues(+value!, i)}
           />
         </div>
-        <Doughnut data={charts[i]} />
+        <Doughnut
+          data={charts[i]}
+          className={`${deposits ? "skeleton" : "skeleton"}`}
+        />
         <button
           disabled={!!openDeposits[i]}
           onClick={() => openDeposit(values[i], +percents[i], i)}
+          className={`${deposits ? "hide" : "hide"}`}
         >
           {openDeposits[i] ? "ACTIVE" : "OPEN DEPOSIT"}
         </button>
@@ -123,11 +136,11 @@ const Plans: FC = () => {
           src={loadingAnimation}
           style={{ opacity: loading == i ? 0.8 : 0 }}
         />
-        <div className="white-circle" />
+        <div className={`white-circle ${deposits ? "hide" : "hide"}`} />
       </div>
     );
   }
-  return <section className="deposits">{deposits && blocks}</section>;
+  return <section className="deposits">{blocks}</section>;
 };
 
 export default Plans;

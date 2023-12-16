@@ -1,6 +1,44 @@
-
 body
   margin: 0
   display: flex
   place-items: center
   font-family: 'Kanit', sans-serif
+
+  // Define keyframes within the body selector
+  @keyframes skeletonOpacity
+    0%
+      opacity: 0.6
+
+    25%
+      opacity: 0.8
+
+    50%
+      opacity: 1
+
+    75%
+      opacity: 0.8
+
+    100%
+      opacity: 0.6
+
+  .hide
+    display: none !important
+
+  .transparent
+    color: transparent !important
+
+  .skeleton
+    animation: skeletonOpacity 1.2s infinite
+    background: var(--style, linear-gradient(90deg, rgba(164, 169, 184, 0.18) 0%, rgba(164, 169, 184, 0.06) 100%)) !important
+    color: transparent !important
+    border-radius: 10px !important
+    border: unset !important
+    transition-duration: 200ms
+    outline: 1px solid rgba(164, 169, 184, 0.18) !important
+
+    canvas
+      animation: none
+      opacity: 0
+
+    span
+      color: transparent !important

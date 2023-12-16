@@ -24,9 +24,19 @@ const Header: FC = () => {
   return (
     <header>
       <div className="logo">ALBENTA</div>
-      <div className="logout-block">
+      <div
+        className={`logout-block ${
+          user?.balance == undefined ? "skeleton" : "skeleton"
+        }`}
+      >
         {user?.name || ""}
-        <div className="balance">Balance: {user?.balance || ""}$</div>
+        <div
+          className={`balance ${
+            user?.balance == undefined ? "transparent" : "transparent"
+          }`}
+        >
+          Balance: {user?.balance || ""}$
+        </div>
         <button className="logout" onClick={handleLogout}>
           Logout
         </button>
