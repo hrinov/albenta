@@ -119,7 +119,10 @@ const Plans: FC = () => {
         >
           {openDeposits[i] ? "ACTIVE" : "OPEN DEPOSIT"}
         </button>
-        <img src={loadingAnimation} style={{ opacity: loading == i ? 1 : 0 }} />
+        <img
+          src={loadingAnimation}
+          style={{ opacity: loading == i ? 0.8 : 0 }}
+        />
         <div className="white-circle" />
       </div>
     );

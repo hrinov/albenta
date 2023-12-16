@@ -5,7 +5,11 @@ import { useSelector } from "react-redux";
 import { DepositInterface } from "../../../../../../types";
 
 interface PropsInterface {
-  handleModal: (type: boolean, amount: number | null) => void;
+  handleModal: (
+    type: boolean,
+    amount: number | null,
+    depositId: number
+  ) => void;
 }
 
 const Deposits: FC<PropsInterface> = ({ handleModal }) => {
@@ -73,8 +77,8 @@ const Deposits: FC<PropsInterface> = ({ handleModal }) => {
     <section>
       <div className="blocks-wrapper">
         {deposits?.active &&
-          deposits.active.map((deposit) => (
-            <div className="block active">
+          deposits.active.map((deposit, i) => (
+            <div className="block active" key={deposit.created_at + "-" + i}>
               {createDepositData(deposit)}
               <div className="data">
                 <span>DEPOSIT STATUS</span>
@@ -84,14 +88,14 @@ const Deposits: FC<PropsInterface> = ({ handleModal }) => {
           ))}
 
         {deposits?.ready &&
-          deposits.ready.map((deposit) => (
-            <div className="block ready">
+          deposits.ready.map((deposit, i) => (
+            <div className="block ready" key={deposit.created_at + "-" + i}>
               {createDepositData(deposit)}
               <div className="data">
                 <span>DEPOSIT STATUS</span>
                 <button
                   onClick={() =>
-                    handleModal(true, deposit.total_sum, depositId)
+                    handleModal(true, deposit.total_sum, deposit.id)
                   }
                 >
                   WITHDRAW NOW
@@ -101,8 +105,8 @@ const Deposits: FC<PropsInterface> = ({ handleModal }) => {
           ))}
 
         {deposits?.closed &&
-          deposits.closed.map((deposit) => (
-            <div className="block closed">
+          deposits.closed.map((deposit, i) => (
+            <div className="block closed" key={deposit.created_at + "-" + i}>
               {createDepositData(deposit)}
               <div className="data">
                 <span>DEPOSIT STATUS</span>
