@@ -26,13 +26,13 @@ const Header: FC = () => {
       <div className="logo">ALBENTA</div>
       <div
         className={`logout-block ${
-          user?.balance == undefined ? "skeleton" : "skeleton"
+          user?.balance == undefined ? "skeleton" : ""
         }`}
       >
         {user?.name || ""}
         <div
           className={`balance ${
-            user?.balance == undefined ? "transparent" : "transparent"
+            user?.balance == undefined ? "transparent" : ""
           }`}
         >
           Balance: {user?.balance || ""}$

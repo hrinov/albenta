@@ -90,7 +90,7 @@ const Plans: FC = () => {
       <div
         key={i}
         className={`block ${openDeposits[i] && "active"} ${
-          deposits ? "skeleton" : "skeleton"
+          deposits ? "" : "skeleton"
         }`}
       >
         Calculate profit
@@ -99,7 +99,7 @@ const Plans: FC = () => {
           <div className="name">amount:</div>
           <InputNumber
             className={`input-${!!openDeposits[i] ? "active" : ""} ${
-              deposits ? "hide" : "hide"
+              deposits ? "" : "skeleton"
             }`}
             disabled={!!openDeposits[i]}
             min={10}
@@ -112,7 +112,7 @@ const Plans: FC = () => {
           <div className="name">hours:</div>
           <InputNumber
             className={`input-${!!openDeposits[i] ? "active" : ""} ${
-              deposits ? "hide" : "hide"
+              deposits ? "" : "skeleton"
             }`}
             disabled={!!openDeposits[i]}
             min={1}
@@ -123,12 +123,12 @@ const Plans: FC = () => {
         </div>
         <Doughnut
           data={charts[i]}
-          className={`${deposits ? "skeleton" : "skeleton"}`}
+          className={`${deposits ? "" : "skeleton"}`}
         />
         <button
-          disabled={!!openDeposits[i]}
+          disabled={!!openDeposits[i] || !deposits}
           onClick={() => openDeposit(values[i], +percents[i], i)}
-          className={`${deposits ? "hide" : "hide"}`}
+          className={`${deposits ? "" : "skeleton"}`}
         >
           {openDeposits[i] ? "ACTIVE" : "OPEN DEPOSIT"}
         </button>
@@ -136,7 +136,8 @@ const Plans: FC = () => {
           src={loadingAnimation}
           style={{ opacity: loading == i ? 0.8 : 0 }}
         />
-        <div className={`white-circle ${deposits ? "hide" : "hide"}`} />
+        <div className={`skeleton-circle ${deposits ? "hide" : ""}`} />
+        <div className={`white-circle ${deposits ? "" : "hide"}`} />
       </div>
     );
   }
