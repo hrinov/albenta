@@ -132,6 +132,7 @@ const getDeposits = async (req, res) => {
 
     //check deposit types
     const currendDate = new Date()
+
     const activeDeposits = deposits.filter(deposit => {
         const createdAt = new Date(deposit.created_at);
         const endDate = new Date(createdAt.getTime() + deposit.hours * 60 * 60 * 1000);
@@ -149,7 +150,16 @@ const getDeposits = async (req, res) => {
 
     closedDeposits = deposits.filter(deposit => deposit.closed)
 
-    return res.status(200).json({ success: true, data: { active: activeDeposits, ready: readyDeposits, closed: closedDeposits } });
+    const limit = req.query.limit;
+
+    return res.status(200).json({
+        success: true,
+        data: {
+            active: activeDeposits.filter((item, i) => !limit || i + 1 <= limit),
+            ready: readyDeposits.filter((item, i) => !limit || i + 1 <= limit - activeDeposits.length),
+            closed: closedDeposits.filter((item, i) => !limit || i + 1 <= limit - activeDeposits.length - readyDeposits.length)
+        }
+    });
 
 };
 

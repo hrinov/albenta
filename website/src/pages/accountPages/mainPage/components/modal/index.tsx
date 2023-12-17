@@ -6,6 +6,7 @@ import { updateDeposits, updateUser } from "../../../../../../redux/slice";
 import { MeResponse } from "../../../../../../types";
 
 interface PropsInterface {
+  depositsLimit: number;
   isModalOpen: {
     type: boolean;
     amount: number | null;
@@ -18,7 +19,11 @@ interface PropsInterface {
   ) => void;
 }
 
-const ModalWindow: FC<PropsInterface> = ({ isModalOpen, handleModal }) => {
+const ModalWindow: FC<PropsInterface> = ({
+  isModalOpen,
+  handleModal,
+  depositsLimit,
+}) => {
   const dispatch = useDispatch();
 
   const handleUserUpdate = async () => {
@@ -36,7 +41,10 @@ const ModalWindow: FC<PropsInterface> = ({ isModalOpen, handleModal }) => {
   };
 
   const getDeposits = async () => {
-    let response = await requestHandler("deposit", "GET");
+    let response = await requestHandler(
+      `deposit?limit=${depositsLimit + 1}`,
+      "GET"
+    );
     if (response?.success) {
       const deposits = response.data;
       dispatch(updateDeposits(deposits));

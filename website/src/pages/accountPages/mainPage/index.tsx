@@ -10,6 +10,7 @@ import ModalWindow from "./components/modal";
 
 const AccountMainPage: FC = () => {
   const dispatch = useDispatch();
+  const [depositsLimit, setDepositsLimit] = useState<number>(5);
   const [isModalOpen, setIsModalOpen] = useState<{
     type: boolean;
     amount: number | null;
@@ -29,7 +30,10 @@ const AccountMainPage: FC = () => {
   };
 
   const getDeposits = async () => {
-    let response = await requestHandler("deposit", "GET");
+    let response = await requestHandler(
+      `deposit?limit=${depositsLimit + 1}`,
+      "GET"
+    );
     if (response?.success) {
       const deposits = response.data;
       dispatch(updateDeposits(deposits));
@@ -38,16 +42,24 @@ const AccountMainPage: FC = () => {
 
   useEffect(() => {
     getDeposits();
-  }, []);
+  }, [depositsLimit]);
 
   return (
     <main className="main-page">
       <div className="container">
         <Header />
         <Plans />
-        <Deposits handleModal={handleModal} />
+        <Deposits
+          handleModal={handleModal}
+          depositsLimit={depositsLimit}
+          setDepositsLimit={setDepositsLimit}
+        />
       </div>
-      <ModalWindow isModalOpen={isModalOpen} handleModal={handleModal} />
+      <ModalWindow
+        isModalOpen={isModalOpen}
+        handleModal={handleModal}
+        depositsLimit={depositsLimit}
+      />
     </main>
   );
 };

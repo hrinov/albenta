@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC, SetStateAction } from "react";
 import "./index.sass";
 import { RootStateInterface } from "../../../../../../redux/slice";
 import { useSelector } from "react-redux";
@@ -10,9 +10,15 @@ interface PropsInterface {
     amount: number | null,
     depositId: number
   ) => void;
+  depositsLimit: number;
+  setDepositsLimit: React.Dispatch<SetStateAction<number>>;
 }
 
-const Deposits: FC<PropsInterface> = ({ handleModal }) => {
+const Deposits: FC<PropsInterface> = ({
+  handleModal,
+  depositsLimit,
+  setDepositsLimit,
+}) => {
   const { deposits } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
@@ -33,6 +39,10 @@ const Deposits: FC<PropsInterface> = ({ handleModal }) => {
 
     return `${formattedDay}.${formattedMonth}.${year} ${formattedHours}:${formattedMinutes}`;
   }
+
+  const showMoreItems = () => {
+    setDepositsLimit(depositsLimit + 5);
+  };
 
   const createDepositData = (deposit: DepositInterface) => (
     <>
@@ -73,48 +83,77 @@ const Deposits: FC<PropsInterface> = ({ handleModal }) => {
     </>
   );
 
+  const totalFetchedDeposits = deposits
+    ? deposits.active.length + deposits.closed.length + deposits.ready.length
+    : 0;
+
   return (
     <section>
       <div className="blocks-wrapper">
-        {deposits?.active &&
-          deposits.active.map((deposit, i) => (
-            <div className="block active" key={deposit.created_at + "-" + i}>
-              {createDepositData(deposit)}
-              <div className="data">
-                <span>DEPOSIT STATUS</span>
-                <div className="status">ACTIVE</div>
-              </div>
-            </div>
+        {!deposits &&
+          [0, 1, 2].map((item, i) => (
+            <div className="block skeleton" key={"deposit-skeleton-" + i} />
           ))}
+
+        {deposits?.active &&
+          deposits.active.map(
+            (deposit, i) =>
+              i < depositsLimit && (
+                <div
+                  className="block active"
+                  key={deposit.created_at + "-" + i}
+                >
+                  {createDepositData(deposit)}
+                  <div className="data">
+                    <span>DEPOSIT STATUS</span>
+                    <div className="status">ACTIVE</div>
+                  </div>
+                </div>
+              )
+          )}
 
         {deposits?.ready &&
-          deposits.ready.map((deposit, i) => (
-            <div className="block ready" key={deposit.created_at + "-" + i}>
-              {createDepositData(deposit)}
-              <div className="data">
-                <span>DEPOSIT STATUS</span>
-                <button
-                  onClick={() =>
-                    handleModal(true, deposit.total_sum, deposit.id)
-                  }
-                >
-                  WITHDRAW NOW
-                </button>
-              </div>
-            </div>
-          ))}
+          deposits.ready.map(
+            (deposit, i) =>
+              i < depositsLimit && (
+                <div className="block ready" key={deposit.created_at + "-" + i}>
+                  {createDepositData(deposit)}
+                  <div className="data">
+                    <span>DEPOSIT STATUS</span>
+                    <button
+                      onClick={() =>
+                        handleModal(true, deposit.total_sum, deposit.id)
+                      }
+                    >
+                      WITHDRAW NOW
+                    </button>
+                  </div>
+                </div>
+              )
+          )}
 
         {deposits?.closed &&
-          deposits.closed.map((deposit, i) => (
-            <div className="block closed" key={deposit.created_at + "-" + i}>
-              {createDepositData(deposit)}
-              <div className="data">
-                <span>DEPOSIT STATUS</span>
-                CLOSED
-              </div>
-            </div>
-          ))}
+          deposits.closed.map(
+            (deposit, i) =>
+              i < depositsLimit && (
+                <div
+                  className="block closed"
+                  key={deposit.created_at + "-" + i}
+                >
+                  {createDepositData(deposit)}
+                  <div className="data">
+                    <span>DEPOSIT STATUS</span>
+                    CLOSED
+                  </div>
+                </div>
+              )
+          )}
       </div>
+      {totalFetchedDeposits && totalFetchedDeposits >= depositsLimit && (
+        <div className="show-more" onClick={showMoreItems}>
+          SHOW MORE
+        </div>
+      )}
     </section>
   );
 };
