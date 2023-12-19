@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 require('dotenv').config()
 const jwt = require('jsonwebtoken');
 const { getUserByEmail, createUser } = require("../db/queries/userQueries")
+const { handleUserActivity } = require("../utils/activityLog")
 
 const addUser = async (req, res) => {
     let { name, email, password } = req.body
@@ -68,6 +69,10 @@ const addUser = async (req, res) => {
         if (result) {
             delete result.password;
             delete result.id;
+
+            //handle activity
+            handleUserActivity(req.ip, req.useragent, "login")
+
             return res.status(200).json({ "success": true, data: result })
         } else {
             return res.status(500).json({ "success": false })

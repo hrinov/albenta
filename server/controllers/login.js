@@ -1,5 +1,6 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken');
+const { handleUserActivity } = require("../utils/activityLog")
 const { getUserByEmail, updateUser } = require("../db/queries/userQueries")
 
 const auth = async (req, res) => {
@@ -14,7 +15,6 @@ const auth = async (req, res) => {
     //handle user not found error
     const user = await getUserByEmail(email)
     if (!user) { return res.status(400).json({ "message": "user not found" }) }
-
 
     //generate new tokens
     function generateAccessToken() {
@@ -33,6 +33,11 @@ const auth = async (req, res) => {
         const result = await updateUser(data);
         if (result) {
             delete result.id;
+            delete result.password;
+
+            //handle activity
+            handleUserActivity(req.ip, req.useragent, "login")
+
             return res.status(200).json({ success: true, data: result });
         } else {
             return res.status(500).json({ success: false });

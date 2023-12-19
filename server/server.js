@@ -1,6 +1,7 @@
 const cors = require('cors')
 const path = require("path")
 const express = require("express");
+const useragent = require('express-useragent');
 const { router: signup } = require("./routes/signup.js")
 const { router: login } = require("./routes/login.js")
 const { router: refreshToken } = require("./routes/refreshToken.js")
@@ -12,6 +13,7 @@ const app = express()
 const PORT = 3000;
 
 const apiRouter = express.Router();
+app.use(useragent.express());
 app.use('/api', apiRouter);
 
 apiRouter.use(cors());
