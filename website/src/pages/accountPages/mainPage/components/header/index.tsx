@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { RootStateInterface, clearStates } from "../../../../../../redux/slice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import watch from "../../../../../icons/timer.svg";
 
 const Header: FC = () => {
   const dispatch = useDispatch();
@@ -22,26 +23,32 @@ const Header: FC = () => {
   };
 
   return (
-    <header>
-      <div className="logo">ALBENTA</div>
-      <div
-        className={`logout-block ${
-          user?.balance == undefined ? "skeleton" : ""
-        }`}
-      >
-        {user?.name || ""}
+    <>
+      <header>
+        <div className="logo">ALBENTA</div>
         <div
-          className={`balance ${
-            user?.balance == undefined ? "transparent" : ""
+          className={`logout-block ${
+            user?.balance == undefined ? "skeleton" : ""
           }`}
         >
-          Balance: {user?.balance || ""}$
+          {user?.name || ""}
+          <div
+            className={`balance ${
+              user?.balance == undefined ? "transparent" : ""
+            }`}
+          >
+            Balance: {user?.balance || ""}$
+          </div>
+          <button className="logout" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
-        <button className="logout" onClick={handleLogout}>
-          Logout
-        </button>
+      </header>
+      <div className="activity-btn">
+        <img src={watch} />
+        ACTIVITY LOG
       </div>
-    </header>
+    </>
   );
 };
 

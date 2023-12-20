@@ -1,6 +1,6 @@
 
 header
-    margin-bottom: 34px
+    margin-bottom: 12px
     width: 100%
     display: flex
     justify-content: space-between
@@ -9,6 +9,7 @@ header
     .logo
         font-size: 24px
         font-weight: 200
+        letter-spacing: 0.84rem
 
     .logout-block
         min-width: 330px
@@ -33,9 +34,29 @@ header
             color: #db5aa1
             font-weight: 300
             font-size: 18px
-            border: 1px solid black
+            border: 1px solid #969696
             border-radius: 4px
             cursor: pointer
 
             &:hover
                 border: 1px solid #e62d93
+
+.activity-btn
+    display: flex
+    align-items: center
+    height: 24px
+    width: 155px
+    border: 1px solid #969696
+    border-radius: 4px
+    padding: 14px
+    margin-right: auto
+    cursor: pointer
+    font-weight: 300
+    color: #5a78db
+
+    img
+        width: 46px
+        transform: translateX(-7px)
+
+    &:hover
+        border: 1px solid #e62d93
