@@ -6,9 +6,10 @@ import "./index.sass";
 import { requestHandler } from "../../../../../utils";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { updateDeposits } from "../../../../../../redux/slice";
+import { updateDeposits, updateUser } from "../../../../../../redux/slice";
 import { RootStateInterface } from "../../../../../../redux/slice";
 import loadingAnimation from "../../../../../icons/deposit-loading.svg";
+import { MeResponse } from "../../../../../../types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -18,6 +19,21 @@ const Plans: FC = () => {
     Array(5).fill({ amount: 10, hours: 1 })
   );
   const dispatch = useDispatch();
+
+  const handleUserUpdate = async () => {
+    const response: MeResponse = await requestHandler("me", "GET");
+    if (response?.success) {
+      const { email, name, balance } = response?.data;
+      dispatch(
+        updateUser({
+          email: email,
+          name: name,
+          balance: balance,
+        })
+      );
+    }
+  };
+
   let { deposits } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
@@ -81,6 +97,7 @@ const Plans: FC = () => {
     const data = { amount, hours, percent };
     await requestHandler("deposit", "POST", data);
     await getDeposits();
+    await handleUserUpdate();
     setLoading(null);
   };
 

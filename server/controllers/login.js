@@ -36,7 +36,12 @@ const auth = async (req, res) => {
             delete result.password;
 
             //handle activity
-            handleUserActivity(req.ip, req.useragent, "login")
+            try {
+                await handleUserActivity(req.ip, req.useragent, user.id, "login")
+            }
+            catch (error) {
+                console.log(error)
+            }
 
             return res.status(200).json({ success: true, data: result });
         } else {

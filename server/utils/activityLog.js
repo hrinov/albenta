@@ -1,6 +1,7 @@
-var geoip = require('geoip-country');
+const { addActivity } = require("../db/queries/activityQueries");
+const geoip = require('geoip-country');
 
-const handleUserActivity = (userIp, userAgent, type) => {
+const handleUserActivity = async (userIp, userAgent, user_id, type) => {
 
     const convertIPv6toIPv4 = (ip) => {
         if (ip.startsWith('::ffff:')) {
@@ -11,13 +12,21 @@ const handleUserActivity = (userIp, userAgent, type) => {
     }
 
     const date = new Date()
-    const formatedIp = convertIPv6toIPv4(userIp)
-    const geo = geoip.lookup(formatedIp);
+    const ip = convertIPv6toIPv4(userIp)
+    const geo = geoip.lookup(ip);
     const country = geo?.country || "Underfined";
     const browser = userAgent?.browser || "Underfined";
     const device = userAgent?.isMobile ? 'Mobile' : userAgent?.isTablet ? 'Tablet' : userAgent?.isDesktop ? 'Desktop' : "Underfined";
 
-    console.log(formatedIp, country, device, browser, date, type)
+    const activityOptions = {
+        ip, country, device, browser, date, user_id, type
+    }
+
+    try {
+        await addActivity(activityOptions)
+    } catch (error) {
+        throw error
+    }
 
 }
 

@@ -1,4 +1,5 @@
 const { getUserByEmail, updateUser } = require("../db/queries/userQueries");
+const { handleUserActivity } = require("../utils/activityLog")
 const { open, findAll } = require("../db/queries/depositQueries");
 const jwt = require("jsonwebtoken");
 
@@ -81,6 +82,14 @@ const openDeposit = async (req, res) => {
     }
 
     const newDeposit = await open(depositOptions)
+
+    //handle activity
+    try {
+        await handleUserActivity(req.ip, req.useragent, user.id, `open ${percent}% deposit`)
+    }
+    catch (error) {
+        console.log(error)
+    }
 
     return res.status(200).json({ success: true, data: { user: updatedUser, deposit: newDeposit } });
 
