@@ -1,27 +1,27 @@
 import { FC } from "react";
 import { Modal } from "antd";
-import { requestHandler } from "../../../../../utils";
+import { requestHandler } from "../../../../../../utils";
 import { useDispatch } from "react-redux";
-import { updateDeposits, updateUser } from "../../../../../../redux/slice";
-import { MeResponse } from "../../../../../../types";
+import { updateDeposits, updateUser } from "../../../../../../../redux/slice";
+import { MeResponse } from "../../../../../../../types";
 
 interface PropsInterface {
   depositsLimit: number;
-  isModalOpen: {
+  isWithdrawModalOpen: {
     type: boolean;
     amount: number | null;
     depositId: number | null;
   };
-  handleModal: (
+  handleWithdrawModal: (
     type: boolean,
     amount: number | null,
     depositId: number | null
   ) => void;
 }
 
-const ModalWindow: FC<PropsInterface> = ({
-  isModalOpen,
-  handleModal,
+const WithdrawModalWindow: FC<PropsInterface> = ({
+  isWithdrawModalOpen,
+  handleWithdrawModal,
   depositsLimit,
 }) => {
   const dispatch = useDispatch();
@@ -55,26 +55,27 @@ const ModalWindow: FC<PropsInterface> = ({
     await requestHandler("withdraw", "POST", { depositId });
     await getDeposits();
     await handleUserUpdate();
-    handleModal(false, null, null);
+    handleWithdrawModal(false, null, null);
   };
 
   const handleCancel = () => {
-    handleModal(false, null, null);
+    handleWithdrawModal(false, null, null);
   };
 
   return (
     <Modal
       title="Withdrow"
-      open={isModalOpen.type}
-      onOk={() => handleOk(isModalOpen.depositId!)}
+      open={isWithdrawModalOpen.type}
+      onOk={() => handleOk(isWithdrawModalOpen.depositId!)}
       okText="withdraw"
       onCancel={handleCancel}
     >
       <p>
-        Are you sure you want to withdraw {isModalOpen.amount}$ to your account?
+        Are you sure you want to withdraw {isWithdrawModalOpen.amount}$ to your
+        account?
       </p>
     </Modal>
   );
 };
 
-export default ModalWindow;
+export default WithdrawModalWindow;

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { DepositInterface } from "../../../../../../types";
 
 interface PropsInterface {
-  handleModal: (
+  handleWithdrawModal: (
     type: boolean,
     amount: number | null,
     depositId: number
@@ -15,7 +15,7 @@ interface PropsInterface {
 }
 
 const Deposits: FC<PropsInterface> = ({
-  handleModal,
+  handleWithdrawModal,
   depositsLimit,
   setDepositsLimit,
 }) => {
@@ -83,9 +83,11 @@ const Deposits: FC<PropsInterface> = ({
     </>
   );
 
-  const totalFetchedDeposits = deposits
+  const totalDeposits = deposits
     ? deposits.active.length + deposits.closed.length + deposits.ready.length
     : 0;
+  const activeDeposits = deposits?.active.length || 0;
+  const readyDeposits = deposits?.ready.length || 0;
 
   return (
     <section>
@@ -115,14 +117,14 @@ const Deposits: FC<PropsInterface> = ({
         {deposits?.ready &&
           deposits.ready.map(
             (deposit, i) =>
-              i < depositsLimit && (
+              i < depositsLimit - activeDeposits && (
                 <div className="block ready" key={deposit.created_at + "-" + i}>
                   {createDepositData(deposit)}
                   <div className="data">
                     <span>DEPOSIT STATUS</span>
                     <button
                       onClick={() =>
-                        handleModal(true, deposit.total_sum, deposit.id)
+                        handleWithdrawModal(true, deposit.total_sum, deposit.id)
                       }
                     >
                       WITHDRAW NOW
@@ -135,7 +137,7 @@ const Deposits: FC<PropsInterface> = ({
         {deposits?.closed &&
           deposits.closed.map(
             (deposit, i) =>
-              i < depositsLimit && (
+              i < depositsLimit - (activeDeposits + readyDeposits) && (
                 <div
                   className="block closed"
                   key={deposit.created_at + "-" + i}
@@ -149,7 +151,7 @@ const Deposits: FC<PropsInterface> = ({
               )
           )}
       </div>
-      {totalFetchedDeposits && totalFetchedDeposits >= depositsLimit && (
+      {totalDeposits && totalDeposits >= depositsLimit && (
         <div className="show-more" onClick={showMoreItems}>
           SHOW MORE
         </div>

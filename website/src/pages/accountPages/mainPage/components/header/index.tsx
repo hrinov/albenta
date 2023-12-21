@@ -6,7 +6,11 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import watch from "../../../../../icons/timer.svg";
 
-const Header: FC = () => {
+interface PropsInterface {
+  handleActivityModal: (arg: boolean) => void;
+}
+
+const Header: FC<PropsInterface> = ({ handleActivityModal }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(
@@ -44,10 +48,15 @@ const Header: FC = () => {
           </button>
         </div>
       </header>
-      <div className="activity-btn">
-        <img src={watch} />
+      <button
+        className={`activity-btn ${
+          user?.balance == undefined ? "skeleton" : ""
+        }`}
+        onClick={() => handleActivityModal(true)}
+      >
+        <img src={watch} className={user?.balance == undefined ? "hide" : ""} />
         ACTIVITY LOG
-      </div>
+      </button>
     </>
   );
 };

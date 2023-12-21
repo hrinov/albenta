@@ -1,5 +1,6 @@
 const { getUserByEmail, updateUser } = require("../db/queries/userQueries");
 const { getActiveDeposit, closeDeposit } = require("../db/queries/depositQueries");
+const { handleUserActivity } = require("../utils/activityLog")
 const jwt = require("jsonwebtoken");
 
 const withdrawDeposit = async (req, res) => {

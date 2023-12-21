@@ -6,27 +6,35 @@ import { useDispatch } from "react-redux";
 import { updateDeposits } from "../../../../redux/slice";
 import "./index.sass";
 import Deposits from "./components/deposits";
-import ModalWindow from "./components/modal";
+import WithdrawModalWindow from "./components/modal/withdraw";
+import ActivityModalWindow from "./components/modal/activity";
 
 const AccountMainPage: FC = () => {
   const dispatch = useDispatch();
   const [depositsLimit, setDepositsLimit] = useState<number>(5);
-  const [isModalOpen, setIsModalOpen] = useState<{
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState<{
     type: boolean;
     amount: number | null;
     depositId: number | null;
   }>({ type: false, amount: null, depositId: null });
 
-  const handleModal = (
+  const [isActivityModalOpen, setIsActivityModalOpen] =
+    useState<boolean>(false);
+
+  const handleWithdrawModal = (
     type: boolean,
     amount: number | null,
     depositId: number | null
   ) => {
-    setIsModalOpen({
+    setIsWithdrawModalOpen({
       type: type,
       amount: amount || null,
       depositId: depositId || null,
     });
+  };
+
+  const handleActivityModal = (arg: boolean) => {
+    setIsActivityModalOpen(arg);
   };
 
   const getDeposits = async () => {
@@ -47,18 +55,22 @@ const AccountMainPage: FC = () => {
   return (
     <main className="main-page">
       <div className="container">
-        <Header />
+        <Header handleActivityModal={handleActivityModal} />
         <Plans />
         <Deposits
-          handleModal={handleModal}
+          handleWithdrawModal={handleWithdrawModal}
           depositsLimit={depositsLimit}
           setDepositsLimit={setDepositsLimit}
         />
       </div>
-      <ModalWindow
-        isModalOpen={isModalOpen}
-        handleModal={handleModal}
+      <WithdrawModalWindow
+        isWithdrawModalOpen={isWithdrawModalOpen}
+        handleWithdrawModal={handleWithdrawModal}
         depositsLimit={depositsLimit}
+      />
+      <ActivityModalWindow
+        isActivityModalOpen={isActivityModalOpen}
+        handleActivityModal={handleActivityModal}
       />
     </main>
   );
