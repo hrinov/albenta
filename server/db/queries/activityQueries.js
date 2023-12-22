@@ -10,5 +10,20 @@ const addActivity = async (data) => {
     }
 };
 
+const getAllUserAactivity = async (userId, startIndex) => {
+    try {
+        const activity = await db('activity')
+            .select('*')
+            .where('user_id', userId)
+            .orderBy('date', 'desc')
+            .offset(startIndex)
+            .limit(10);
 
-module.exports = { addActivity }
+        return activity;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+module.exports = { addActivity, getAllUserAactivity }
