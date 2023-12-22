@@ -21,3 +21,12 @@ export interface DepositInterface {
   total_sum: number;
   closed: boolean;
 }
+
+export interface ActivityInterface {
+  ip: number;
+  country: string;
+  device: string;
+  browser: string;
+  date: string;
+  type: string;
+}

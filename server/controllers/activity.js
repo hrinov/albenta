@@ -3,7 +3,8 @@ const { getUserByEmail } = require("../db/queries/userQueries");
 const jwt = require("jsonwebtoken");
 
 const getActivity = async (req, res) => {
-    const { page } = req.body;
+
+    const page = req.query.page
     if (!page) {
         // handle not all parametres
         return res.status(400).json({ "message": "page is required" })
