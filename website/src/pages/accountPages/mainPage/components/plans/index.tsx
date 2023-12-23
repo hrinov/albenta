@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { InputNumber } from "antd";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
@@ -10,6 +10,7 @@ import { updateDeposits, updateUser } from "../../../../../../redux/slice";
 import { RootStateInterface } from "../../../../../../redux/slice";
 import loadingAnimation from "../../../../../icons/deposit-loading.svg";
 import { MeResponse } from "../../../../../../types";
+const url = import.meta.env.VITE_URL;
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -18,17 +19,21 @@ const Plans: FC = () => {
   const [values, setValues] = useState<{ amount: number; hours: number }[]>(
     Array(5).fill({ amount: 10, hours: 1 })
   );
+  const { user } = useSelector(
+    (state: { slice: RootStateInterface }) => state.slice
+  );
   const dispatch = useDispatch();
 
   const handleUserUpdate = async () => {
     const response: MeResponse = await requestHandler("me", "GET");
     if (response?.success) {
-      const { email, name, balance } = response?.data;
+      const { id, email, name, balance } = response?.data;
       dispatch(
         updateUser({
-          email: email,
-          name: name,
-          balance: balance,
+          id,
+          email,
+          name,
+          balance,
         })
       );
     }
@@ -160,6 +165,25 @@ const Plans: FC = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+    console.log(user);
+    if (user) {
+      const ws = new WebSocket(
+        url.replace("http:", "ws:") + `?userId=${user.id}`
+      );
+      ws.onopen = () => {
+        console.log("Connected to WebSocket");
+      };
+      ws.onmessage = (event) => {
+        console.log("Received message:", event.data); // Handle the received message here
+      };
+      return () => {
+        ws.close();
+      };
+    }
+  }, [user?.id]);
+
   return <section className="deposits">{blocks}</section>;
 };
 

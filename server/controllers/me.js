@@ -32,7 +32,6 @@ const getUser = async (req, res) => {
     return res.status(400).json({ message: "wrong token" });
   }
 
-  delete user.id;
   return res.status(200).json({ success: true, data: user });
 
 };

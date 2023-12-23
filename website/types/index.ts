@@ -3,6 +3,7 @@ export interface MeResponse {
   data: {
     access_token: string;
     refresh_token: string;
+    id: number;
     email: string;
     name: string;
     balance: number;

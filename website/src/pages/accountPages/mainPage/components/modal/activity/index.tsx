@@ -3,6 +3,7 @@ import { Modal } from "antd";
 import "./index.sass";
 import { requestHandler } from "../../../../../../utils";
 import { ActivityInterface } from "../../../../../../../types";
+import { Pagination } from "antd";
 
 interface PropsInterface {
   isActivityModalOpen: boolean;
@@ -13,10 +14,14 @@ const ActivityModalWindow: FC<PropsInterface> = ({
   isActivityModalOpen,
   handleActivityModal,
 }) => {
-  const [activity, setActivity] = useState<ActivityInterface[]>();
+  const [activity, setActivity] = useState<ActivityInterface[] | null>();
+  const [totalItems, setTotalItems] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   const handleCancel = () => {
+    setActivity(null);
+    setTotalItems(1);
+    setPageNumber(1);
     handleActivityModal(false);
   };
 
@@ -38,14 +43,25 @@ const ActivityModalWindow: FC<PropsInterface> = ({
   }
 
   const getActivity = async () => {
-    const response: { success: boolean; data: ActivityInterface[] } =
-      await requestHandler(`activity?page=${pageNumber}`, "GET");
-    response.success && setActivity(response.data);
+    const response: {
+      success: boolean;
+      data: ActivityInterface[];
+      total: number;
+    } = await requestHandler(`activity?page=${pageNumber}`, "GET");
+    if (response.success) {
+      setActivity(response.data);
+      setTotalItems(response.total || 1);
+    }
+  };
+
+  const handleChangePage = (page: number) => {
+    setActivity(null);
+    setPageNumber(page);
   };
 
   useEffect(() => {
     if (isActivityModalOpen) getActivity();
-  }, [isActivityModalOpen]);
+  }, [isActivityModalOpen, pageNumber]);
 
   return (
     <Modal
@@ -62,8 +78,8 @@ const ActivityModalWindow: FC<PropsInterface> = ({
           <div className="block right">COUNTRY</div>
           <div className="block right">ACTIVITY</div>
         </div>
-        {activity?.map((item) => (
-          <div className="activity">
+        {activity?.map((item, i) => (
+          <div className="activity" key={item.date}>
             <div className="block">{formatDate(item.date)}</div>
             <div className="block right">{item.device}</div>
             <div className="block right">{item.browser}</div>
@@ -71,6 +87,20 @@ const ActivityModalWindow: FC<PropsInterface> = ({
             <div className="block right">{item.type}</div>
           </div>
         ))}
+        {!activity &&
+          Array(10)
+            .fill(null)
+            ?.map((item, i) => (
+              <div className="activity skeleton square" key={"skeleton" + i} />
+            ))}
+      </div>
+      <div className="footer">
+        <Pagination
+          simple
+          defaultCurrent={1}
+          total={totalItems}
+          onChange={(page) => handleChangePage(page)}
+        />
       </div>
     </Modal>
   );

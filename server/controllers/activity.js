@@ -48,7 +48,7 @@ const getActivity = async (req, res) => {
 
     const activity = await getAllUserAactivity(user.id, startIndex)
 
-    return res.status(200).json({ success: true, data: activity });
+    return res.status(200).json({ success: true, data: activity.data, total: activity.total });
 
 };
 

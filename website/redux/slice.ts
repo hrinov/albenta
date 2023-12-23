@@ -5,6 +5,7 @@ export interface RootStateInterface {
   accessToken: string | null;
   refreshToken: string | null;
   user: {
+    id: number;
     name: string;
     email: string;
     balance: number;
@@ -31,6 +32,7 @@ const slice = createSlice({
       state,
       action: {
         payload: {
+          id: number;
           name: string;
           email: string;
           balance: number;
@@ -38,6 +40,7 @@ const slice = createSlice({
       }
     ) => {
       state.user = {
+        id: action.payload.id,
         name: action.payload.name,
         email: action.payload.email,
         balance: action.payload.balance,

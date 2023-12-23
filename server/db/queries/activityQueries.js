@@ -12,14 +12,19 @@ const addActivity = async (data) => {
 
 const getAllUserAactivity = async (userId, startIndex) => {
     try {
-        const activity = await db('activity')
+        const data = await db('activity')
             .select('*')
             .where('user_id', userId)
             .orderBy('date', 'desc')
             .offset(startIndex)
             .limit(10);
+        const count = await db('activity')
+            .count('* as total')
+            .where('user_id', userId)
+            .first()
 
-        return activity;
+        return { data, total: count.total };
+
     } catch (error) {
         throw error;
     }

@@ -2,6 +2,7 @@ const cors = require('cors')
 const path = require("path")
 const express = require("express");
 const useragent = require('express-useragent');
+const { useWS } = require('./ws');
 const { router: signup } = require("./routes/signup.js")
 const { router: login } = require("./routes/login.js")
 const { router: refreshToken } = require("./routes/refreshToken.js")
@@ -9,6 +10,10 @@ const { router: me } = require("./routes/me.js")
 const { router: deposit } = require("./routes/deposit.js")
 const { router: withdraw } = require("./routes/withdraw.js")
 const { router: activity } = require("./routes/activity.js")
+
+
+const http = require('http');
+const WebSocket = require('ws');
 
 const cookieParser = require("cookie-parser")
 const app = express()
@@ -29,5 +34,9 @@ apiRouter.use('/deposit', deposit);
 apiRouter.use('/withdraw', withdraw);
 apiRouter.use('/activity', activity);
 
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
-app.listen(PORT, () => console.log(`server running on port ${PORT}`))
+useWS(wss)
+
+server.listen(PORT, () => console.log(`WebSocket server running on port ${PORT}`));
