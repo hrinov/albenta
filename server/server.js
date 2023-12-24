@@ -39,4 +39,4 @@ const wss = new WebSocket.Server({ server });
 
 useWS(wss)
 
-server.listen(PORT, () => console.log(`WebSocket server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

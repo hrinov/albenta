@@ -19,6 +19,12 @@ const Plans: FC = () => {
   const [values, setValues] = useState<{ amount: number; hours: number }[]>(
     Array(5).fill({ amount: 10, hours: 1 })
   );
+  const [timeToEnd, setTimeToEnd] = useState<
+    {
+      percent: number;
+      timeToEnd: number;
+    }[]
+  >();
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
@@ -108,12 +114,14 @@ const Plans: FC = () => {
 
   const blocks = [];
   for (let i = 0; i < 5; i++) {
+    const time = timeToEnd?.find((deposit) => {
+      return +deposit.percent == +percents[i];
+    })?.timeToEnd;
+
     blocks.push(
       <div
         key={i}
-        className={`block ${openDeposits[i] && "active"} ${
-          deposits ? "" : "skeleton"
-        }`}
+        className={`block ${time && "active"} ${deposits ? "" : "skeleton"}`}
       >
         Calculate profit
         <div className={`percent  ${deposits ? "" : "skeleton"}`}>
@@ -122,10 +130,10 @@ const Plans: FC = () => {
         <div className="configurator">
           <div className="name">amount:</div>
           <InputNumber
-            className={`input-${!!openDeposits[i] ? "active" : ""} ${
+            className={`input-${!!time ? "active" : ""} ${
               deposits ? "" : "skeleton"
             }`}
-            disabled={!!openDeposits[i]}
+            disabled={!!time}
             min={10}
             max={100000}
             value={+openDeposits[i]?.amount || +values[i]?.amount}
@@ -135,10 +143,10 @@ const Plans: FC = () => {
         <div className="configurator">
           <div className="name">hours:</div>
           <InputNumber
-            className={`input-${!!openDeposits[i] ? "active" : ""} ${
+            className={`input-${!!time ? "active" : ""} ${
               deposits ? "" : "skeleton"
             }`}
-            disabled={!!openDeposits[i]}
+            disabled={!!time}
             min={1}
             max={100}
             value={+openDeposits[i]?.hours || +values[i]?.hours}
@@ -150,11 +158,11 @@ const Plans: FC = () => {
           className={`${deposits ? "" : "skeleton"}`}
         />
         <button
-          disabled={!!openDeposits[i] || !deposits}
+          disabled={!!time || !deposits}
           onClick={() => openDeposit(values[i], +percents[i], i)}
           className={`${deposits ? "" : "skeleton"}`}
         >
-          {openDeposits[i] ? "ACTIVE" : "OPEN DEPOSIT"}
+          {time ? "ACTIVE" : "OPEN DEPOSIT"}
         </button>
         <img
           src={loadingAnimation}
@@ -162,27 +170,30 @@ const Plans: FC = () => {
         />
         <div className={`skeleton-circle ${deposits ? "hide" : ""}`} />
         <div className={`white-circle ${deposits ? "" : "hide"}`} />
+        {time && <div className="timer">{time}h</div>}
       </div>
     );
   }
 
   useEffect(() => {
-    console.log(user);
     if (user) {
       const ws = new WebSocket(
         url.replace("http:", "ws:") + `?userId=${user.id}`
       );
-      ws.onopen = () => {
-        console.log("Connected to WebSocket");
-      };
       ws.onmessage = (event) => {
-        console.log("Received message:", event.data); // Handle the received message here
+        setTimeToEnd(
+          JSON.parse(event.data) as {
+            percent: number;
+            timeToEnd: number;
+          }[]
+        );
       };
+
       return () => {
         ws.close();
       };
     }
-  }, [user?.id]);
+  }, [user?.id, deposits]);
 
   return <section className="deposits">{blocks}</section>;
 };
