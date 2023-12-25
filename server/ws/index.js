@@ -17,9 +17,11 @@ const useWS = (wss) => {
             })
 
             const getTimeToEnd = (end_date) => {
-                const differenceMs = end_date.getTime() - currendDate.getTime()
+                const currentDate = new Date();
+                const differenceMs = end_date.getTime() - currentDate.getTime();
+                const totalHours = Math.floor(differenceMs / (1000 * 60 * 60));
+                const hours = Math.floor(totalHours);
                 let minutes = Math.floor((differenceMs / (1000 * 60)) % 60);
-                const hours = Math.floor((differenceMs / (1000 * 60 * 60)) % 24);
                 minutes = (minutes < 10) ? `0${minutes}` : minutes;
                 return `${hours}:${minutes}`;
             }
@@ -31,7 +33,7 @@ const useWS = (wss) => {
                     timeToEnd: getTimeToEnd(endDate)
                 }
             })
-
+            console.log(activeDeposits)
             return activeDeposits
         }
 

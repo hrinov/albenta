@@ -15,9 +15,13 @@ const url = import.meta.env.VITE_URL;
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Plans: FC = () => {
+  const percents = [5, 10, 15, 20, 25];
+  const minHours = [1, 12, 24, 36, 48];
   const [loading, setLoading] = useState<null | number>(null);
   const [values, setValues] = useState<{ amount: number; hours: number }[]>(
-    Array(5).fill({ amount: 10, hours: 1 })
+    Array(5)
+      .fill({})
+      .map((item, i) => ({ amount: 10, hours: minHours[i] }))
   );
   const [timeToEnd, setTimeToEnd] = useState<
     {
@@ -49,7 +53,6 @@ const Plans: FC = () => {
     (state: { slice: RootStateInterface }) => state.slice
   );
 
-  const percents = [5, 10, 15, 20, 25];
   const openDeposits: any = percents.map(
     (percent) =>
       deposits?.active?.find((deposit) => +deposit.percent == +percent)
@@ -147,7 +150,7 @@ const Plans: FC = () => {
               deposits ? "" : "skeleton"
             }`}
             disabled={!!time}
-            min={1}
+            min={minHours[i]}
             max={100}
             value={+openDeposits[i]?.hours || +values[i]?.hours}
             onChange={(value) => updateValues(+value!, i)}

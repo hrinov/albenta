@@ -97,7 +97,7 @@ const ActivityModalWindow: FC<PropsInterface> = ({
       <div className="footer">
         <Pagination
           simple
-          defaultCurrent={1}
+          current={pageNumber}
           total={totalItems}
           onChange={(page) => handleChangePage(page)}
         />

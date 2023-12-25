@@ -29,9 +29,10 @@ const WithdrawModalWindow: FC<PropsInterface> = ({
   const handleUserUpdate = async () => {
     const response: MeResponse = await requestHandler("me", "GET");
     if (response?.success) {
-      const { email, name, balance } = response?.data;
+      const { id, email, name, balance } = response?.data;
       dispatch(
         updateUser({
+          id: id,
           email: email,
           name: name,
           balance: balance,
