@@ -5,6 +5,7 @@ import { RootStateInterface, clearStates } from "../../../../../../redux/slice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import watch from "../../../../../icons/timer.svg";
+import profileDefaultImg from "../../../../../images/profile.png";
 
 interface PropsInterface {
   handleActivityModal: (arg: boolean) => void;
@@ -35,6 +36,7 @@ const Header: FC<PropsInterface> = ({ handleActivityModal }) => {
             user?.balance == undefined ? "skeleton" : ""
           }`}
         >
+          <img src={profileDefaultImg} />
           {user?.name || ""}
           <div
             className={`balance ${
@@ -43,6 +45,7 @@ const Header: FC<PropsInterface> = ({ handleActivityModal }) => {
           >
             Balance: {user?.balance || ""}$
           </div>
+          <button className="profile-btn">Profile</button>
           <button className="logout" onClick={handleLogout}>
             Logout
           </button>

@@ -5,6 +5,7 @@ const useWS = (wss) => {
     wss.on('connection', async (ws, req) => {
 
         const userId = req.url.split('?userId=')[1]
+        if (!userId) return
         let deposits = await findAll(userId)
 
         const getData = async () => {
@@ -33,7 +34,7 @@ const useWS = (wss) => {
                     timeToEnd: getTimeToEnd(endDate)
                 }
             })
-            console.log(activeDeposits)
+
             return activeDeposits
         }
 
