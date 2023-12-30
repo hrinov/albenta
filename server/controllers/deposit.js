@@ -130,7 +130,6 @@ const getDeposits = async (req, res) => {
     }
 
     let deposits = await findAll(user.id)
-
     //create deposits info
     deposits = deposits.map(deposit => ({
         ...deposit,

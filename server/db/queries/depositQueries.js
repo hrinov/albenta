@@ -26,7 +26,7 @@ const findAll = async (userId) => {
 const getActiveDeposit = async (depositId, userId) => {
     try {
         const deposit = db('deposits')
-            .select('id', 'user_id', 'amount', 'percent', 'hours', 'created_at', 'closed')
+            .select("*")
             .where('id', depositId)
             .where('closed', false)
             .where('user_id', userId)

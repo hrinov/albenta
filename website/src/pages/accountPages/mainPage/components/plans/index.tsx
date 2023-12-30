@@ -179,7 +179,7 @@ const Plans: FC = () => {
   }
 
   useEffect(() => {
-    if (user) {
+    if (user?.id) {
       const ws = new WebSocket(
         url.replace("http:", "ws:") + `?userId=${user.id}`
       );
@@ -191,7 +191,6 @@ const Plans: FC = () => {
           }[]
         );
       };
-
       return () => {
         ws.close();
       };
