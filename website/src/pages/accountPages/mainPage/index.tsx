@@ -8,6 +8,7 @@ import "./index.sass";
 import Deposits from "./components/deposits";
 import WithdrawModalWindow from "./components/modal/withdraw";
 import ActivityModalWindow from "./components/modal/activity";
+import ProfileModalWindow from "./components/modal/profile";
 
 const AccountMainPage: FC = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const AccountMainPage: FC = () => {
 
   const [isActivityModalOpen, setIsActivityModalOpen] =
     useState<boolean>(false);
+
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
 
   const handleWithdrawModal = (
     type: boolean,
@@ -35,6 +38,10 @@ const AccountMainPage: FC = () => {
 
   const handleActivityModal = (arg: boolean) => {
     setIsActivityModalOpen(arg);
+  };
+
+  const handleProfileModal = (arg: boolean) => {
+    setIsProfileModalOpen(arg);
   };
 
   const getDeposits = async () => {
@@ -55,7 +62,10 @@ const AccountMainPage: FC = () => {
   return (
     <main className="main-page">
       <div className="container">
-        <Header handleActivityModal={handleActivityModal} />
+        <Header
+          handleActivityModal={handleActivityModal}
+          handleProfileModal={handleProfileModal}
+        />
         <Plans />
         <Deposits
           handleWithdrawModal={handleWithdrawModal}
@@ -71,6 +81,10 @@ const AccountMainPage: FC = () => {
       <ActivityModalWindow
         isActivityModalOpen={isActivityModalOpen}
         handleActivityModal={handleActivityModal}
+      />
+      <ProfileModalWindow
+        isProfileModalOpen={isProfileModalOpen}
+        handleProfileModal={handleProfileModal}
       />
     </main>
   );

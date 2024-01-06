@@ -9,9 +9,13 @@ import profileDefaultImg from "../../../../../images/profile.png";
 
 interface PropsInterface {
   handleActivityModal: (arg: boolean) => void;
+  handleProfileModal: (arg: boolean) => void;
 }
 
-const Header: FC<PropsInterface> = ({ handleActivityModal }) => {
+const Header: FC<PropsInterface> = ({
+  handleActivityModal,
+  handleProfileModal,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(
@@ -36,7 +40,10 @@ const Header: FC<PropsInterface> = ({ handleActivityModal }) => {
             user?.balance == undefined ? "skeleton" : ""
           }`}
         >
-          <img src={profileDefaultImg} />
+          <img
+            src={profileDefaultImg}
+            className={`${user?.balance == undefined ? "transparent" : ""}`}
+          />
           {user?.name || ""}
           <div
             className={`balance ${
@@ -45,7 +52,12 @@ const Header: FC<PropsInterface> = ({ handleActivityModal }) => {
           >
             Balance: {user?.balance || ""}$
           </div>
-          <button className="profile-btn">Profile</button>
+          <button
+            className="profile-btn"
+            onClick={() => handleProfileModal(true)}
+          >
+            Profile
+          </button>
           <button className="logout" onClick={handleLogout}>
             Logout
           </button>
