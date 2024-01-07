@@ -70,7 +70,7 @@ const ActivityModalWindow: FC<PropsInterface> = ({
       onCancel={handleCancel}
       footer={null}
     >
-      <div className="main-wrapper">
+      <div className="activity-main-wrapper">
         <div className="activity title">
           <div className="block">DATE</div>
           <div className="block right">DEVICE</div>

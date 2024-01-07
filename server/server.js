@@ -10,6 +10,7 @@ const { router: me } = require("./routes/me.js")
 const { router: deposit } = require("./routes/deposit.js")
 const { router: withdraw } = require("./routes/withdraw.js")
 const { router: activity } = require("./routes/activity.js")
+const { router: updateUser } = require("./routes/updateUser.js")
 
 
 const http = require('http');
@@ -33,6 +34,7 @@ apiRouter.use('/me', me);
 apiRouter.use('/deposit', deposit);
 apiRouter.use('/withdraw', withdraw);
 apiRouter.use('/activity', activity);
+apiRouter.use('/update-user', updateUser);
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });

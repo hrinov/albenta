@@ -42,7 +42,7 @@ const Header: FC<PropsInterface> = ({
         >
           <img
             src={profileDefaultImg}
-            className={`${user?.balance == undefined ? "transparent" : ""}`}
+            className={`${user?.balance == undefined ? "hide" : ""}`}
           />
           {user?.name || ""}
           <div
@@ -64,12 +64,10 @@ const Header: FC<PropsInterface> = ({
         </div>
       </header>
       <button
-        className={`activity-btn ${
-          user?.balance == undefined ? "skeleton" : ""
-        }`}
+        className={`activity-btn ${user?.balance == undefined ? "hide" : ""}`}
         onClick={() => handleActivityModal(true)}
       >
-        <img src={watch} className={user?.balance == undefined ? "hide" : ""} />
+        <img src={watch} />
         ACTIVITY LOG
       </button>
     </>

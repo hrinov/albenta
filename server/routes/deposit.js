@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const deposit = require("../controllers/deposit.js");
+const controller = require("../controllers/deposit.js");
 
 router
     .route("/")
-    .post(deposit.openDeposit)
-    .get(deposit.getDeposits)
+    .post(controller.openDeposit)
+    .get(controller.getDeposits)
 
 module.exports = { router };

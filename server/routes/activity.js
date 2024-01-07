@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const activity = require("../controllers/activity.js");
+const controller = require("../controllers/activity.js");
 
 router
     .route("/")
-    .get(activity.getActivity)
+    .get(controller.getActivity)
 
 module.exports = { router };
