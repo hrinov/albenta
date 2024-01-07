@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { Modal, Button } from "antd";
-import profileDefaultImg from "../../../../../../images/profile.png";
 import "./index.sass";
 import { useSelector } from "react-redux";
 import {
@@ -10,7 +9,7 @@ import {
 import { requestHandler } from "../../../../../../utils";
 import { MeResponse } from "../../../../../../../types";
 import { useDispatch } from "react-redux";
-
+import AvatarUpload from "./components/imageLoader";
 interface PropsInterface {
   isProfileModalOpen: boolean;
   handleProfileModal: (arg: boolean) => void;
@@ -78,7 +77,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
       ]}
     >
       <div className="profile-main-wrapper">
-        <img className="avatar" src={profileDefaultImg} />
+        <AvatarUpload />
         <form>
           name
           <input onChange={(e) => setName(e.target.value)} value={name} />
