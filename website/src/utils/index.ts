@@ -12,16 +12,17 @@ export const requestHandler = async (
     let responseJSON = await fetch(`${url}/api/${path}`, {
       method: `${method}`,
       headers: {
-        "Content-Type": "application/json",
+        ...(body?.avatar ? {} : { "Content-Type": "application/json" }),
         Authorization: `Bearer ${accessToken}`,
       },
-      ...(body ? { body: JSON.stringify(body) } : {}),
+      ...(body && !body?.avatar ? { body: JSON.stringify(body) } : {}),
+      ...(body?.avatar ? { body: body?.avatar } : {}),
     });
     const response = await responseJSON.json();
 
     if (responseJSON.status == 200) {
       return response;
-    } else if ((response.message = "token has expired")) {
+    } else if (response?.message == "token has expired") {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       let responseJSON = await fetch(`${url}/api/refreshToken`, {

@@ -7,7 +7,8 @@ const AvatarUpload: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string>(profileDefaultImg);
 
   const addAvatar = async (formData: FormData, file: File) => {
-    await requestHandler("/avatar", "POST", { data: formData });
+ 
+    await requestHandler("update-user", "PUT", { avatar: formData });
 
     const reader = new FileReader();
     reader.onload = function (e) {
@@ -29,7 +30,7 @@ const AvatarUpload: React.FC = () => {
     if (input.files && input.files[0]) {
       const file = input.files[0];
       const formData = new FormData();
-      formData.append("files", file);
+      formData.append("file", file);
       if (!isAvatar) {
         addAvatar(formData, file);
       } else {

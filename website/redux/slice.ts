@@ -2,13 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DepositInterface } from "../types";
 
 export interface RootStateInterface {
-  accessToken: string | null;
-  refreshToken: string | null;
   user: {
     id: number;
     name: string;
     email: string;
     balance: number;
+    avatar: string;
   } | null;
   deposits: {
     active: DepositInterface[] | [];
@@ -18,8 +17,6 @@ export interface RootStateInterface {
 }
 
 const initialState: RootStateInterface = {
-  accessToken: null,
-  refreshToken: null,
   user: null,
   deposits: null,
 };
@@ -36,6 +33,7 @@ const slice = createSlice({
           name: string;
           email: string;
           balance: number;
+          avatar: string;
         };
       }
     ) => {
@@ -44,6 +42,7 @@ const slice = createSlice({
         name: action.payload.name,
         email: action.payload.email,
         balance: action.payload.balance,
+        avatar: action.payload.avatar,
       };
     },
 
@@ -61,8 +60,6 @@ const slice = createSlice({
     },
 
     clearStates: (state) => {
-      state.accessToken = null;
-      state.refreshToken = null;
       state.user = null;
       state.deposits = null;
     },

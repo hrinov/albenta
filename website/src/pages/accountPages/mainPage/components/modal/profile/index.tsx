@@ -46,13 +46,14 @@ const ProfileModalWindow: FC<PropsInterface> = ({
       ...(password ? { password: password } : {}),
     });
     if (response?.success) {
-      const { id, email, name, balance } = response?.data;
+      const { avatar, id, email, name, balance } = response?.data;
       dispatch(
         updateUser({
-          id: id,
-          email: email,
-          name: name,
-          balance: balance,
+          id,
+          email,
+          name,
+          balance,
+          avatar,
         })
       );
     }

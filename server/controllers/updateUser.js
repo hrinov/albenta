@@ -7,9 +7,10 @@ const { updateUser: updateUserQuery } = require("../db/queries/userQueries")
 
 const updateUser = async (req, res) => {
     let { name, email, password } = req.body
+    const avatar = req?.file?.filename;
 
-    if (!name && !email && !password) {
-        return res.status(400).json({ "message": "name, email or password is required" })
+    if (!name && !email && !password && !avatar) {
+        return res.status(400).json({ "message": "name, email, avatar or password is required" })
     }
 
     const access_token = req?.headers?.authorization?.substring(7)
@@ -78,6 +79,7 @@ const updateUser = async (req, res) => {
             ...(name ? { name: name } : {}),
             ...(email ? { email: email } : {}),
             ...(password ? { password: password } : {}),
+            ...(avatar ? { avatar: avatar } : {}),
         };
 
         const result = await updateUserQuery(data)

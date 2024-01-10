@@ -3,7 +3,7 @@ const db = require("../knex")
 const getUserByEmail = async (email) => {
     try {
         const user = db('users')
-            .select('id', 'name', 'email', 'access_token', 'refresh_token', 'balance')
+            .select('*')
             .where('email', email)
             .first();
         return user

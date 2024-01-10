@@ -25,7 +25,7 @@ const LoginPage: FC = () => {
     const response: MeResponse = await requestHandler("login", "POST", data);
 
     if (response?.success) {
-      const { access_token, refresh_token, id, email, name, balance } =
+      const { avatar, access_token, refresh_token, id, email, name, balance } =
         response?.data;
 
       window.localStorage.setItem("accessToken", access_token);
@@ -37,6 +37,7 @@ const LoginPage: FC = () => {
           email,
           name,
           balance,
+          avatar,
         })
       );
       setLoading(false);

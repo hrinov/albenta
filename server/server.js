@@ -11,7 +11,7 @@ const { router: deposit } = require("./routes/deposit.js")
 const { router: withdraw } = require("./routes/withdraw.js")
 const { router: activity } = require("./routes/activity.js")
 const { router: updateUser } = require("./routes/updateUser.js")
-
+const { router: avatar } = require("./routes/avatar.js")
 
 const http = require('http');
 const WebSocket = require('ws');
@@ -27,6 +27,8 @@ app.use('/api', apiRouter);
 apiRouter.use(cors());
 apiRouter.use(cookieParser());
 apiRouter.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 apiRouter.use('/signup', signup);
 apiRouter.use('/login', login);
 apiRouter.use('/refreshToken', refreshToken);
@@ -35,6 +37,7 @@ apiRouter.use('/deposit', deposit);
 apiRouter.use('/withdraw', withdraw);
 apiRouter.use('/activity', activity);
 apiRouter.use('/update-user', updateUser);
+apiRouter.use('/avatar', avatar);
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });

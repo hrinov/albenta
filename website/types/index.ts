@@ -7,6 +7,7 @@ export interface MeResponse {
     email: string;
     name: string;
     balance: number;
+    avatar: string;
   };
 }
 

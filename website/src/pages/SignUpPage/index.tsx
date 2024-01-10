@@ -27,7 +27,7 @@ const SignupPage: FC = () => {
     const response: MeResponse = await requestHandler("signup", "POST", data);
 
     if (response?.success) {
-      const { access_token, refresh_token, id, email, name, balance } =
+      const { avatar, access_token, refresh_token, id, email, name, balance } =
         response?.data;
 
       window.localStorage.setItem("accessToken", access_token);
@@ -39,6 +39,7 @@ const SignupPage: FC = () => {
           email,
           name,
           balance,
+          avatar,
         })
       );
       setLoading(false);
