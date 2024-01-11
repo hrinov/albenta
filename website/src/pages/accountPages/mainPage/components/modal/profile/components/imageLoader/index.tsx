@@ -1,13 +1,22 @@
+const url = import.meta.env.VITE_URL;
 import React, { ChangeEvent, useState } from "react";
 import profileDefaultImg from "../../../../../../../../images/profile.png";
 import { requestHandler } from "../../../../../../../../utils";
+import { useSelector } from "react-redux";
+import { RootStateInterface } from "../../../../../../../../../redux/slice";
 
 const AvatarUpload: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [imagePreview, setImagePreview] = useState<string>(profileDefaultImg);
+  const { user } = useSelector(
+    (state: { slice: RootStateInterface }) => state.slice
+  );
+  const [imagePreview, setImagePreview] = useState<string>(
+    user?.avatar
+      ? `${url}/api/avatar?filename=${user?.avatar}`
+      : profileDefaultImg
+  );
 
   const addAvatar = async (formData: FormData, file: File) => {
- 
     await requestHandler("update-user", "PUT", { avatar: formData });
 
     const reader = new FileReader();
@@ -38,7 +47,11 @@ const AvatarUpload: React.FC = () => {
       }
     }
   };
-  const deleteImage = () => {};
+  const deleteImage = async () => {
+    if (user?.avatar) {
+      await requestHandler(`avatar?filename=${user.avatar}`, "DELETE");
+    }
+  };
 
   return (
     <div className={"container"}>

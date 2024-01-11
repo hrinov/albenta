@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Modal, Button } from "antd";
 import "./index.sass";
 import { useSelector } from "react-redux";
@@ -23,8 +23,8 @@ const ProfileModalWindow: FC<PropsInterface> = ({
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
-  const [name, setName] = useState<string>(user?.name || "");
-  const [email, setEmail] = useState<string>(user?.email || "");
+  const [name, setName] = useState<string>();
+  const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
   const handleCancel = () => {
@@ -58,6 +58,13 @@ const ProfileModalWindow: FC<PropsInterface> = ({
       );
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+    }
+  }, [user]);
 
   return (
     <Modal
