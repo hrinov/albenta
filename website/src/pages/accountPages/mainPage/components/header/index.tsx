@@ -1,5 +1,5 @@
 const url = import.meta.env.VITE_URL;
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import "./index.sass";
 import { useNavigate } from "react-router-dom";
 import { RootStateInterface, clearStates } from "../../../../../../redux/slice";
@@ -17,6 +17,7 @@ const Header: FC<PropsInterface> = ({
   handleActivityModal,
   handleProfileModal,
 }) => {
+  const [avatar, setAvatar] = useState<string>();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(
@@ -32,6 +33,14 @@ const Header: FC<PropsInterface> = ({
     navigate("/login");
   };
 
+  useEffect(() => {
+    setAvatar(
+      user?.avatar
+        ? `${url}/api/avatar?filename=${user?.avatar}`
+        : profileDefaultImg
+    );
+  }, [user]);
+
   return (
     <>
       <header>
@@ -42,11 +51,7 @@ const Header: FC<PropsInterface> = ({
           }`}
         >
           <img
-            src={
-              user?.avatar
-                ? `${url}/api/avatar?filename=${user?.avatar}`
-                : profileDefaultImg
-            }
+            src={avatar}
             className={`${user?.balance == undefined ? "hide" : ""}`}
           />
           {user?.name || ""}

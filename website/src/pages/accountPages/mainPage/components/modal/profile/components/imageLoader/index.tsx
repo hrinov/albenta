@@ -1,9 +1,14 @@
 const url = import.meta.env.VITE_URL;
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import profileDefaultImg from "../../../../../../../../images/profile.png";
 import { requestHandler } from "../../../../../../../../utils";
 import { useSelector } from "react-redux";
-import { RootStateInterface } from "../../../../../../../../../redux/slice";
+import {
+  RootStateInterface,
+  updateUser,
+} from "../../../../../../../../../redux/slice";
+import { useDispatch } from "react-redux";
+import { MeResponse } from "../../../../../../../../../types";
 
 const AvatarUpload: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -15,25 +20,45 @@ const AvatarUpload: React.FC = () => {
       ? `${url}/api/avatar?filename=${user?.avatar}`
       : profileDefaultImg
   );
+  const dispatch = useDispatch();
+
+  const handleUserUpdate = async () => {
+    const response: MeResponse = await requestHandler("me", "GET");
+    if (response?.success) {
+      const { avatar, id, email, name, balance } = response?.data;
+      dispatch(
+        updateUser({
+          id,
+          email,
+          name,
+          balance,
+          avatar,
+        })
+      );
+    }
+  };
 
   const addAvatar = async (formData: FormData, file: File) => {
     await requestHandler("update-user", "PUT", { avatar: formData });
-
     const reader = new FileReader();
     reader.onload = function (e) {
       if (typeof e.target?.result === "string") {
         setImagePreview(e.target.result);
       }
     };
-    setLoading(false);
     reader.readAsDataURL(file);
   };
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const deleteImage = async () => {
+    if (user?.avatar) {
+      await requestHandler(`avatar?filename=${user.avatar}`, "DELETE");
+      setImagePreview(profileDefaultImg);
+    }
+  };
+
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
-
     const isAvatar = false;
-
     e.preventDefault();
     const input = e.target;
     if (input.files && input.files[0]) {
@@ -41,17 +66,24 @@ const AvatarUpload: React.FC = () => {
       const formData = new FormData();
       formData.append("file", file);
       if (!isAvatar) {
-        addAvatar(formData, file);
+        await addAvatar(formData, file);
       } else {
+        await deleteImage();
         addAvatar(formData, file);
       }
     }
+    await handleUserUpdate();
+    setLoading(false);
   };
-  const deleteImage = async () => {
-    if (user?.avatar) {
-      await requestHandler(`avatar?filename=${user.avatar}`, "DELETE");
-    }
+
+  const handleRemoveAvatar = async () => {
+    setLoading(true);
+    await deleteImage();
+    await handleUserUpdate();
+    setLoading(false);
   };
+
+  useEffect(() => {}, [user]);
 
   return (
     <div className={"container"}>
@@ -70,7 +102,7 @@ const AvatarUpload: React.FC = () => {
           <label className={"edit"} htmlFor={"imageUpload"}>
             Edit
           </label>
-          <span onClick={deleteImage} className={"delete"}>
+          <span onClick={handleRemoveAvatar} className={"delete"}>
             Delete
           </span>
         </div>

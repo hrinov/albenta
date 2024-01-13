@@ -1,6 +1,7 @@
 const path = require('path')
 const jwt = require('jsonwebtoken');
 const fs = require('fs').promises;
+const { handleUserActivity } = require("../utils/activityLog")
 const { updateUser: updateUserQuery, getUserByEmail } = require("../db/queries/userQueries")
 
 const getAvatar = async (req, res) => {
