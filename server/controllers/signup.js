@@ -56,7 +56,7 @@ const addUser = async (req, res) => {
 
     const data = {
         email: email,
-        password: bcrypt.hashSync(password, 10),
+        password: password,
         access_token: generateAccessToken(),
         refresh_token: generateRefreshToken(),
         name: name,

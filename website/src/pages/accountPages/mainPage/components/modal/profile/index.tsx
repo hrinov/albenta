@@ -10,6 +10,7 @@ import { requestHandler } from "../../../../../../utils";
 import { MeResponse } from "../../../../../../../types";
 import { useDispatch } from "react-redux";
 import AvatarUpload from "./components/imageLoader";
+import loadingAnimation from "../../../../../../icons/loading.svg";
 interface PropsInterface {
   isProfileModalOpen: boolean;
   handleProfileModal: (arg: boolean) => void;
@@ -26,6 +27,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleCancel = () => {
     handleProfileModal(false);
@@ -36,7 +38,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
     email: string | undefined,
     password: string | undefined
   ) => {
-    console.log(name, email, password);
+    setLoading(true);
     if (!name && !email && !password) {
       return;
     }
@@ -46,7 +48,8 @@ const ProfileModalWindow: FC<PropsInterface> = ({
       ...(password ? { password: password } : {}),
     });
     if (response?.success) {
-      const { avatar, id, email, name, balance } = response?.data;
+      const { avatar, id, email, name, balance, access_token, refresh_token } =
+        response?.data;
       dispatch(
         updateUser({
           id,
@@ -56,7 +59,11 @@ const ProfileModalWindow: FC<PropsInterface> = ({
           avatar,
         })
       );
+      console.log(access_token, refresh_token);
+      window.localStorage.setItem("accessToken", access_token);
+      window.localStorage.setItem("refreshToken", refresh_token);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -80,7 +87,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
           type="primary"
           onClick={() => handleUserUpdate(name, email, password)}
         >
-          Submit
+          Save
         </Button>,
       ]}
     >
@@ -99,6 +106,13 @@ const ProfileModalWindow: FC<PropsInterface> = ({
             type="password"
           />
         </form>
+        {
+          <img
+            src={loadingAnimation}
+            className="loading"
+            style={{ opacity: loading ? 1 : 0 }}
+          />
+        }
       </div>
     </Modal>
   );

@@ -58,14 +58,9 @@ const slice = createSlice({
     ) => {
       state.deposits = action.payload;
     },
-
-    clearStates: (state) => {
-      state.user = null;
-      state.deposits = null;
-    },
   },
 });
 
 const { actions, reducer } = slice;
 export default reducer;
-export const { updateUser, updateDeposits, clearStates } = actions;
+export const { updateUser, updateDeposits } = actions;

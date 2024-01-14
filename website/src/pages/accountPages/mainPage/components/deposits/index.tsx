@@ -151,7 +151,7 @@ const Deposits: FC<PropsInterface> = ({
               )
           )}
       </div>
-      {totalDeposits && totalDeposits >= depositsLimit && (
+      {totalDeposits > 0 && totalDeposits >= depositsLimit && (
         <div className="show-more" onClick={showMoreItems}>
           SHOW MORE
         </div>

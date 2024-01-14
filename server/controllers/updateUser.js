@@ -72,6 +72,15 @@ const updateUser = async (req, res) => {
         }
     }
 
+    //create tokens
+    function generateAccessToken() {
+        return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '15m' });
+    }
+
+    function generateRefreshToken() {
+        return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '30d' });
+    }
+
     //update user
     try {
         const data = {
@@ -80,6 +89,8 @@ const updateUser = async (req, res) => {
             ...(email ? { email: email } : {}),
             ...(password ? { password: password } : {}),
             ...(avatar ? { avatar: avatar } : {}),
+            access_token: generateAccessToken(),
+            refresh_token: generateRefreshToken(),
         };
 
         const result = await updateUserQuery(data)

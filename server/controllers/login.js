@@ -1,4 +1,5 @@
 require('dotenv').config()
+const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const { handleUserActivity } = require("../utils/activityLog")
 const { getUserByEmail, updateUser } = require("../db/queries/userQueries")
@@ -15,6 +16,11 @@ const auth = async (req, res) => {
     //handle user not found error
     const user = await getUserByEmail(email)
     if (!user) { return res.status(400).json({ "message": "user not found" }) }
+
+    const passwordMatch = bcrypt.compareSync(password, user.password);
+
+    if (!passwordMatch) { return res.status(400).json({ "message": "wrong password" }) }
+
 
     //generate new tokens
     function generateAccessToken() {

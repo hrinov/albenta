@@ -22,25 +22,26 @@ export const requestHandler = async (
 
     if (responseJSON.status == 200) {
       return response;
-    } else if (response?.message == "token has expired") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      let responseJSON = await fetch(`${url}/api/refreshToken`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ refreshToken: refreshToken }),
-      });
-      const response = await responseJSON.json();
+    } else {
+      switch (response?.message) {
+        case "token has expired":
+          if (response?.success) {
+            const { access_token, refresh_token } = response?.data;
+            window.localStorage.setItem("accessToken", access_token);
+            window.localStorage.setItem("refreshToken", refresh_token);
+            return makeRequest();
+          }
+          break;
 
-      if (response?.success) {
-        const { access_token, refresh_token } = response?.data;
-        window.localStorage.setItem("accessToken", access_token);
-        window.localStorage.setItem("refreshToken", refresh_token);
-        return makeRequest();
+        case "wrong token":
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          break;
+
+        default:
+          return;
       }
-    } else return;
+    }
   };
 
   return makeRequest();

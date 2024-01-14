@@ -1,9 +1,7 @@
 const url = import.meta.env.VITE_URL;
 import { FC, useEffect, useState } from "react";
 import "./index.sass";
-import { useNavigate } from "react-router-dom";
-import { RootStateInterface, clearStates } from "../../../../../../redux/slice";
-import { useDispatch } from "react-redux";
+import { RootStateInterface } from "../../../../../../redux/slice";
 import { useSelector } from "react-redux";
 import watch from "../../../../../icons/timer.svg";
 import profileDefaultImg from "../../../../../images/profile.png";
@@ -18,8 +16,6 @@ const Header: FC<PropsInterface> = ({
   handleProfileModal,
 }) => {
   const [avatar, setAvatar] = useState<string>();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
@@ -29,8 +25,7 @@ const Header: FC<PropsInterface> = ({
   };
   const handleLogout = () => {
     removeTokensFromLocalStorage();
-    dispatch(clearStates());
-    navigate("/login");
+    window.location.href = window.location.origin + "/login";
   };
 
   useEffect(() => {

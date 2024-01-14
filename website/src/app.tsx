@@ -1,5 +1,9 @@
 import { FC, useEffect } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  useNavigate,
+} from "react-router-dom";
 import { guestRoutes, accountRoutes } from "./pages/routes";
 import { Provider } from "react-redux";
 import store from "../redux/store";
@@ -20,6 +24,10 @@ const Router: FC = () => {
   routes = accessToken && refreshToken ? accountRoutes : guestRoutes;
   const router = createBrowserRouter(routes!);
 
+  const handleLogout = () => {
+    window.location.href = window.location.origin + "/login";
+  };
+
   const handleUserUpdate = async () => {
     const response: MeResponse = await requestHandler("me", "GET");
     if (response?.success) {
@@ -39,6 +47,8 @@ const Router: FC = () => {
   useEffect(() => {
     if (accessToken && refreshToken && !user) {
       handleUserUpdate();
+    } else if (user && !accessToken && !refreshToken) {
+      handleLogout();
     }
   }, [user, accessToken, refreshToken]);
 
