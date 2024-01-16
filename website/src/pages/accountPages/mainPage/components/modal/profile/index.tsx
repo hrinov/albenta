@@ -49,7 +49,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
     });
     if (response?.success) {
       const { avatar, id, email, name, balance, access_token, refresh_token } =
-        response?.data;
+        response?.data!;
       dispatch(
         updateUser({
           id,
@@ -59,7 +59,6 @@ const ProfileModalWindow: FC<PropsInterface> = ({
           avatar,
         })
       );
-      console.log(access_token, refresh_token);
       window.localStorage.setItem("accessToken", access_token);
       window.localStorage.setItem("refreshToken", refresh_token);
     }

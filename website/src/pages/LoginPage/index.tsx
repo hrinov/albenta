@@ -10,12 +10,14 @@ import { requestHandler } from "../../utils";
 
 const LoginPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const dispatch = useDispatch();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
   const loginUser = async () => {
+    setError("");
     setLoading(true);
     const data = {
       email: email,
@@ -23,10 +25,9 @@ const LoginPage: FC = () => {
     };
 
     const response: MeResponse = await requestHandler("login", "POST", data);
-
     if (response?.success) {
       const { avatar, access_token, refresh_token, id, email, name, balance } =
-        response?.data;
+        response?.data!;
 
       window.localStorage.setItem("accessToken", access_token);
       window.localStorage.setItem("refreshToken", refresh_token);
@@ -44,6 +45,7 @@ const LoginPage: FC = () => {
       navigate("/account");
     } else {
       setLoading(false);
+      response?.message && setError(response?.message);
     }
   };
 
@@ -52,27 +54,32 @@ const LoginPage: FC = () => {
   };
 
   return (
-    <section className="login-page">
-      <button className={"signup-btn"} onClick={() => navigate("/signup")}>
-        Sign Up
-      </button>
-      <div className="inputs-wrapper">
-        <AnimatedTitle loading={loading} />
-        <input
-          value={email}
-          placeholder="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          value={password}
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className="ok-btn" onClick={handleClick}>
-          NEXT
+    <>
+      <section className="login-page">
+        <button className={"signup-btn"} onClick={() => navigate("/signup")}>
+          Sign Up
+        </button>
+        <div className="inputs-wrapper">
+          <AnimatedTitle loading={loading} />
+          <input
+            value={email}
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            value={password}
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div className="ok-btn" onClick={handleClick}>
+            NEXT
+          </div>
+          <div className={`error-message ${!error && "transparent"}`}>
+            {error}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

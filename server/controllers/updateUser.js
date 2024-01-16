@@ -86,11 +86,9 @@ const updateUser = async (req, res) => {
         const data = {
             ...user,
             ...(name ? { name: name } : {}),
-            ...(email ? { email: email } : {}),
+            ...(email ? { email: email, access_token: generateAccessToken(), refresh_token: generateRefreshToken() } : {}),
             ...(password ? { password: password } : {}),
             ...(avatar ? { avatar: avatar } : {}),
-            access_token: generateAccessToken(),
-            refresh_token: generateRefreshToken(),
         };
 
         const result = await updateUserQuery(data)

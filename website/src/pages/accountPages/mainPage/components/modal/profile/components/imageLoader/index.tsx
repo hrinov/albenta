@@ -25,7 +25,7 @@ const AvatarUpload: React.FC = () => {
   const handleUserUpdate = async () => {
     const response: MeResponse = await requestHandler("me", "GET");
     if (response?.success) {
-      const { avatar, id, email, name, balance } = response?.data;
+      const { avatar, id, email, name, balance } = response?.data!;
       dispatch(
         updateUser({
           id,

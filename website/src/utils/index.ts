@@ -9,6 +9,10 @@ export const requestHandler = async (
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
 
+    const handleLogout = () => {
+      window.location.href = window.location.origin + "/login";
+    };
+
     let responseJSON = await fetch(`${url}/api/${path}`, {
       method: `${method}`,
       headers: {
@@ -20,27 +24,38 @@ export const requestHandler = async (
     });
     const response = await responseJSON.json();
 
-    if (responseJSON.status == 200) {
-      return response;
-    } else {
-      switch (response?.message) {
-        case "token has expired":
-          if (response?.success) {
-            const { access_token, refresh_token } = response?.data;
-            window.localStorage.setItem("accessToken", access_token);
-            window.localStorage.setItem("refreshToken", refresh_token);
-            return makeRequest();
-          }
-          break;
+    if (responseJSON.status == 200) return response;
 
-        case "wrong token":
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          break;
+    switch (response?.message) {
+      case "token has expired":
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        let refreshResponseJSON = await fetch(`${url}/api/refreshToken`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ refreshToken: refreshToken }),
+        });
+        const refreshResponse = await refreshResponseJSON.json();
+        if (refreshResponse?.success) {
+          const { access_token, refresh_token } = response?.data;
+          window.localStorage.setItem("accessToken", access_token);
+          window.localStorage.setItem("refreshToken", refresh_token);
+          return makeRequest();
+        } else {
+          handleLogout();
+        }
+        break;
 
-        default:
-          return;
-      }
+      case "wrong token":
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        handleLogout();
+        break;
+
+      default:
+        return response;
     }
   };
 

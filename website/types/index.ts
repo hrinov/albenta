@@ -1,6 +1,7 @@
 export interface MeResponse {
-  success: boolean;
-  data: {
+  success?: boolean;
+  message?: string;
+  data?: {
     access_token: string;
     refresh_token: string;
     id: number;

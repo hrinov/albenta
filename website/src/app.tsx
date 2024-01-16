@@ -24,14 +24,10 @@ const Router: FC = () => {
   routes = accessToken && refreshToken ? accountRoutes : guestRoutes;
   const router = createBrowserRouter(routes!);
 
-  const handleLogout = () => {
-    window.location.href = window.location.origin + "/login";
-  };
-
   const handleUserUpdate = async () => {
     const response: MeResponse = await requestHandler("me", "GET");
     if (response?.success) {
-      const { avatar, id, email, name, balance } = response?.data;
+      const { avatar, id, email, name, balance } = response?.data!;
       dispatch(
         updateUser({
           id,
@@ -47,8 +43,6 @@ const Router: FC = () => {
   useEffect(() => {
     if (accessToken && refreshToken && !user) {
       handleUserUpdate();
-    } else if (user && !accessToken && !refreshToken) {
-      handleLogout();
     }
   }, [user, accessToken, refreshToken]);
 
