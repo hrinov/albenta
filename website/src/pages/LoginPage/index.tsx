@@ -7,6 +7,7 @@ import { updateUser } from "../../../redux/slice";
 import { MeResponse } from "../../../types";
 import { useSpring, animated } from "react-spring";
 import { requestHandler } from "../../utils";
+import loadingAnimation from "../../icons/loading.svg";
 
 const LoginPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,10 +50,6 @@ const LoginPage: FC = () => {
     }
   };
 
-  const handleClick = () => {
-    loginUser();
-  };
-
   return (
     <>
       <section className="login-page">
@@ -71,9 +68,14 @@ const LoginPage: FC = () => {
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <div className="ok-btn" onClick={handleClick}>
+          <div className="ok-btn" onClick={loginUser}>
             NEXT
           </div>
+          <img
+            src={loadingAnimation}
+            className="loading right"
+            style={{ opacity: loading ? 1 : 0 }}
+          />
           <div className={`error-message ${!error && "transparent"}`}>
             {error}
           </div>
@@ -86,47 +88,100 @@ const LoginPage: FC = () => {
 const AnimatedTitle: FC<{ loading: boolean }> = ({ loading }) => {
   const changeColor = () => {
     const baseColor = "#db5aa1";
-    const animationColor = "#0510ab";
+    const animationColor = "#4096ff";
+    const baseTransform = "translateY(0)";
+    const animatedTransform = "translateY(-4px)";
+
     return useSpring({
       from: {
         color1: baseColor,
+        transform1: baseTransform,
         color2: baseColor,
+        transform2: baseTransform,
         color3: baseColor,
+        transform3: baseTransform,
         color4: baseColor,
+        transform4: baseTransform,
         color5: baseColor,
+        transform5: baseTransform,
       },
       to: async (next) => {
-        await next({ color1: animationColor });
-        await next({ color1: baseColor });
-        await next({ color2: animationColor });
-        await next({ color2: baseColor });
-        await next({ color3: animationColor });
-        await next({ color3: baseColor });
-        await next({ color4: animationColor });
-        await next({ color4: baseColor });
-        await next({ color5: animationColor });
-        await next({ color5: baseColor });
+        await next({ color1: animationColor, transform1: animatedTransform });
+        await next({ color1: baseColor, transform1: baseTransform });
+        await next({ color2: animationColor, transform2: animatedTransform });
+        await next({ color2: baseColor, transform2: baseTransform });
+        await next({ color3: animationColor, transform3: animatedTransform });
+        await next({ color3: baseColor, transform3: baseTransform });
+        await next({ color4: animationColor, transform4: animatedTransform });
+        await next({ color4: baseColor, transform4: baseTransform });
+        await next({ color5: animationColor, transform5: animatedTransform });
+        await next({ color5: baseColor, transform5: baseTransform });
       },
       loop: { reverse: true },
-      config: { duration: 250 },
+      config: { duration: 300 },
     });
   };
 
   return (
     <div className="title-wrapper">
-      <animated.div style={loading ? { color: changeColor().color1 } : {}}>
+      <animated.div
+        style={
+          loading
+            ? {
+                color: changeColor().color1,
+                transform: changeColor().transform1,
+              }
+            : {}
+        }
+      >
         L
       </animated.div>
-      <animated.div style={loading ? { color: changeColor().color2 } : {}}>
+      <animated.div
+        style={
+          loading
+            ? {
+                color: changeColor().color2,
+                transform: changeColor().transform2,
+              }
+            : {}
+        }
+      >
         o
       </animated.div>
-      <animated.div style={loading ? { color: changeColor().color3 } : {}}>
+      <animated.div
+        style={
+          loading
+            ? {
+                color: changeColor().color3,
+                transform: changeColor().transform3,
+              }
+            : {}
+        }
+      >
         g
       </animated.div>
-      <animated.div style={loading ? { color: changeColor().color4 } : {}}>
+      <animated.div
+        style={
+          loading
+            ? {
+                color: changeColor().color4,
+                transform: changeColor().transform4,
+              }
+            : {}
+        }
+      >
         i
       </animated.div>
-      <animated.div style={loading ? { color: changeColor().color5 } : {}}>
+      <animated.div
+        style={
+          loading
+            ? {
+                color: changeColor().color5,
+                transform: changeColor().transform5,
+              }
+            : {}
+        }
+      >
         n
       </animated.div>
     </div>
