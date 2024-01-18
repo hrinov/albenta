@@ -1,4 +1,3 @@
-const url = import.meta.env.VITE_URL;
 import { FC, useState } from "react";
 import "./index.sass";
 import { useNavigate } from "react-router-dom";
@@ -30,23 +29,26 @@ const LoginPage: FC = () => {
       const { avatar, access_token, refresh_token, id, email, name, balance } =
         response?.data!;
 
-      window.localStorage.setItem("accessToken", access_token);
-      window.localStorage.setItem("refreshToken", refresh_token);
-
-      dispatch(
-        updateUser({
-          id,
-          email,
-          name,
-          balance,
-          avatar,
-        })
-      );
-      setLoading(false);
-      navigate("/account");
+      setTimeout(() => {
+        window.localStorage.setItem("accessToken", access_token);
+        window.localStorage.setItem("refreshToken", refresh_token);
+        dispatch(
+          updateUser({
+            id,
+            email,
+            name,
+            balance,
+            avatar,
+          })
+        );
+        setLoading(false);
+        navigate("/account");
+      }, 3000);
     } else {
-      setLoading(false);
-      response?.message && setError(response?.message);
+      setTimeout(() => {
+        setLoading(false);
+        response?.message && setError(response?.message);
+      }, 3000);
     }
   };
 
@@ -73,7 +75,7 @@ const LoginPage: FC = () => {
           </div>
           <img
             src={loadingAnimation}
-            className="loading right"
+            className="loading"
             style={{ opacity: loading ? 1 : 0 }}
           />
           <div className={`error-message ${!error && "transparent"}`}>
@@ -106,16 +108,16 @@ const AnimatedTitle: FC<{ loading: boolean }> = ({ loading }) => {
         transform5: baseTransform,
       },
       to: async (next) => {
-        await next({ color1: animationColor, transform1: animatedTransform });
-        await next({ color1: baseColor, transform1: baseTransform });
-        await next({ color2: animationColor, transform2: animatedTransform });
-        await next({ color2: baseColor, transform2: baseTransform });
-        await next({ color3: animationColor, transform3: animatedTransform });
-        await next({ color3: baseColor, transform3: baseTransform });
-        await next({ color4: animationColor, transform4: animatedTransform });
-        await next({ color4: baseColor, transform4: baseTransform });
-        await next({ color5: animationColor, transform5: animatedTransform });
-        await next({ color5: baseColor, transform5: baseTransform });
+        for (let i = 1; i <= 5; i++) {
+          await next({
+            [`color${i}`]: animationColor,
+            [`transform${i}`]: animatedTransform,
+          });
+          await next({
+            [`color${i}`]: baseColor,
+            [`transform${i}`]: baseTransform,
+          });
+        }
       },
       loop: { reverse: true },
       config: { duration: 300 },

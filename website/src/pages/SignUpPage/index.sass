@@ -11,7 +11,15 @@ section.signup-page
     opacity: 0
     animation: fade-in 400ms forwards
 
+    .error-message
+        position: absolute
+        bottom: -34px
+        transition-duration: 400ms
+        color: #db5aa1
+        font-weight: 300
+
     .inputs-wrapper
+        position: relative
         display: flex
         flex-direction: column
         justify-content: center
@@ -64,3 +72,10 @@ section.signup-page
 
             &:hover
                 border: 1px solid #db5aa1
+
+    .loading
+        position: absolute
+        width: 40px
+        height: 40px
+        bottom: 27px
+        right: 52px
