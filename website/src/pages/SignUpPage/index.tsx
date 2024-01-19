@@ -62,6 +62,9 @@ const SignupPage: FC = () => {
 
   return (
     <section className="signup-page">
+      <button className={"login-btn"} onClick={() => navigate("/login")}>
+        Login
+      </button>
       <div className="inputs-wrapper">
         <h1>
           <AnimatedTitle loading={loading} />
