@@ -1,4 +1,6 @@
 require('dotenv').config()
+const fs = require('fs').promises;
+const path = require('path')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const { getUserByEmail } = require("../db/queries/userQueries")
@@ -37,6 +39,7 @@ const updateUser = async (req, res) => {
     if (!user) {
         return res.status(400).json({ "message": "user not found" })
     }
+
     //validate name
     if (name) {
         name = name.trim()
@@ -92,6 +95,17 @@ const updateUser = async (req, res) => {
         };
 
         const result = await updateUserQuery(data)
+
+        // delete the avatar in case of updating it
+        if (avatar) {
+            try {
+                const previousAvatar = user?.avatar
+                const filePath = path.join(__dirname, '..', 'uploads', previousAvatar);
+                previousAvatar && await fs.unlink(filePath);
+            } catch (error) {
+                console.log(error)
+            }
+        }
 
         if (result) {
             delete result.password;

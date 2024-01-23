@@ -99,12 +99,17 @@ const AvatarUpload: React.FC = () => {
             accept={".png, .jpg, .jpeg"}
             onChange={handleImageChange}
           />
-          <label className={"edit"} htmlFor={"imageUpload"}>
-            Edit
-          </label>
-          <span onClick={handleRemoveAvatar} className={"delete"}>
-            Delete
-          </span>
+
+          <div className="options">
+            <label className={"edit"} htmlFor={"imageUpload"}>
+              Edit
+            </label>
+            {user?.avatar && (
+              <span onClick={handleRemoveAvatar} className={"delete"}>
+                Delete
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
