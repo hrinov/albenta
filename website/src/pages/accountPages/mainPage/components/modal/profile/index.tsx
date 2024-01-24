@@ -11,6 +11,8 @@ import { MeResponse } from "../../../../../../../types";
 import { useDispatch } from "react-redux";
 import AvatarUpload from "./components/imageLoader";
 import loadingAnimation from "../../../../../../icons/loading.svg";
+import eye from "../../../../../../icons/eye.svg";
+import eye_off from "../../../../../../icons/eye-off.svg";
 interface PropsInterface {
   isProfileModalOpen: boolean;
   handleProfileModal: (arg: boolean) => void;
@@ -28,6 +30,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [isPasVisible, setIsPasVisible] = useState<boolean>(false);
 
   const handleCancel = () => {
     handleProfileModal(false);
@@ -98,12 +101,18 @@ const ProfileModalWindow: FC<PropsInterface> = ({
           email
           <input onChange={(e) => setEmail(e.target.value)} value={email} />
           new password
-          <input
-            placeholder="enter new password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password || ""}
-            type="password"
-          />
+          <div className="password-holder">
+            <input
+              placeholder="enter new password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password || ""}
+              type={isPasVisible ? "text" : "password"}
+            />
+            <img
+              src={!isPasVisible ? eye : eye_off}
+              onClick={() => setIsPasVisible(!isPasVisible)}
+            />
+          </div>
         </form>
         {
           <img

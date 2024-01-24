@@ -38,6 +38,7 @@
             font-weight: 100
 
             input
+                position: relative
                 margin-bottom: 6px
                 width: 240px
                 height: 34px
@@ -49,7 +50,22 @@
                     font-weight: 100
                     color: #363535
                 &:focus-visible
-                    outline: 1px solid #e62d93
+                    outline: 1px solid #4096ff
+
+            .password-holder
+                position: relative
+                img
+                    border-color: transparent
+                    width: 15px
+                    height: 15px
+                    position: absolute
+                    right: 14px
+                    top: 9px
+                    cursor: pointer
+                input
+                    box-sizing: border-box
+                    width: 269px
+                    padding-right: 34px
 
         .avatar-upload
             position: relative
