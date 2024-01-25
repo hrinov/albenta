@@ -2,12 +2,22 @@
     width: max-content !important
 
     .profile-main-wrapper
+        position: relative
         min-height: unset
         width: max-content
         margin-top: 24px
         display: flex
         flex-direction: column
         align-items: center
+
+    .error
+        position: absolute
+        bottom: 0
+        color: #db5aa1
+        opacity: 0
+        transition-duration: 250ms
+        &.active
+            opacity: 1
 
     .ant-modal-content
         padding: 40px 60px 34px 60px !important
@@ -69,8 +79,6 @@
 
         .avatar-upload
             position: relative
-            width: 184px
-            height: 184px
             display: flex
             justify-content: center
             align-items: center
@@ -86,29 +94,47 @@
             flex-direction: column
             justify-content: center
             align-items: center
-            opacity: 0
+            gap: 8px
+
             z-index: 100
 
             &:hover
-                opacity: 1
+                .edit
+                    opacity: 0.8
+                .delete
+                    opacity: 0.8
 
             .edit
-                color: #4096ff
+                color: white
+                padding-left: 6px
+                padding-right: 6px
                 font-weight: 500
                 font-size: 16px
                 line-height: 26px
                 cursor: pointer
                 z-index: 1
+                background-color: #4096ff
+                border-radius: 4px
                 transition: opacity 0.3s
+                opacity: 0
+                &:hover
+                    opacity: 1
 
             .delete
-                color: #ff0000
+                color: white
+                padding-left: 6px
+                padding-right: 6px
                 font-weight: 500
                 font-size: 16px
                 line-height: 26px
                 cursor: pointer
                 z-index: 1
+                background-color: #db5aa1
+                border-radius: 4px
                 transition: opacity 0.3s
+                opacity: 0
+                &:hover
+                    opacity: 1
 
     input#imageUpload
         display: none

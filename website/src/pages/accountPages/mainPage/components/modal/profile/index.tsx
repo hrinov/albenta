@@ -26,6 +26,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
+  const [error, setError] = useState<string>();
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
@@ -42,6 +43,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
     password: string | undefined
   ) => {
     setLoading(true);
+    setError("");
     if (!name && !email && !password) {
       return;
     }
@@ -64,6 +66,8 @@ const ProfileModalWindow: FC<PropsInterface> = ({
       );
       window.localStorage.setItem("accessToken", access_token);
       window.localStorage.setItem("refreshToken", refresh_token);
+    } else if (response?.message) {
+      setError(response?.message);
     }
     setLoading(false);
   };
@@ -121,6 +125,7 @@ const ProfileModalWindow: FC<PropsInterface> = ({
             style={{ opacity: loading ? 1 : 0 }}
           />
         }
+        <div className={`error ${error && "active"}`}>{error}</div>
       </div>
     </Modal>
   );
