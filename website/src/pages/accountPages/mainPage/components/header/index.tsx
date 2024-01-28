@@ -68,13 +68,13 @@ const Header: FC<PropsInterface> = ({
           </button>
         </div>
       </header>
-      <button
+      {/* <button
         className={`activity-btn ${user?.balance == undefined ? "hide" : ""}`}
         onClick={() => handleActivityModal(true)}
       >
         <img src={watch} />
         ACTIVITY LOG
-      </button>
+      </button> */}
     </>
   );
 };

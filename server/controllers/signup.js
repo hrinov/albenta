@@ -17,7 +17,8 @@ const addUser = async (req, res) => {
         return /^[a-zA-Z\s]+$/.test(name);
     }
     if (!name || !matchRegExp() || name.length < 3) {
-        return res.status(400).json({ "message": "invalid name, name should contain at list 3 letters" })
+        console.log(!matchRegExp())
+        return res.status(400).json({ "message": "name should contain at list 3 letters (latin)" })
     }
 
     //validate password
@@ -26,7 +27,7 @@ const addUser = async (req, res) => {
         return password.length >= 8 && !disallowedSymbolsAndSpaces.test(password)
     }
     if (!validatePassword(password)) {
-        return res.status(400).json({ "message": "invalid password" })
+        return res.status(400).json({ "message": "password should not be shorter than 8 characters and should consist only of numbers or letters" })
     }
     password = bcrypt.hashSync(password, 10)
 

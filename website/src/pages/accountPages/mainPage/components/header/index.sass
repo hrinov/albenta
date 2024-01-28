@@ -2,14 +2,24 @@
 header
     margin-bottom: 12px
     width: 100%
+    box-sizing: border-box
     display: flex
     justify-content: space-between
     align-items: center
+    position: fixed
+    width: calc(100vw)
+    height: 100px
+    background-color: #fff
+    border-bottom: 1px solid #000
+    z-index: 100
+    padding: 24px
 
     .logo
         font-size: 24px
         font-weight: 200
         letter-spacing: 0.84rem
+        color: white
+        font-weight: 400
 
     .logout-block
         min-width: 330px
@@ -18,15 +28,15 @@ header
         justify-content: space-between
         gap: 24px
         font-size: 20px
-        font-weight: 200
+        font-weight: 400
         color: #db5aa1
 
         .balance
             color: #4096ff
 
         img
-            width: 40px
-            height: 40px
+            width: 50px
+            height: 50px
             border-radius: 100%
             border: 1px solid #dddada
 
@@ -37,7 +47,7 @@ header
             align-items: center
             justify-content: center
             background-color: transparent
-            color: #db5aa1
+            color: #404040
             font-weight: 300
             font-size: 18px
             border: 1px solid #969696

@@ -9,6 +9,7 @@ import Deposits from "./components/deposits";
 import WithdrawModalWindow from "./components/modal/withdraw";
 import ActivityModalWindow from "./components/modal/activity";
 import ProfileModalWindow from "./components/modal/profile";
+import Navigation from "./components/navigation";
 
 const AccountMainPage: FC = () => {
   const dispatch = useDispatch();
@@ -60,33 +61,36 @@ const AccountMainPage: FC = () => {
   }, [depositsLimit]);
 
   return (
-    <main className="main-page">
-      <div className="container">
-        <Header
-          handleActivityModal={handleActivityModal}
-          handleProfileModal={handleProfileModal}
-        />
-        <Plans />
-        <Deposits
-          handleWithdrawModal={handleWithdrawModal}
-          depositsLimit={depositsLimit}
-          setDepositsLimit={setDepositsLimit}
-        />
-      </div>
-      <WithdrawModalWindow
-        isWithdrawModalOpen={isWithdrawModalOpen}
-        handleWithdrawModal={handleWithdrawModal}
-        depositsLimit={depositsLimit}
-      />
-      <ActivityModalWindow
-        isActivityModalOpen={isActivityModalOpen}
+    <>
+      <Navigation />
+      <Header
         handleActivityModal={handleActivityModal}
-      />
-      <ProfileModalWindow
-        isProfileModalOpen={isProfileModalOpen}
         handleProfileModal={handleProfileModal}
       />
-    </main>
+      <main className="main-page">
+        <div className="container">
+          <Plans />
+          <Deposits
+            handleWithdrawModal={handleWithdrawModal}
+            depositsLimit={depositsLimit}
+            setDepositsLimit={setDepositsLimit}
+          />
+        </div>
+        <WithdrawModalWindow
+          isWithdrawModalOpen={isWithdrawModalOpen}
+          handleWithdrawModal={handleWithdrawModal}
+          depositsLimit={depositsLimit}
+        />
+        <ActivityModalWindow
+          isActivityModalOpen={isActivityModalOpen}
+          handleActivityModal={handleActivityModal}
+        />
+        <ProfileModalWindow
+          isProfileModalOpen={isProfileModalOpen}
+          handleProfileModal={handleProfileModal}
+        />
+      </main>
+    </>
   );
 };
 
