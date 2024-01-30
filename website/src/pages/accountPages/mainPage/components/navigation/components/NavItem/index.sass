@@ -1,0 +1,62 @@
+.wrapper
+  display: flex
+  flex-direction: column
+  overflow: hidden
+  transition-duration: 300ms
+  height: 41px
+
+  .nav-item, .nav-subitem
+    padding-top: 10px
+    padding-bottom: 10px
+    height: 42px
+    display: flex
+    align-items: center
+    &:hover
+      background-color: #677685
+      color: white
+
+  .nav-item
+    width: 100%
+    box-sizing: border-box
+    display: flex
+    justify-content: space-between
+    padding-left: 12px
+    padding-right: 12px
+    color: #677685
+    font-size: 14px
+    font-weight: 400
+    cursor: pointer
+
+    &:hover
+      img
+        fill: white
+
+    &.active
+      background-color: #F6F6F8
+      color: black
+
+    .label-wrapper
+      img
+        transform: translateY(2px)
+
+      &.open
+        img
+          fill: black
+
+    .description
+      display: flex
+      gap: 8px
+
+    img
+      transition-property: transform
+      transition-duration: 300ms
+
+  .nav-subitem
+    width: 100%
+    padding-left: 36px
+    padding-right: 12px
+    color: #A4A9B8
+    font-size: 14px
+    font-style: unset
+    font-weight: 400
+    cursor: pointer

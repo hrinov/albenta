@@ -1,0 +1,76 @@
+import React, { FC, useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import chevron from "../../../../../../../icons/chevron_down.svg";
+import "./index.sass";
+import { NavItemInterface } from "../../../../../../../../types";
+
+const NavItem: FC<NavItemInterface> = ({
+  name,
+  label,
+  openedElement,
+  setOpenedElement,
+  children,
+}) => {
+  const { pathname } = useLocation();
+  const [blockHeight, setBlockHeight] = useState<number>();
+  const navItemRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const handleElementClick = () => {
+    if (children && openedElement !== name.toLowerCase()) {
+      setOpenedElement!(name.toLowerCase());
+      return;
+    } else {
+      setOpenedElement!(undefined);
+      return;
+    }
+    navigate(`/account/${name.toLowerCase()}`);
+  };
+
+  const handleStyle = () => {
+    if (pathname.includes(`/account/${name.toLowerCase()}`) && !children) {
+      return { backgroundColor: "#677685", color: "#fff" };
+    }
+    return {};
+  };
+
+  const isOpen =
+    (!openedElement && pathname?.includes(`/account/${name.toLowerCase()}`)) ||
+    openedElement == name?.toLowerCase();
+
+  useEffect(() => {
+    if (navItemRef?.current) {
+      const childrenAmount = React.Children.count(children) || 0;
+      const navElementHeight = parseFloat(
+        window.getComputedStyle(navItemRef.current).height
+      );
+      setBlockHeight((childrenAmount + 1) * navElementHeight);
+    }
+  }, [navItemRef]);
+
+  return (
+    <div className={"wrapper"} style={isOpen ? { height: blockHeight } : {}}>
+      <div
+        className={`nav-item ${isOpen && "active"}`}
+        onClick={handleElementClick}
+        ref={navItemRef}
+        style={handleStyle()}
+      >
+        <div className={"description"}>
+          <div className={`label-wrapper ${isOpen && "open"}`}>{label}</div>
+          {name}
+        </div>
+        {children && (
+          <img
+            src={chevron}
+            style={
+              isOpen ? { transform: "rotate(180deg)", fill: "#677685" } : {}
+            }
+          />
+        )}
+      </div>
+      {children}
+    </div>
+  );
+};
+export default NavItem;

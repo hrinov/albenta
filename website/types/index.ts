@@ -1,3 +1,5 @@
+import { ReactNode, SetStateAction } from "react";
+
 export interface MeResponse {
   success?: boolean;
   message?: string;
@@ -32,4 +34,12 @@ export interface ActivityInterface {
   browser: string;
   date: string;
   type: string;
+}
+
+export interface NavItemInterface {
+  name: string;
+  label: ReactNode;
+  children?: ReactNode;
+  openedElement?: string | undefined;
+  setOpenedElement?: React.Dispatch<SetStateAction<string | undefined>>;
 }
