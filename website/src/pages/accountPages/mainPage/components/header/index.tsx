@@ -3,30 +3,13 @@ import { FC, useEffect, useState } from "react";
 import "./index.sass";
 import { RootStateInterface } from "../../../../../../redux/slice";
 import { useSelector } from "react-redux";
-import watch from "../../../../../icons/timer.svg";
 import profileDefaultImg from "../../../../../images/profile.png";
 
-interface PropsInterface {
-  handleActivityModal: (arg: boolean) => void;
-  handleProfileModal: (arg: boolean) => void;
-}
-
-const Header: FC<PropsInterface> = ({
-  handleActivityModal,
-  handleProfileModal,
-}) => {
+const Header: FC = () => {
   const [avatar, setAvatar] = useState<string>();
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
-  const removeTokensFromLocalStorage = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-  };
-  const handleLogout = () => {
-    removeTokensFromLocalStorage();
-    window.location.href = window.location.origin + "/login";
-  };
 
   useEffect(() => {
     setAvatar(
@@ -41,7 +24,7 @@ const Header: FC<PropsInterface> = ({
       <header>
         <div className="logo">ALBENTA</div>
         <div
-          className={`logout-block ${
+          className={`info-block ${
             user?.balance == undefined ? "skeleton" : ""
           }`}
         >
@@ -57,24 +40,8 @@ const Header: FC<PropsInterface> = ({
           >
             Balance: {user?.balance || ""}$
           </div>
-          <button
-            className="profile-btn"
-            onClick={() => handleProfileModal(true)}
-          >
-            Profile
-          </button>
-          <button className="logout" onClick={handleLogout}>
-            Logout
-          </button>
         </div>
       </header>
-      {/* <button
-        className={`activity-btn ${user?.balance == undefined ? "hide" : ""}`}
-        onClick={() => handleActivityModal(true)}
-      >
-        <img src={watch} />
-        ACTIVITY LOG
-      </button> */}
     </>
   );
 };

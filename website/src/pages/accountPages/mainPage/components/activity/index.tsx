@@ -1,39 +1,21 @@
 import { FC, useEffect, useState } from "react";
-import { Modal } from "antd";
 import "./index.sass";
-import { requestHandler } from "../../../../../../utils";
-import { ActivityInterface } from "../../../../../../../types";
+import { requestHandler } from "../../../../../utils";
+import { ActivityInterface } from "../../../../../../types";
 import { Pagination } from "antd";
 
-interface PropsInterface {
-  isActivityModalOpen: boolean;
-  handleActivityModal: (arg: boolean) => void;
-}
-
-const ActivityModalWindow: FC<PropsInterface> = ({
-  isActivityModalOpen,
-  handleActivityModal,
-}) => {
+const Activity: FC = () => {
   const [activity, setActivity] = useState<ActivityInterface[] | null>();
   const [totalItems, setTotalItems] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState<number>(1);
 
-  const handleCancel = () => {
-    setActivity(null);
-    setTotalItems(1);
-    setPageNumber(1);
-    handleActivityModal(false);
-  };
-
   function formatDate(inputDate: string) {
     const date = new Date(inputDate);
-
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
     const hours = date.getHours();
     const minutes = date.getMinutes();
-
     const formattedDay = day < 10 ? `0${day}` : `${day}`;
     const formattedMonth = month < 10 ? `0${month}` : `${month}`;
     const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
@@ -64,12 +46,7 @@ const ActivityModalWindow: FC<PropsInterface> = ({
   }, [isActivityModalOpen, pageNumber]);
 
   return (
-    <Modal
-      title="Activity Log"
-      open={isActivityModalOpen}
-      onCancel={handleCancel}
-      footer={null}
-    >
+    <section className="activity">
       <div className="activity-main-wrapper">
         <div className="activity title">
           <div className="block">DATE</div>
@@ -102,8 +79,8 @@ const ActivityModalWindow: FC<PropsInterface> = ({
           onChange={(page) => handleChangePage(page)}
         />
       </div>
-    </Modal>
+    </section>
   );
 };
 
-export default ActivityModalWindow;
+export default Activity;

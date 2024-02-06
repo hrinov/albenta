@@ -63,10 +63,7 @@ const AccountMainPage: FC = () => {
   return (
     <>
       <Navigation />
-      <Header
-        handleActivityModal={handleActivityModal}
-        handleProfileModal={handleProfileModal}
-      />
+      <Header />
       <main className="main-page">
         <div className="container">
           <Plans />

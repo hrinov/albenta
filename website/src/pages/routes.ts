@@ -30,6 +30,10 @@ const accountRoutes: RouteObject[] = [
     Component: AccountMainPage,
     path: "/account",
   },
+  // {
+  //   Component: AccountMainPage,
+  //   path: "/account/activity-log",
+  // },
   {
     Component: Redirect,
     path: "/",

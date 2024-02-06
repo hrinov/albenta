@@ -20,11 +20,19 @@ const NavItem: FC<NavItemInterface> = ({
     if (children && openedElement !== name.toLowerCase()) {
       setOpenedElement!(name.toLowerCase());
       return;
-    } else {
+    } else if (children) {
       setOpenedElement!(undefined);
       return;
     }
-    navigate(`/account/${name.toLowerCase()}`);
+    switch (name) {
+      case "Log out":
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        window.location.href = window.location.origin + "/login";
+        break;
+      default:
+        navigate(`/account/${name.toLowerCase().replace(" ", "-")}`);
+    }
   };
 
   const handleStyle = () => {
