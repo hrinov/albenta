@@ -1,17 +1,18 @@
 import { FC, useEffect, useState } from "react";
 import Header from "./components/header";
 import Plans from "./components/plans";
-import { requestHandler } from "../../../utils";
+import { requestHandler } from "../../utils";
 import { useDispatch } from "react-redux";
-import { updateDeposits } from "../../../../redux/slice";
+import { updateDeposits } from "../../../redux/slice";
 import "./index.sass";
 import Deposits from "./components/deposits";
 import WithdrawModalWindow from "./components/modal/withdraw";
-import ActivityModalWindow from "./components/modal/activity";
-import ProfileModalWindow from "./components/modal/profile";
+// import ActivityModalWindow from "./components/modal/activity";
+// import ProfileModalWindow from "./components/modal/profile";
 import Navigation from "./components/navigation";
+import { AccountProps } from "../../../types";
 
-const AccountMainPage: FC = () => {
+const Account: FC<AccountProps> = ({ type }) => {
   const dispatch = useDispatch();
   const [depositsLimit, setDepositsLimit] = useState<number>(5);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState<{
@@ -66,29 +67,36 @@ const AccountMainPage: FC = () => {
       <Header />
       <main className="main-page">
         <div className="container">
-          <Plans />
-          <Deposits
+          {type == "plans" && <Plans />}
+          {type == "deposits" && (
+            <Deposits
+              handleWithdrawModal={handleWithdrawModal}
+              depositsLimit={depositsLimit}
+              setDepositsLimit={setDepositsLimit}
+            />
+          )}
+          {/* <Deposits
             handleWithdrawModal={handleWithdrawModal}
             depositsLimit={depositsLimit}
             setDepositsLimit={setDepositsLimit}
-          />
+          /> */}
         </div>
         <WithdrawModalWindow
           isWithdrawModalOpen={isWithdrawModalOpen}
           handleWithdrawModal={handleWithdrawModal}
           depositsLimit={depositsLimit}
         />
-        <ActivityModalWindow
+        {/* <ActivityModalWindow
           isActivityModalOpen={isActivityModalOpen}
           handleActivityModal={handleActivityModal}
         />
         <ProfileModalWindow
           isProfileModalOpen={isProfileModalOpen}
           handleProfileModal={handleProfileModal}
-        />
+        /> */}
       </main>
     </>
   );
 };
 
-export default AccountMainPage;
+export default Account;

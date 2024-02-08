@@ -43,3 +43,7 @@ export interface NavItemInterface {
   openedElement?: string | undefined;
   setOpenedElement?: React.Dispatch<SetStateAction<string | undefined>>;
 }
+
+export interface AccountProps {
+  type: string;
+}

@@ -46,7 +46,7 @@ const SignupPage: FC = () => {
           })
         );
         setLoading(false);
-        navigate("/account");
+        navigate("/account/deposits/plans");
       }, 3500);
     } else {
       setTimeout(() => {

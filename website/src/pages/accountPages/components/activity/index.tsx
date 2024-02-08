@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import "./index.sass";
-import { requestHandler } from "../../../../../utils";
-import { ActivityInterface } from "../../../../../../types";
+import { requestHandler } from "../../../../utils";
+import { ActivityInterface } from "../../../../../types";
 import { Pagination } from "antd";
 
 const Activity: FC = () => {

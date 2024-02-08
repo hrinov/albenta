@@ -9,7 +9,7 @@ const Redirect = () => {
 
   useEffect(() => {
     if (isUserAuthorized) {
-      navigate("/account");
+      navigate("/account/deposits/plans");
     } else {
       navigate("/login");
     }

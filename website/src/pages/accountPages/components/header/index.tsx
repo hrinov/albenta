@@ -1,9 +1,9 @@
 const url = import.meta.env.VITE_URL;
 import { FC, useEffect, useState } from "react";
 import "./index.sass";
-import { RootStateInterface } from "../../../../../../redux/slice";
+import { RootStateInterface } from "../../../../../redux/slice";
 import { useSelector } from "react-redux";
-import profileDefaultImg from "../../../../../images/profile.png";
+import profileDefaultImg from "../../../../images/profile.png";
 
 const Header: FC = () => {
   const [avatar, setAvatar] = useState<string>();

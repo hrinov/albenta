@@ -8,7 +8,7 @@ const NotFoundPage: FC = () => {
   const refreshToken = localStorage.getItem("refreshToken");
   const isUserAuthorized = accessToken && refreshToken;
   const handleClick = () =>
-    navigate(`${isUserAuthorized ? "/account" : "/login"}`);
+    navigate(`${isUserAuthorized ? "/account/deposits/plans" : "/login"}`);
   return (
     <section className="not-found-page">
       <div className="image-holder">

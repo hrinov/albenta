@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import NavItem from "./components/NavItem";
 import { useNavigate, useLocation } from "react-router";
-import activity from "../../../../../icons/activity.svg";
-import deposits from "../../../../../icons/deposits.svg";
+import activity from "../../../../icons/activity.svg";
+import deposits from "../../../../icons/deposits.svg";
 import "./index.sass";
 
 const Navigation: FC = () => {
@@ -33,15 +33,15 @@ const Navigation: FC = () => {
         >
           <div
             className={"nav-subitem"}
-            onClick={() => handleElementClick("team", "dsc")}
-            style={handleStyle("team", "dsc")}
+            onClick={() => handleElementClick("deposits", "plans")}
+            style={handleStyle("deposits", "plans")}
           >
             Plans
           </div>
           <div
             className={"nav-subitem"}
-            onClick={() => handleElementClick("team", "sales-manager")}
-            style={handleStyle("team", "sales-manager")}
+            onClick={() => handleElementClick("deposits", "your")}
+            style={handleStyle("deposits", "your")}
           >
             Your Deposits
           </div>

@@ -42,7 +42,7 @@ const LoginPage: FC = () => {
           })
         );
         setLoading(false);
-        navigate("/account");
+        navigate("/account/deposits/plans");
       }, 3000);
     } else {
       setTimeout(() => {

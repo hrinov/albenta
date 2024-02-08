@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
 import SignupPage from "./SignUpPage";
-import AccountMainPage from "./accountPages/mainPage";
+import Account from "./accountPages";
 import Redirect from "./redirect";
 
 const guestRoutes: RouteObject[] = [
@@ -27,13 +27,13 @@ const guestRoutes: RouteObject[] = [
 
 const accountRoutes: RouteObject[] = [
   {
-    Component: AccountMainPage,
-    path: "/account",
+    element: <Account type={"plans"} />,
+    path: "/account/deposits/plans",
   },
-  // {
-  //   Component: AccountMainPage,
-  //   path: "/account/activity-log",
-  // },
+  {
+    element: <Account type={"deposits"} />,
+    path: "/account/deposits/your",
+  },
   {
     Component: Redirect,
     path: "/",

@@ -3,13 +3,13 @@ import { InputNumber } from "antd";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import "./index.sass";
-import { requestHandler } from "../../../../../utils";
+import { requestHandler } from "../../../../utils";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { updateDeposits, updateUser } from "../../../../../../redux/slice";
-import { RootStateInterface } from "../../../../../../redux/slice";
-import loadingAnimation from "../../../../../icons/deposit-loading.svg";
-import { MeResponse } from "../../../../../../types";
+import { updateDeposits, updateUser } from "../../../../../redux/slice";
+import { RootStateInterface } from "../../../../../redux/slice";
+import loadingAnimation from "../../../../icons/deposit-loading.svg";
+import { MeResponse } from "../../../../../types";
 const url = import.meta.env.VITE_URL;
 
 ChartJS.register(ArcElement, Tooltip, Legend);
