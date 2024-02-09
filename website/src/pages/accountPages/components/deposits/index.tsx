@@ -90,7 +90,7 @@ const Deposits: FC<PropsInterface> = ({
   const readyDeposits = deposits?.ready.length || 0;
 
   return (
-    <section>
+    <section className="deposits">
       <div className="blocks-wrapper">
         {!deposits &&
           [0, 1, 2].map((item, i) => (

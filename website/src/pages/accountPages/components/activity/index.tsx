@@ -42,8 +42,8 @@ const Activity: FC = () => {
   };
 
   useEffect(() => {
-    if (isActivityModalOpen) getActivity();
-  }, [isActivityModalOpen, pageNumber]);
+    getActivity();
+  }, [pageNumber]);
 
   return (
     <section className="activity">

@@ -26,7 +26,7 @@ const Navigation: FC = () => {
       <img src={activity} className={"logo"} />
       <nav className={"first-menu"}>
         <NavItem
-          name={"Depositsns"}
+          name={"Deposits"}
           label={<img src={deposits} />}
           openedElement={openedElement}
           setOpenedElement={setOpenedElement}
@@ -54,10 +54,10 @@ const Navigation: FC = () => {
         >
           <div
             className={"nav-subitem"}
-            onClick={() => handleElementClick("content", "posts")}
-            style={handleStyle("content", "posts")}
+            onClick={() => handleElementClick("history", "activity-log")}
+            style={handleStyle("history", "activity-log")}
           >
-            Activity log
+            Activity Log
           </div>
           <div
             className={"nav-subitem"}

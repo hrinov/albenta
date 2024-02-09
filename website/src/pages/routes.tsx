@@ -35,6 +35,10 @@ const accountRoutes: RouteObject[] = [
     path: "/account/deposits/your",
   },
   {
+    element: <Account type={"activity-log"} />,
+    path: "/account/history/activity-log",
+  },
+  {
     Component: Redirect,
     path: "/",
   },

@@ -1,31 +1,37 @@
-.ant-modal
-    width: 900px !important
+
+section.activity
+    padding-bottom: 34px
 
     .activity-main-wrapper
-        width: 824px !important
-        min-height: 420px
-        margin-top: 24px
+        background-color: white
+        padding: 32px
+        width: 824px
+        min-height: 460px
+        margin: 65px auto 0 auto
 
-        .activity
-            height: 25px
-            font-size: 16px
-            font-weight: 300
-            width: 100%
-            display: grid
-            grid-template-columns: 0.85fr repeat(3, 1fr) 1.5fr
+    .activity
+        height: 25px
+        font-size: 16px
+        font-weight: 300
+        width: 100%
+        display: grid
+        grid-template-columns: 0.85fr repeat(3, 1fr) 1fr
+        margin-bottom: 14px
+
+        &.title
             margin-bottom: 14px
-
-            &.title
-                margin-bottom: 14px
-                color: #22212177
+            color: #22212177
 
             .block
                 display: flex
 
-                &.right
-                    justify-content: end
+            &.right
+                justify-content: end
 
-    .footer
-        width: max-content
-        min-height: 24px
-        margin: 24px 16px 0 auto
+.footer
+    width: max-content
+    background-color: white
+    width: 824px
+    height: 32px
+    padding: 32px
+    margin: 0 auto

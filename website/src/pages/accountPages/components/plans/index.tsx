@@ -198,7 +198,7 @@ const Plans: FC = () => {
     }
   }, [user?.id, deposits]);
 
-  return <section className="deposits">{blocks}</section>;
+  return <section className="plans">{blocks}</section>;
 };
 
 export default Plans;
