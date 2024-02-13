@@ -12,6 +12,7 @@ import WithdrawModalWindow from "./components/modal/withdraw";
 import Navigation from "./components/navigation";
 import { AccountProps } from "../../../types";
 import Activity from "./components/activity";
+import Profile from "./components/profile";
 
 const Account: FC<AccountProps> = ({ type }) => {
   const dispatch = useDispatch();
@@ -77,6 +78,7 @@ const Account: FC<AccountProps> = ({ type }) => {
             />
           )}
           {type == "activity-log" && <Activity />}
+          {type == "profile" && <Profile />}
           {/* <Deposits
             handleWithdrawModal={handleWithdrawModal}
             depositsLimit={depositsLimit}

@@ -1,14 +1,14 @@
 const url = import.meta.env.VITE_URL;
 import React, { ChangeEvent, useEffect, useState } from "react";
-import profileDefaultImg from "../../../../../../../../images/profile.png";
-import { requestHandler } from "../../../../../../../../utils";
+import profileDefaultImg from "../../../../../../images/profile.png";
+import { requestHandler } from "../../../../../../utils";
 import { useSelector } from "react-redux";
 import {
   RootStateInterface,
   updateUser,
-} from "../../../../../../../../../redux/slice";
+} from "../../../../../../../redux/slice";
 import { useDispatch } from "react-redux";
-import { MeResponse } from "../../../../../../../../../types";
+import { MeResponse } from "../../../../../../../types";
 
 const AvatarUpload: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -86,7 +86,7 @@ const AvatarUpload: React.FC = () => {
   useEffect(() => {}, [user]);
 
   return (
-    <div className={"container"}>
+    <div className={"avatar-upload-container"}>
       <div className={"avatar-upload"}>
         <div
           className={"avatar-preview"}

@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import { Modal, Button } from "antd";
 import "./index.sass";
 import { useSelector } from "react-redux";
 import { RootStateInterface, updateUser } from "../../../../../redux/slice";
@@ -7,18 +6,11 @@ import { requestHandler } from "../../../../utils";
 import { MeResponse } from "../../../../../types";
 import { useDispatch } from "react-redux";
 import AvatarUpload from "./components/imageLoader";
-import loadingAnimation from "../../../../../../icons/loading.svg";
-import eye from "../../../../../../icons/eye.svg";
-import eye_off from "../../../../../../icons/eye-off.svg";
-interface PropsInterface {
-  isProfileModalOpen: boolean;
-  handleProfileModal: (arg: boolean) => void;
-}
+import loadingAnimation from "../../../../icons/loading.svg";
+import eye from "../../../../icons/eye.svg";
+import eye_off from "../../../../icons/eye-off.svg";
 
-const ProfileModalWindow: FC<PropsInterface> = ({
-  isProfileModalOpen,
-  handleProfileModal,
-}) => {
+const Profile: FC = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
@@ -29,10 +21,6 @@ const ProfileModalWindow: FC<PropsInterface> = ({
   const [password, setPassword] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const [isPasVisible, setIsPasVisible] = useState<boolean>(false);
-
-  const handleCancel = () => {
-    handleProfileModal(false);
-  };
 
   const handleUserUpdate = async (
     name: string | undefined,
@@ -77,55 +65,37 @@ const ProfileModalWindow: FC<PropsInterface> = ({
   }, [user]);
 
   return (
-    <Modal
-      title="Profile"
-      open={isProfileModalOpen}
-      onCancel={handleCancel}
-      footer={[
-        <Button key="back" onClick={handleCancel}>
-          Cancel
-        </Button>,
-        <Button
-          key="submit"
-          type="primary"
-          onClick={() => handleUserUpdate(name, email, password)}
-        >
-          Save
-        </Button>,
-      ]}
-    >
-      <div className="profile-main-wrapper">
-        <AvatarUpload />
-        <form>
-          name
-          <input onChange={(e) => setName(e.target.value)} value={name} />
-          email
-          <input onChange={(e) => setEmail(e.target.value)} value={email} />
-          new password
-          <div className="password-holder">
-            <input
-              placeholder="enter new password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password || ""}
-              type={isPasVisible ? "text" : "password"}
-            />
-            <img
-              src={!isPasVisible ? eye : eye_off}
-              onClick={() => setIsPasVisible(!isPasVisible)}
-            />
-          </div>
-        </form>
-        {
-          <img
-            src={loadingAnimation}
-            className="loading"
-            style={{ opacity: loading ? 1 : 0 }}
+    <div className="profile-main-wrapper">
+      <AvatarUpload />
+      <form>
+        name
+        <input onChange={(e) => setName(e.target.value)} value={name} />
+        email
+        <input onChange={(e) => setEmail(e.target.value)} value={email} />
+        new password
+        <div className="password-holder">
+          <input
+            placeholder="enter new password"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password || ""}
+            type={isPasVisible ? "text" : "password"}
           />
-        }
-        <div className={`error ${error && "active"}`}>{error}</div>
-      </div>
-    </Modal>
+          <img
+            src={!isPasVisible ? eye : eye_off}
+            onClick={() => setIsPasVisible(!isPasVisible)}
+          />
+        </div>
+      </form>
+      {
+        <img
+          src={loadingAnimation}
+          className="loading"
+          style={{ opacity: loading ? 1 : 0 }}
+        />
+      }
+      <div className={`error ${error && "active"}`}>{error}</div>
+    </div>
   );
 };
 
-export default ProfileModalWindow;
+export default Profile;
