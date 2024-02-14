@@ -23,7 +23,7 @@ const Navigation: FC = () => {
 
   return (
     <section className={"navigation"}>
-      <img src={activity} className={"logo"} />
+      <div className={"logo"}>ALBENTA</div>
       <nav className={"first-menu"}>
         <NavItem
           name={"Deposits"}

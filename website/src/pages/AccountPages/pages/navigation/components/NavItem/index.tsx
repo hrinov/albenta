@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import chevron from "../../../../../../icons/chevron_down.svg";
 import "./index.sass";
-import { NavItemInterface } from "../../../../../../../types";
+import { NavItemInterface } from "../../../../../../../../types";
 
 const NavItem: FC<NavItemInterface> = ({
   name,

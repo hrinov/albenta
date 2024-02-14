@@ -1,18 +1,18 @@
 import { FC, useEffect, useState } from "react";
-import Header from "./components/header";
-import Plans from "./components/plans";
+import Header from "./pages/header";
+import Plans from "./pages/Plans";
 import { requestHandler } from "../../utils";
 import { useDispatch } from "react-redux";
 import { updateDeposits } from "../../../redux/slice";
 import "./index.sass";
-import Deposits from "./components/deposits";
-import WithdrawModalWindow from "./components/modal/withdraw";
+import Deposits from "./pages/Deposits";
+import WithdrawModalWindow from "./pages/modal/withdraw";
 // import ActivityModalWindow from "./components/modal/activity";
 // import ProfileModalWindow from "./components/modal/profile";
-import Navigation from "./components/navigation";
+import Navigation from "./pages/navigation";
 import { AccountProps } from "../../../types";
-import Activity from "./components/activity";
-import Profile from "./components/profile";
+import Activity from "./pages/Activity";
+import Profile from "./pages/Profile";
 
 const Account: FC<AccountProps> = ({ type }) => {
   const dispatch = useDispatch();
