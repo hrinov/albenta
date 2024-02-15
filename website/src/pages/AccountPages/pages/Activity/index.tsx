@@ -41,6 +41,10 @@ const Activity: FC = () => {
     setPageNumber(page);
   };
 
+  const getItemNumber = (i: number) => {
+    return pageNumber == 1 ? i + 1 : 10 * (pageNumber - 1) + (i + 1);
+  };
+
   useEffect(() => {
     getActivity();
   }, [pageNumber]);
@@ -49,6 +53,7 @@ const Activity: FC = () => {
     <section className="activity">
       <div className="activity-main-wrapper">
         <div className="activity title">
+          <div className="block">№</div>
           <div className="block">DATE</div>
           <div className="block right">DEVICE</div>
           <div className="block right">BROWSER</div>
@@ -57,6 +62,7 @@ const Activity: FC = () => {
         </div>
         {activity?.map((item, i) => (
           <div className="activity" key={item.date}>
+            <div className="block">{getItemNumber(i)}</div>
             <div className="block">{formatDate(item.date)}</div>
             <div className="block right">{item.device}</div>
             <div className="block right">{item.browser}</div>
