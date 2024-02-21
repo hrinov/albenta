@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
 import SignupPage from "./SignUpPage";
-import Account from "./AccountPages";
+import Account from "./Account";
 import Redirect from "./redirect";
 
 const guestRoutes: RouteObject[] = [

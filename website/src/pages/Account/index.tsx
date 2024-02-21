@@ -1,15 +1,13 @@
 import { FC, useEffect, useState } from "react";
-import Header from "./pages/header";
+import Header from "./components/header";
 import Plans from "./pages/Plans";
 import { requestHandler } from "../../utils";
 import { useDispatch } from "react-redux";
 import { updateDeposits } from "../../../redux/slice";
 import "./index.sass";
 import Deposits from "./pages/Deposits";
-import WithdrawModalWindow from "./pages/modal/withdraw";
-// import ActivityModalWindow from "./components/modal/activity";
-// import ProfileModalWindow from "./components/modal/profile";
-import Navigation from "./pages/navigation";
+import WithdrawModalWindow from "./components/modal/withdraw";
+import Navigation from "./components/navigation";
 import { AccountProps } from "../../../types";
 import Activity from "./pages/Activity";
 import Profile from "./pages/Profile";
@@ -23,11 +21,6 @@ const Account: FC<AccountProps> = ({ type }) => {
     depositId: number | null;
   }>({ type: false, amount: null, depositId: null });
 
-  const [isActivityModalOpen, setIsActivityModalOpen] =
-    useState<boolean>(false);
-
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
-
   const handleWithdrawModal = (
     type: boolean,
     amount: number | null,
@@ -38,14 +31,6 @@ const Account: FC<AccountProps> = ({ type }) => {
       amount: amount || null,
       depositId: depositId || null,
     });
-  };
-
-  const handleActivityModal = (arg: boolean) => {
-    setIsActivityModalOpen(arg);
-  };
-
-  const handleProfileModal = (arg: boolean) => {
-    setIsProfileModalOpen(arg);
   };
 
   const getDeposits = async () => {
@@ -79,25 +64,12 @@ const Account: FC<AccountProps> = ({ type }) => {
           )}
           {type == "activity-log" && <Activity />}
           {type == "profile" && <Profile />}
-          {/* <Deposits
-            handleWithdrawModal={handleWithdrawModal}
-            depositsLimit={depositsLimit}
-            setDepositsLimit={setDepositsLimit}
-          /> */}
         </div>
         <WithdrawModalWindow
           isWithdrawModalOpen={isWithdrawModalOpen}
           handleWithdrawModal={handleWithdrawModal}
           depositsLimit={depositsLimit}
         />
-        {/* <ActivityModalWindow
-          isActivityModalOpen={isActivityModalOpen}
-          handleActivityModal={handleActivityModal}
-        />
-        <ProfileModalWindow
-          isProfileModalOpen={isProfileModalOpen}
-          handleProfileModal={handleProfileModal}
-        /> */}
       </main>
     </>
   );
