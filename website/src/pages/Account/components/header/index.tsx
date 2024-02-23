@@ -4,12 +4,18 @@ import "./index.sass";
 import { RootStateInterface } from "../../../../../redux/slice";
 import { useSelector } from "react-redux";
 import profileDefaultImg from "../../../../images/profile.png";
+import { useLocation } from "react-router-dom";
 
 const Header: FC = () => {
   const [avatar, setAvatar] = useState<string>();
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
+  const { pathname } = useLocation();
+  const pathElements = pathname.split("/");
+  const pathIdentifier = pathElements[pathElements.length - 1]
+    .toUpperCase()
+    .replace("-", " ");
 
   useEffect(() => {
     setAvatar(
@@ -22,7 +28,7 @@ const Header: FC = () => {
   return (
     <>
       <header>
-        <div className="logo">ALBENTA</div>
+        <div className="page-name">{pathIdentifier}</div>
         <div
           className={`info-block ${
             user?.balance == undefined ? "skeleton" : ""

@@ -32,7 +32,7 @@ const accountRoutes: RouteObject[] = [
   },
   {
     element: <Account type={"deposits"} />,
-    path: "/account/deposits/your",
+    path: "/account/deposits/your-deposits",
   },
   {
     element: <Account type={"activity-log"} />,
