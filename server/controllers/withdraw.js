@@ -65,7 +65,7 @@ const withdrawDeposit = async (req, res) => {
     const updatedUser = await updateUser(newUserData);
 
     //handle activity
-    handleUserActivity(req.ip, req.useragent, user.id, `withdrow ${totalDepositSum}$`)
+    handleUserActivity(req.ip, req.useragent, user.id, `withdraw ${totalDepositSum}$`)
 
     return res.status(200).json({ success: true, user: updatedUser });
 

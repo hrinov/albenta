@@ -74,7 +74,14 @@ const Activity: FC = () => {
           Array(10)
             .fill(null)
             ?.map((item, i) => (
-              <div className="activity skeleton square" key={"skeleton" + i} />
+              <div className="activity" key={"skeleton" + i}>
+                <div className="block skeleton square" />
+                <div className="block skeleton square" />
+                <div className="block skeleton square" />
+                <div className="block skeleton square" />
+                <div className="block skeleton square" />
+                <div className="block skeleton square" />
+              </div>
             ))}
       </div>
       <div className="footer">

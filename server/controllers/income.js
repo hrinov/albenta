@@ -2,14 +2,14 @@ const { getAllUserActivity } = require("../db/queries/activityQueries");
 const { getUserByEmail } = require("../db/queries/userQueries");
 const jwt = require("jsonwebtoken");
 
-const getActivity = async (req, res) => {
+const getIncomeHistory = async (req, res) => {
+    const month = req.query.month
+    const year = req.query.year
 
-    const page = req.query.page
-    if (!page) {
-        // handle not all parametres
-        return res.status(400).json({ "message": "page is required" })
+    if (!month || !year) {
+        // handle not all parameters
+        return res.status(400).json({ "message": "month and year are required" })
     }
-
 
     const access_token = req?.headers?.authorization?.substring(7)
     let decodedToken;
@@ -44,13 +44,22 @@ const getActivity = async (req, res) => {
         return res.status(400).json({ message: "wrong token" });
     }
 
-    const startIndex = (page - 1) * 10
+    // get withdraw activity
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month - 1, 31);
 
-    const activity = await getAllUserActivity(user.id, startIndex)
+    let activity = await getAllUserActivity(user.id, 0, startDate, endDate)
 
-    return res.status(200).json({ success: true, data: activity.data, total: activity.total });
+    // convert activity in month income
+    monthIncome = activity?.data.map(item => ({
+        day: item.date.getDate(),
+        amount: +item.type.replace("withdraw ", "")?.replace("$", "")
+    })
+    )
+
+    return res.status(200).json({ success: !!monthIncome, data: monthIncome, total: activity.total });
 
 };
 
-module.exports = { getActivity };
+module.exports = { getIncomeHistory };
 

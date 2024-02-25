@@ -47,3 +47,8 @@ export interface NavItemInterface {
 export interface AccountProps {
   type: string;
 }
+
+export interface MonthIncomeInterface {
+  day: number;
+  amount: number;
+}

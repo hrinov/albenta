@@ -11,6 +11,7 @@ import Navigation from "./components/navigation";
 import { AccountProps } from "../../../types";
 import Activity from "./pages/Activity";
 import Profile from "./pages/Profile";
+import Income from "./pages/Income";
 
 const Account: FC<AccountProps> = ({ type }) => {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ const Account: FC<AccountProps> = ({ type }) => {
           )}
           {type == "activity-log" && <Activity />}
           {type == "profile" && <Profile />}
+          {type == "income" && <Income />}
         </div>
         <WithdrawModalWindow
           isWithdrawModalOpen={isWithdrawModalOpen}

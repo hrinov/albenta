@@ -12,6 +12,7 @@ const { router: withdraw } = require("./routes/withdraw.js")
 const { router: activity } = require("./routes/activity.js")
 const { router: updateUser } = require("./routes/updateUser.js")
 const { router: avatar } = require("./routes/avatar.js")
+const { router: income } = require("./routes/income.js")
 
 const http = require('http');
 const WebSocket = require('ws');
@@ -38,6 +39,7 @@ apiRouter.use('/withdraw', withdraw);
 apiRouter.use('/activity', activity);
 apiRouter.use('/update-user', updateUser);
 apiRouter.use('/avatar', avatar);
+apiRouter.use('/income', income);
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });

@@ -39,6 +39,10 @@ const accountRoutes: RouteObject[] = [
     path: "/account/history/activity-log",
   },
   {
+    element: <Account type={"income"} />,
+    path: "/account/history/income",
+  },
+  {
     element: <Account type={"profile"} />,
     path: "/account/profile",
   },
