@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import Filter from "./components/Filter";
 import "./index.sass";
 import { MonthIncomeInterface } from "../../../../../types";
 import { requestHandler } from "../../../../utils";
@@ -24,6 +25,7 @@ const Income: FC = () => {
 
   return (
     <section className="income">
+      <Filter />
       <div className="income-main-wrapper"></div>
     </section>
   );

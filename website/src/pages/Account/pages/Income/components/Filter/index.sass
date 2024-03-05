@@ -1,0 +1,60 @@
+.filters-wrapper
+    display: flex
+    flex-direction: column
+    gap: 64px
+    background-color: white
+    height: 100%
+    opacity: 0
+    min-width: 1226px
+    max-width: 1440px
+    margin: 0 auto
+    padding: 24px 32px
+    animation: fade-in 400ms forwards
+
+.title
+    font-size: 16px
+    font-weight: 500
+
+.filters
+    height: 114px
+    display: flex
+    justify-content: end
+    gap: 32px
+
+    .ant-typography.ant-dropdown-trigger
+        position: relative
+        height: 46px
+        padding-left: 16px
+        padding-right: 16px
+        min-width: 167px
+        color: black
+        background-color: #ebebd9
+
+    &.active
+        background-color: #eef5f9
+
+    &:before
+        position: absolute
+        top: -34px
+        left: 0
+        color: #677685
+        font-size: 14px
+        font-weight: 300
+
+    &.month-filter
+        &:before
+            content: "By Month"
+
+    &.year-filter
+        &:before
+            content: "By Year"
+
+    .ant-space
+        height: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        gap: 16px
+
+    &-item
+        color: black
