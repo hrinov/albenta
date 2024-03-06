@@ -25,8 +25,9 @@ const Income: FC = () => {
 
   return (
     <section className="income">
-      <Filter />
-      <div className="income-main-wrapper"></div>
+      <div className="income-main-wrapper">
+        <Filter />
+      </div>
     </section>
   );
 };

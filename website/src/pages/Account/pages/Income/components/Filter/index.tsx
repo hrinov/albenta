@@ -118,12 +118,9 @@ const Filter: FC = () => {
 
   return (
     <div className={"filters-wrapper"}>
-      <div>
-        <div className={"title"}>OVERVIEW</div>
-        <div className={"filters"}>
-          {createFilter(availableMonthOptions, "selectedMonth")}
-          {createFilter(yearOptions, "selectedYear")}
-        </div>
+      <div className={"filters"}>
+        {createFilter(availableMonthOptions, "selectedMonth")}
+        {createFilter(yearOptions, "selectedYear")}
       </div>
     </div>
   );
