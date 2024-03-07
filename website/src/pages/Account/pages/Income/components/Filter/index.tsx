@@ -1,6 +1,6 @@
 import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Typography, Space } from "antd";
-import { FC, useState } from "react";
+import { Dropdown, Menu, Typography, Space, MenuProps } from "antd";
+import { FC, useEffect, useState } from "react";
 import "./index.sass";
 
 const Filter: FC = () => {
@@ -18,11 +18,11 @@ const Filter: FC = () => {
       label: new Date(currentYear, index).toLocaleString("default", {
         month: "long",
       }),
-      key: String(index + 1),
+      key: String(index),
     };
   });
   const getMonthNumber = (month: string) => {
-    return monthOptions?.find((option) => option.label === month)!.key;
+    return +monthOptions?.find((option) => option.label === month)!.key + 1;
   };
   const currentMonthName = monthOptions?.find(
     (option) => +option.key === currentMonth
@@ -34,7 +34,7 @@ const Filter: FC = () => {
   });
 
   const availableMonthOptions = monthOptions?.filter(
-    (month, i) => +filters.selectedYear !== currentYear || i < currentMonth
+    (_, i) => +filters.selectedYear !== currentYear || i < currentMonth
   );
 
   const isCurrentMonthInFilter =
@@ -49,72 +49,94 @@ const Filter: FC = () => {
     const filterType =
       filterName === "selectedMonth" ? "month-filter" : "year-filter";
 
-    // const { data, loading } = useGetDashboardQuery({
-    //   variables: {
-    //     input: {
-    //       dateRange: {
-    //         fromDate: `${filters.selectedYear}-${getMonthNumber(
-    //           filters.selectedMonth
-    //         )
-    //           .toString()
-    //           .padStart(2, "0")}-01T00:00:00`,
-    //         toDate: `${
-    //           filters.selectedMonth !== "December"
-    //             ? filters.selectedYear
-    //             : +filters.selectedYear + 1
-    //         }-${
-    //           filters.selectedMonth !== "December"
-    //             ? (+getMonthNumber(filters.selectedMonth) + 1)
-    //                 .toString()
-    //                 .padStart(2, "0")
-    //             : "01"
-    //         }-01T00:00:00`,
-    //       },
-    //     },
-    //   },
-    // });
+    const items: MenuProps["items"] = [
+      {
+        key: "1",
+        label: <a>1st menu item</a>,
+      },
+    ];
 
     return (
       <Dropdown
-        className={`${filterType} ${isActive && "active"}`}
-        trigger={["click"]}
-        overlay={
-          <Menu
-            onClick={(e) =>
-              setFilters({
-                ...filters,
-                ...(filterName === "selectedYear"
-                  ? { selectedMonth: "January" }
-                  : {}),
-                [filterName]: options?.find(
-                  (item: any) => +item.key === +e.key
-                )!.label,
-              })
-            }
-            selectedKeys={[
-              `${options?.find(
-                (item: any) => item.label === filters[filterName]
-              )!.key}`,
-            ]}
-          >
-            {options.map((item: any) => (
-              <Menu.Item key={item.key}>{item.label}</Menu.Item>
-            ))}
-          </Menu>
-        }
+        menu={{
+          items: options.map((item: any, i: number) => ({
+            key: "1",
+            label: (
+              <a
+                onClick={(e) =>
+                  setFilters({
+                    ...filters,
+                    ...(filterName === "selectedYear"
+                      ? { selectedMonth: "January" }
+                      : {}),
+                    [filterName]: options?.find((item: any) => +item.key === i)!
+                      .label,
+                  })
+                }
+              >
+                {item.label}
+              </a>
+            ),
+          })),
+        }}
       >
-        <Typography.Link>
-          <Space className={"dropdown"}>
+        <a onClick={(e) => e.preventDefault()}>
+          <Space>
             {
-              options?.find((item: any) => item.label === filters[filterName])!
+              options?.find((item: any) => item.label === filters[filterName])
                 .label
             }
-            <DownOutlined style={{ color: "black" }} />
+            <DownOutlined />
           </Space>
-        </Typography.Link>
+        </a>
       </Dropdown>
+      // <Dropdown
+      //   className={`${filterType} ${isActive && "active"}`}
+      //   trigger={["click"]}
+      //   menu={items}
+      // overlay={
+      //   <Menu
+      //     onClick={(e) =>
+      //       setFilters({
+      //         ...filters,
+      //         ...(filterName === "selectedYear"
+      //           ? { selectedMonth: "January" }
+      //           : {}),
+      //         [filterName]: options?.find(
+      //           (item: any) => +item.key === +e.key
+      //         )!.label,
+      //       })
+      //     }
+      //     selectedKeys={[
+      //       `${options?.find(
+      //         (item: any) => item.label === filters[filterName]
+      //       )!.key}`,
+      //     ]}
+      //   >
+      //     {options.map((item: any) => (
+      //       <Menu.Item key={item.key}>{item.label}</Menu.Item>
+      //     ))}
+      //   </Menu>
+      // }
+      // >
+      //   <Typography.Link>
+      //     <Space className={"dropdown"}>
+      //       {
+      //         options?.find((item: any) => item.label === filters[filterName])!
+      //           .label
+      //       }
+      //       <DownOutlined style={{ color: "black" }} />
+      //     </Space>
+      //   </Typography.Link>
+      // </Dropdown>
     );
   };
+
+  useEffect(() => {
+    const month = getMonthNumber(filters.selectedMonth);
+    const year = filters.selectedYear;
+    console.log(month, year);
+  }, [filters]);
 
   return (
     <div className={"filters-wrapper"}>
