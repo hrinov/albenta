@@ -12,7 +12,7 @@ const Filter: FC = () => {
       key: String(i),
     })
   );
-  const currentMonth = new Date().getMonth() + 1;
+  const currentMonth = new Date().getMonth();
   let monthOptions = Array.from({ length: 12 }, (_, index) => {
     return {
       label: new Date(currentYear, index).toLocaleString("default", {
@@ -34,7 +34,7 @@ const Filter: FC = () => {
   });
 
   const availableMonthOptions = monthOptions?.filter(
-    (_, i) => +filters.selectedYear !== currentYear || i < currentMonth
+    (_, i) => +filters.selectedYear !== currentYear || i <= currentMonth
   );
 
   const isCurrentMonthInFilter =
@@ -49,20 +49,15 @@ const Filter: FC = () => {
     const filterType =
       filterName === "selectedMonth" ? "month-filter" : "year-filter";
 
-    const items: MenuProps["items"] = [
-      {
-        key: "1",
-        label: <a>1st menu item</a>,
-      },
-    ];
-
     return (
       <Dropdown
+        className={`${filterType} ${isActive && "active"}`}
         menu={{
           items: options.map((item: any, i: number) => ({
-            key: "1",
+            key: i,
             label: (
               <a
+                className={filters[filterName] == item.label ? "active" : ""}
                 onClick={(e) =>
                   setFilters({
                     ...filters,
@@ -82,10 +77,7 @@ const Filter: FC = () => {
       >
         <a onClick={(e) => e.preventDefault()}>
           <Space>
-            {
-              options?.find((item: any) => item.label === filters[filterName])
-                .label
-            }
+            {filters[filterName]}
             <DownOutlined />
           </Space>
         </a>
