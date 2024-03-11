@@ -1,51 +1,32 @@
-import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Typography, Space, MenuProps } from "antd";
-import { FC, useEffect, useState } from "react";
 import "./index.sass";
+import { FC } from "react";
+import { Dropdown, Space } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import { IncomeFilterProps } from "../../../../../../../types";
 
-const Filter: FC = () => {
-  const currentYear = new Date().getFullYear();
-  const yearOptions = Array.from(
-    { length: currentYear - 2023 + 1 },
-    (_, i) => ({
-      label: String(currentYear - i),
-      key: String(i),
-    })
-  );
-  const currentMonth = new Date().getMonth();
-  let monthOptions = Array.from({ length: 12 }, (_, index) => {
-    return {
-      label: new Date(currentYear, index).toLocaleString("default", {
-        month: "long",
-      }),
-      key: String(index),
-    };
-  });
-  const getMonthNumber = (month: string) => {
-    return +monthOptions?.find((option) => option.label === month)!.key + 1;
-  };
-  const currentMonthName = monthOptions?.find(
-    (option) => +option.key === currentMonth
-  )!.label;
-
-  const [filters, setFilters] = useState<{ [key: string]: string }>({
-    selectedMonth: currentMonthName!,
-    selectedYear: String(currentYear),
-  });
-
+const Filter: FC<IncomeFilterProps> = ({
+  filters,
+  setFilters,
+  yearOptions,
+  currentYear,
+  currentMonth,
+  monthOptions,
+  currentMonthName,
+}) => {
   const availableMonthOptions = monthOptions?.filter(
     (_, i) => +filters.selectedYear !== currentYear || i <= currentMonth
   );
 
   const isCurrentMonthInFilter =
     filters.selectedMonth !== currentMonthName ||
-    filters.selectedYear !== String(currentYear);
+    +filters.selectedYear !== currentYear;
 
   const createFilter = (options: any, filterName: string) => {
     const isActive =
       filterName === "selectedMonth"
         ? isCurrentMonthInFilter
-        : filters.selectedYear !== String(currentYear);
+        : +filters.selectedYear !== currentYear;
+
     const filterType =
       filterName === "selectedMonth" ? "month-filter" : "year-filter";
 
@@ -58,7 +39,7 @@ const Filter: FC = () => {
             label: (
               <a
                 className={filters[filterName] == item.label ? "active" : ""}
-                onClick={(e) =>
+                onClick={() =>
                   setFilters({
                     ...filters,
                     ...(filterName === "selectedYear"
@@ -68,9 +49,8 @@ const Filter: FC = () => {
                       .label,
                   })
                 }
-              >
-                {item.label}
-              </a>
+                children={item.label}
+              />
             ),
           })),
         }}
@@ -82,53 +62,8 @@ const Filter: FC = () => {
           </Space>
         </a>
       </Dropdown>
-      // <Dropdown
-      //   className={`${filterType} ${isActive && "active"}`}
-      //   trigger={["click"]}
-      //   menu={items}
-      // overlay={
-      //   <Menu
-      //     onClick={(e) =>
-      //       setFilters({
-      //         ...filters,
-      //         ...(filterName === "selectedYear"
-      //           ? { selectedMonth: "January" }
-      //           : {}),
-      //         [filterName]: options?.find(
-      //           (item: any) => +item.key === +e.key
-      //         )!.label,
-      //       })
-      //     }
-      //     selectedKeys={[
-      //       `${options?.find(
-      //         (item: any) => item.label === filters[filterName]
-      //       )!.key}`,
-      //     ]}
-      //   >
-      //     {options.map((item: any) => (
-      //       <Menu.Item key={item.key}>{item.label}</Menu.Item>
-      //     ))}
-      //   </Menu>
-      // }
-      // >
-      //   <Typography.Link>
-      //     <Space className={"dropdown"}>
-      //       {
-      //         options?.find((item: any) => item.label === filters[filterName])!
-      //           .label
-      //       }
-      //       <DownOutlined style={{ color: "black" }} />
-      //     </Space>
-      //   </Typography.Link>
-      // </Dropdown>
     );
   };
-
-  useEffect(() => {
-    const month = getMonthNumber(filters.selectedMonth);
-    const year = filters.selectedYear;
-    console.log(month, year);
-  }, [filters]);
 
   return (
     <div className={"filters-wrapper"}>

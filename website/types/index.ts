@@ -52,3 +52,13 @@ export interface MonthIncomeInterface {
   day: number;
   amount: number;
 }
+
+export interface IncomeFilterProps {
+  filters: { [key: string]: string };
+  setFilters: React.Dispatch<SetStateAction<{ [key: string]: string }>>;
+  yearOptions: { value?: string; label: string; key: number }[];
+  currentYear: number;
+  currentMonth: number;
+  monthOptions: { value?: string; label: string; key: number }[];
+  currentMonthName: string;
+}
