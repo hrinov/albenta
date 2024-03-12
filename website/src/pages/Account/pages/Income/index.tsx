@@ -3,8 +3,11 @@ import Filter from "./components/Filter";
 import { FC, useEffect, useState } from "react";
 import { requestHandler } from "../../../../utils";
 import { MonthIncomeInterface } from "../../../../../types";
+import Chart from "./components/Chart";
 
 const Income: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from(
     { length: currentYear - 2023 + 1 },
@@ -44,18 +47,24 @@ const Income: FC = () => {
   const [monthIncome, setMonthIncome] = useState<MonthIncomeInterface[]>();
 
   const getIncome = async () => {
-    const response: {
-      success: boolean;
-      data: MonthIncomeInterface[];
-    } = await requestHandler(
-      `income?month=${getMonthNumber(filters.selectedMonth)}&year=${
-        filters.selectedYear
-      }`,
-      "GET"
-    );
-    if (response.success) {
-      setMonthIncome(response.data);
+    setLoading(true);
+    try {
+      const response: {
+        success: boolean;
+        data: MonthIncomeInterface[];
+      } = await requestHandler(
+        `income?month=${getMonthNumber(filters.selectedMonth)}&year=${
+          filters.selectedYear
+        }`,
+        "GET"
+      );
+      if (response.success) {
+        setMonthIncome(response.data);
+      }
+    } catch (error) {
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -74,6 +83,16 @@ const Income: FC = () => {
             currentMonth,
             monthOptions,
             currentMonthName,
+          }}
+        />
+        <Chart
+          {...{
+            loading,
+            monthOptions,
+            filters,
+            currentMonth,
+            currentYear,
+            monthIncome,
           }}
         />
       </div>
