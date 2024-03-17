@@ -35,14 +35,6 @@ const Chart: FC<ChartInterface> = ({
   currentYear,
   monthIncome,
 }) => {
-  //   const lineFetchedData = Array.from(
-  //     { length: currentYear == +filters.selectedYear ? currentMonth : 12 },
-  //     (_, i) =>
-  //       (monthIncome?.[
-  //         monthOptions[i].label.toLowerCase()
-  //       ]?.haircare ?? 0
-  //   );
-
   const createLineData = (color: string, skirtColor: string, data: any) => [
     {
       lineTension: 0.25,
@@ -61,6 +53,7 @@ const Chart: FC<ChartInterface> = ({
         above: skirtColor,
       },
       data: data,
+      label: "amount in USD",
     },
   ];
 
@@ -85,7 +78,8 @@ const Chart: FC<ChartInterface> = ({
       tooltip: {
         displayColors: false,
         callbacks: {
-          label: (context: any) => context.parsed.y,
+          title: (context: any) => "day " + context[0].label + " total income",
+          label: (context: any) => "$" + context.parsed.y,
         },
       },
     },
@@ -95,8 +89,8 @@ const Chart: FC<ChartInterface> = ({
     labels: Array.from({ length: 30 }, (_, i) => i),
     datasets: [
       ...createLineData(
-        "#C8E6F7",
-        "rgba(200, 230, 247, 0.3)",
+        "#e62d93",
+        "rgba(230, 45, 147, 0.25)",
         Array.from(
           { length: 30 },
           (_, i) => monthIncome?.find((income) => income?.day == i)?.amount || 0
@@ -107,17 +101,15 @@ const Chart: FC<ChartInterface> = ({
 
   return (
     <div>
-      <div className={`line-chart ${loading && "skeleton"}`}>
-        <div className={"title"}>
-          <div children={"HAIRCARE"} />
-          <div children={"COLOR.ME & GLOSS"} />
-        </div>
-        <div className={"count"}>
-          {/* <div children={formatAmount(totalHaircare)} />
-          <div children={formatAmount(totalColor)} /> */}
-        </div>
-        <div className={"chart-holder"}>
-          <Line data={lineData} options={lineOptions as any} />
+      <div className={`line-char`}>
+        <div className={"title"}>{filters.selectedMonth} income</div>
+        <div className={"count"}></div>
+        <div className={`chart-holder ${loading && "skeleton"}`}>
+          <Line
+            data={lineData}
+            options={lineOptions as any}
+            className={`${loading && "skeleton"}`}
+          />
         </div>
       </div>
     </div>

@@ -70,7 +70,7 @@ const Income: FC = () => {
   useEffect(() => {
     getIncome();
   }, [filters]);
-  console.log(monthIncome);
+
   return (
     <section className="income">
       <div className="income-main-wrapper">

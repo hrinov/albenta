@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import chevron from "../../../../../../icons/chevron_down.svg";
+import Chevron from "../../../../../../icons/chevron_down.svg?react";
 import "./index.sass";
 import { NavItemInterface } from "../../../../../../../types";
 
@@ -49,9 +49,11 @@ const NavItem: FC<NavItemInterface> = ({
   useEffect(() => {
     if (navItemRef?.current) {
       const childrenAmount = React.Children.count(children) || 0;
+      console.log(window.getComputedStyle(navItemRef.current).paddingTop);
       const navElementHeight = parseFloat(
         window.getComputedStyle(navItemRef.current).height
       );
+      console.log(navElementHeight);
       setBlockHeight((childrenAmount + 1) * navElementHeight);
     }
   }, [navItemRef]);
@@ -69,12 +71,7 @@ const NavItem: FC<NavItemInterface> = ({
           {name}
         </div>
         {children && (
-          <img
-            src={chevron}
-            style={
-              isOpen ? { transform: "rotate(180deg)", fill: "#677685" } : {}
-            }
-          />
+          <Chevron style={isOpen ? { transform: "rotate(180deg)" } : {}} />
         )}
       </div>
       {children}

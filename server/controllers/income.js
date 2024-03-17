@@ -57,7 +57,24 @@ const getIncomeHistory = async (req, res) => {
     })
     )
 
-    return res.status(200).json({ success: !!monthIncome, data: monthIncome, total: activity.total });
+    // function needed to sum income per every day
+    function sumDuplicateDays(days) {
+        const sums = {};
+
+        days.forEach(obj => {
+            if (sums.hasOwnProperty(obj.day)) {
+                sums[obj.day] += obj.amount
+
+            } else {
+                sums[obj.day] = obj.amount;
+            }
+        });
+
+        const result = Object.keys(sums).map(day => ({ day: day, amount: sums[day] }));
+        return result;
+    }
+
+    return res.status(200).json({ success: !!monthIncome, data: sumDuplicateDays(monthIncome), total: activity.total });
 
 };
 

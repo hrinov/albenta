@@ -1,8 +1,10 @@
 import { FC, useState } from "react";
 import NavItem from "./components/NavItem";
 import { useNavigate, useLocation } from "react-router";
-import activity from "../../../../icons/activity.svg";
-import deposits from "../../../../icons/deposits.svg";
+import Activity from "../../../../icons/timer.svg?react";
+import Deposits from "../../../../icons/deposits.svg?react";
+import Profile from "../../../../icons/profile.svg?react";
+import Logout from "../../../../icons/logout.svg?react";
 import "./index.sass";
 
 const Navigation: FC = () => {
@@ -27,7 +29,7 @@ const Navigation: FC = () => {
       <nav className={"first-menu"}>
         <NavItem
           name={"Deposits"}
-          label={<img src={deposits} />}
+          label={<Deposits />}
           openedElement={openedElement}
           setOpenedElement={setOpenedElement}
         >
@@ -48,7 +50,7 @@ const Navigation: FC = () => {
         </NavItem>
         <NavItem
           name={"History"}
-          label={<img src={activity} />}
+          label={<Activity />}
           openedElement={openedElement}
           setOpenedElement={setOpenedElement}
         >
@@ -69,8 +71,8 @@ const Navigation: FC = () => {
         </NavItem>
       </nav>
       <nav className={"second-menu"}>
-        <NavItem name={"Profile"} label={<img src={activity} />} />
-        <NavItem name={"Log out"} label={<img src={activity} />} />
+        <NavItem name={"Profile"} label={<Profile />} />
+        <NavItem name={"Log out"} label={<Logout />} />
       </nav>
     </section>
   );

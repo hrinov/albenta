@@ -3,12 +3,12 @@
   flex-direction: column
   overflow: hidden
   transition-duration: 300ms
-  height: 41px
+  height: 44px
 
   .nav-item, .nav-subitem
     padding-top: 10px
     padding-bottom: 10px
-    height: 46px
+
     display: flex
     align-items: center
     &:hover
@@ -27,9 +27,9 @@
     font-weight: 400
     cursor: pointer
 
-    &:hover
-      img
-        fill: white
+    &:not(.active):hover
+      svg
+        fill: white !important
 
     &.active
       background-color: #F6F6F8
@@ -46,6 +46,10 @@
     .description
       display: flex
       gap: 8px
+
+      .label-wrapper
+        display: flex
+        align-items: center
 
     img
       transition-property: transform
