@@ -1,9 +1,37 @@
 .line-chart
     width: 790px
-.title
-    padding-left: 89px
+    .title
+        padding-left: 89px
 
     .chart-holder
+        position: relative
         transform: translateY(-10px)
         width: 100%
         margin: 0 auto
+
+        &.loading
+            width: 790px
+            height: 395px
+            display: flex
+            justify-content: center
+            align-items: center
+
+            .ant-spin-dot-item
+                background-color: #000
+
+        .total-average
+            position: absolute
+            border: 1px solid rgb(206, 206, 206)
+            height: 246px
+            width: 375px
+            top: 75px
+            right: -345px
+            display: grid
+            grid-auto-rows: 50%
+
+            .total, .average
+                color: #677685
+                font-weight: 300
+                display: flex
+                align-items: center
+                padding-left: 16px

@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import "./index.sass";
+import { Spin } from "antd";
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -93,7 +94,8 @@ const Chart: FC<ChartInterface> = ({
         "rgba(230, 45, 147, 0.25)",
         Array.from(
           { length: 30 },
-          (_, i) => monthIncome?.find((income) => income?.day == i)?.amount || 0
+          (_, i) =>
+            monthIncome?.find((income: any) => income?.day == i)?.amount || 0
         )
       ),
     ],
@@ -101,15 +103,26 @@ const Chart: FC<ChartInterface> = ({
 
   return (
     <div>
-      <div className={`line-char`}>
+      <div className={`line-chart`}>
         <div className={"title"}>{filters.selectedMonth} income</div>
         <div className={"count"}></div>
-        <div className={`chart-holder ${loading && "skeleton"}`}>
-          <Line
-            data={lineData}
-            options={lineOptions as any}
-            className={`${loading && "skeleton"}`}
-          />
+        <div className={`chart-holder ${loading && "loading"}`}>
+          {loading ? (
+            <Spin />
+          ) : (
+            <>
+              <Line data={lineData} options={lineOptions as any} />
+              <div className="total-average">
+                <div className="total">
+                  Total {filters.selectedMonth} income:
+                </div>
+                <div className="average">
+                  {" "}
+                  Average {filters.selectedMonth} per day income:
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
