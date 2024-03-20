@@ -9,32 +9,48 @@ header
     position: fixed
     width: calc(100vw)
     height: 84px
-    background-color: #fff
-    border-bottom: 1px solid #e1e4e6
     z-index: 100
     padding: 24px
 
     .page-name
         padding-left: 179px
+        padding-right: 34px
         font-size: 22px
         font-weight: 300
-        color: #e62d93
-
-    .info-block
-        min-width: 330px
+        height: 84px
+        width: 950px
         display: flex
         align-items: center
-        justify-content: space-between
-        gap: 24px
+        color: #e62d93
+        background-color: #fff
+        clip-path: polygon(0 0, 100% 0%, 85% 100%, 0% 100%)
+        border-bottom: 1px solid #e1e4e6
+
+    .info-block
+        width: 500px
+        display: flex
+        align-items: center
+        justify-content: end
+        gap: 32px
         font-size: 20px
+        padding-right: 34px
+        padding-left: 179px
         font-weight: 200
         color: #db5aa1
+        height: 84px
 
         .balance
             color: #000
+            background-color: #fff
+            border-radius: 10px
+            padding: 12px
+
+        .name
+            background-color: #fff
+            border-radius: 10px
+            padding: 12px
 
         img
-            width: 50px
-            height: 50px
+            width: 54px
+            height: 54px
             border-radius: 100%
-            border: 1px solid #dddada

@@ -38,7 +38,7 @@ const Header: FC = () => {
             src={avatar}
             className={`${user?.balance == undefined ? "hide" : ""}`}
           />
-          {user?.name || ""}
+          <div className="name">{user?.name || ""}</div>
           <div
             className={`balance ${
               user?.balance == undefined ? "transparent" : ""
