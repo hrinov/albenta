@@ -12,22 +12,32 @@ header
     z-index: 100
     padding: 24px
 
-    .page-name
+    .content-wrapper
+        box-sizing: border-box
         padding-left: 179px
-        padding-right: 34px
+        padding-right: 200px
         font-size: 22px
         font-weight: 300
         height: 84px
-        width: 950px
+        width: 1200px
         display: flex
         align-items: center
+        justify-content: space-between
         color: #e62d93
         background-color: #fff
         clip-path: polygon(0 0, 100% 0%, 85% 100%, 0% 100%)
-        border-bottom: 1px solid #e1e4e6
+        border-bottom: 1px solid #e62d93
+
+        &:after
+            content: ""
+            position: absolute
+            height: 200px
+            width: 1px
+            left: 1134px
+            transform: rotate(65deg)
+            background-color: #e62d93
 
     .info-block
-        width: 500px
         display: flex
         align-items: center
         justify-content: end

@@ -28,23 +28,25 @@ const Header: FC = () => {
   return (
     <>
       <header>
-        <div className="page-name">{pathIdentifier}</div>
-        <div
-          className={`info-block ${
-            user?.balance == undefined ? "skeleton" : ""
-          }`}
-        >
-          <img
-            src={avatar}
-            className={`${user?.balance == undefined ? "hide" : ""}`}
-          />
-          <div className="name">{user?.name || ""}</div>
+        <div className="content-wrapper">
+          {pathIdentifier}
           <div
-            className={`balance ${
-              user?.balance == undefined ? "transparent" : ""
+            className={`info-block ${
+              user?.balance == undefined ? "skeleton" : ""
             }`}
           >
-            Balance: {user?.balance || ""}$
+            <img
+              src={avatar}
+              className={`${user?.balance == undefined ? "hide" : ""}`}
+            />
+            <div className="name">{user?.name || ""}</div>
+            <div
+              className={`balance ${
+                user?.balance == undefined ? "transparent" : ""
+              }`}
+            >
+              Balance: {user?.balance || ""}$
+            </div>
           </div>
         </div>
       </header>

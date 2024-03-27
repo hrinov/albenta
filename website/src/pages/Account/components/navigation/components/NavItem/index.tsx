@@ -49,11 +49,9 @@ const NavItem: FC<NavItemInterface> = ({
   useEffect(() => {
     if (navItemRef?.current) {
       const childrenAmount = React.Children.count(children) || 0;
-      console.log(window.getComputedStyle(navItemRef.current).paddingTop);
       const navElementHeight = parseFloat(
         window.getComputedStyle(navItemRef.current).height
       );
-      console.log(navElementHeight);
       setBlockHeight((childrenAmount + 1) * navElementHeight);
     }
   }, [navItemRef]);

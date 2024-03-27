@@ -43,7 +43,7 @@ const Navigation: FC = () => {
           <div
             className={"nav-subitem"}
             onClick={() => handleElementClick("deposits", "your-deposits")}
-            style={handleStyle("deposits", "your")}
+            style={handleStyle("deposits", "your-deposits")}
           >
             Your Deposits
           </div>
