@@ -21,17 +21,33 @@
 
         .total-average
             position: absolute
-            border: 1px solid rgb(206, 206, 206)
+            border: 1px solid #e62d93
             height: 246px
             width: 375px
             top: 75px
             right: -345px
             display: grid
             grid-auto-rows: 50%
+            clip-path: polygon(0 0, 65% 0, 100% 100%, 0 100%)
 
             .total, .average
-                color: #677685
-                font-weight: 300
+                color: #000
+                font-weight: 200
                 display: flex
                 align-items: center
                 padding-left: 16px
+
+                span
+                    color: #e62d93
+                    font-weight: 400
+                    margin-left: 8px
+
+        &:after
+            content: ""
+            top: 59px
+            right: -280px
+            transform: rotate(-28deg)
+            position: absolute
+            width: 1px
+            height: 280px
+            background-color: #e62d93

@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const getIncomeHistory = async (req, res) => {
     const month = req.query.month
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
     const year = req.query.year
 
     if (!month || !year) {
@@ -71,10 +72,14 @@ const getIncomeHistory = async (req, res) => {
         });
 
         const result = Object.keys(sums).map(day => ({ day: day, amount: sums[day] }));
-        return result;
+        return result || [];
     }
 
-    return res.status(200).json({ success: !!monthIncome, data: sumDuplicateDays(monthIncome), total: activity.total });
+    const monthData = sumDuplicateDays(monthIncome)
+    const totalIncome = monthData.reduce((acc, income) => acc + income.amount, 0)
+    const averageIncome = totalIncome / daysInMonth
+
+    return res.status(200).json({ success: !!monthIncome, data: sumDuplicateDays(monthIncome), total: totalIncome, average: averageIncome });
 
 };
 

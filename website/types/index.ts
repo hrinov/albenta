@@ -49,8 +49,9 @@ export interface AccountProps {
 }
 
 export interface MonthIncomeInterface {
-  day: number;
-  amount: number;
+  data: { day: number; amount: number }[];
+  total: number;
+  average: number;
 }
 
 export interface IncomeFilterProps {
@@ -61,4 +62,10 @@ export interface IncomeFilterProps {
   currentMonth: number;
   monthOptions: { value?: string; label: string; key: number }[];
   currentMonthName: string;
+}
+
+export interface ChartInterface {
+  loading: boolean;
+  filters: { [key: string]: string };
+  monthIncome: MonthIncomeInterface;
 }

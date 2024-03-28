@@ -1,4 +1,8 @@
 import { FC } from "react";
+import { Line } from "react-chartjs-2";
+import "./index.sass";
+import { Spin } from "antd";
+import { ChartInterface } from "../../../../../../../types";
 import {
   ArcElement,
   CategoryScale,
@@ -10,9 +14,6 @@ import {
   RadialLinearScale,
   Tooltip,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
-import "./index.sass";
-import { Spin } from "antd";
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -24,18 +25,7 @@ ChartJS.register(
   Filler
 );
 
-interface ChartInterface {
-  loading: boolean;
-}
-
-const Chart: FC<ChartInterface> = ({
-  loading,
-  monthOptions,
-  filters,
-  currentMonth,
-  currentYear,
-  monthIncome,
-}) => {
+const Chart: FC<ChartInterface> = ({ loading, filters, monthIncome }) => {
   const createLineData = (color: string, skirtColor: string, data: any) => [
     {
       lineTension: 0.25,
@@ -95,7 +85,8 @@ const Chart: FC<ChartInterface> = ({
         Array.from(
           { length: 30 },
           (_, i) =>
-            monthIncome?.find((income: any) => income?.day == i)?.amount || 0
+            monthIncome?.data?.find((income: any) => income?.day == i)
+              ?.amount || 0
         )
       ),
     ],
@@ -115,10 +106,12 @@ const Chart: FC<ChartInterface> = ({
               <div className="total-average">
                 <div className="total">
                   Total {filters.selectedMonth} income:
+                  <span children={`$${monthIncome?.total}`} />
                 </div>
                 <div className="average">
                   {" "}
                   Average {filters.selectedMonth} per day income:
+                  <span children={`$${monthIncome?.average}`} />
                 </div>
               </div>
             </>

@@ -44,22 +44,23 @@ const Income: FC = () => {
     selectedYear: String(currentYear),
   });
 
-  const [monthIncome, setMonthIncome] = useState<MonthIncomeInterface[]>();
+  const [monthIncome, setMonthIncome] = useState<MonthIncomeInterface>();
 
   const getIncome = async () => {
     setLoading(true);
     try {
-      const response: {
-        success: boolean;
-        data: MonthIncomeInterface[];
-      } = await requestHandler(
+      const response: any = await requestHandler(
         `income?month=${getMonthNumber(filters.selectedMonth)}&year=${
           filters.selectedYear
         }`,
         "GET"
       );
       if (response.success) {
-        setMonthIncome(response.data);
+        setMonthIncome({
+          data: response.data,
+          total: response.total,
+          average: response.average,
+        });
       }
     } catch (error) {
       setLoading(false);

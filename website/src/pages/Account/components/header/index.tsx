@@ -28,18 +28,16 @@ const Header: FC = () => {
   return (
     <>
       <header>
-        <div className="content-wrapper">
+        <div className={"content-wrapper"}>
           {pathIdentifier}
           <div
-            className={`info-block ${
-              user?.balance == undefined ? "skeleton" : ""
-            }`}
+            className={`info-block ${user?.balance == undefined ? "hide" : ""}`}
           >
             <img
               src={avatar}
               className={`${user?.balance == undefined ? "hide" : ""}`}
             />
-            <div className="name">{user?.name || ""}</div>
+            <div className={"name"}>{user?.name || ""}</div>
             <div
               className={`balance ${
                 user?.balance == undefined ? "transparent" : ""
