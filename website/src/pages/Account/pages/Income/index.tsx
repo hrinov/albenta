@@ -6,7 +6,7 @@ import { MonthIncomeInterface } from "../../../../../types";
 import Chart from "./components/Chart";
 
 const Income: FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from(

@@ -21,7 +21,7 @@ const Plans: FC = () => {
   const [values, setValues] = useState<{ amount: number; hours: number }[]>(
     Array(5)
       .fill({})
-      .map((item, i) => ({ amount: 10, hours: minHours[i] }))
+      .map((_, i) => ({ amount: 10, hours: minHours[i] }))
   );
   const [timeToEnd, setTimeToEnd] = useState<
     {
@@ -71,11 +71,8 @@ const Plans: FC = () => {
               percents[inputIndex] *
               values[inputIndex].hours,
           ],
-          backgroundColor: [
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-          ],
-          borderColor: ["rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)"],
+          backgroundColor: ["#a6e1ff", "#a5c2ff"],
+          borderColor: ["#000", "#000"],
           borderWidth: 1,
         },
       ],

@@ -1,6 +1,11 @@
+@keyframes fade-in
+    to
+        opacity: 1
 
 section.activity
     padding-bottom: 34px
+    opacity: 0
+    animation: fade-in 1300ms forwards
 
     .activity-main-wrapper
         background-color: white
@@ -30,6 +35,9 @@ section.activity
 
             &.right
                 justify-content: end
+
+    .colored
+        color: #e62d93
 
 .footer
     width: max-content

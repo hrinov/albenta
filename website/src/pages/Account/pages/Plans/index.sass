@@ -1,3 +1,6 @@
+@keyframes fade-in
+    to
+        opacity: 1
 
 section.plans
     margin: 84px auto 0 auto
@@ -5,13 +8,15 @@ section.plans
     width: 1200px
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr
     gap: 14px
+    opacity: 0
+    animation: fade-in 1300ms forwards
 
     .block
         position: relative
         display: flex
         flex-direction: column
         background-color: white
-        outline: 1px solid #eecee0
+        outline: 1px solid #000
         border-radius: 4px
         padding: 14px
         font-weight: 300
@@ -21,7 +26,7 @@ section.plans
             outline: 1px solid #db5aa1
 
         &.active
-            background-color: #effffe
+            background-color: #d1dcff
 
         .percent
             position: absolute
@@ -104,8 +109,8 @@ section.plans
                 border: 1px solid #e62d93
 
         button[disabled]
-            background-color: #677685
-            border: unset
+            background-color: #a5c2ff
+            border: 1px solid #000
             color: #fff
             cursor: unset
 

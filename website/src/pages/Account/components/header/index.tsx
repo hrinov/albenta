@@ -31,7 +31,9 @@ const Header: FC = () => {
         <div className={"content-wrapper"}>
           {pathIdentifier}
           <div
-            className={`info-block ${user?.balance == undefined ? "hide" : ""}`}
+            className={`info-block ${
+              user?.balance == undefined ? "transparent" : ""
+            }`}
           >
             <img
               src={avatar}
@@ -43,7 +45,7 @@ const Header: FC = () => {
                 user?.balance == undefined ? "transparent" : ""
               }`}
             >
-              Balance: {user?.balance || ""}$
+              Balance: <span children={`${user?.balance || ""}$`} />
             </div>
           </div>
         </div>

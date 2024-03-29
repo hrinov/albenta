@@ -58,11 +58,11 @@ const Activity: FC = () => {
           <div className="block right">DEVICE</div>
           <div className="block right">BROWSER</div>
           <div className="block right">COUNTRY</div>
-          <div className="block right">ACTIVITY</div>
+          <div className="block right colored">ACTIVITY</div>
         </div>
         {activity?.map((item, i) => (
           <div className="activity" key={item.date}>
-            <div className="block">{getItemNumber(i)}</div>
+            <div className="block colored">{getItemNumber(i)}</div>
             <div className="block">{formatDate(item.date)}</div>
             <div className="block right">{item.device}</div>
             <div className="block right">{item.browser}</div>

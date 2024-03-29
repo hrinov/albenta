@@ -1,3 +1,6 @@
+@keyframes fade-in
+    to
+        opacity: 1
 
 .profile-main-wrapper
     margin: 0 auto
@@ -11,6 +14,8 @@
     justify-content: center
     align-items: center
     gap: 20%
+    opacity: 0
+    animation: fade-in 1300ms forwards
 
     .error
         position: absolute

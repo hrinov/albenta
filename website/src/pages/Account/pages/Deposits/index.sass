@@ -1,3 +1,6 @@
+@keyframes fade-in
+    to
+        opacity: 1
 
 section.deposits
     margin-top: 65px
@@ -5,6 +8,8 @@ section.deposits
     display: flex
     align-items: center
     flex-direction: column
+    opacity: 0
+    animation: fade-in 1300ms forwards
 
     .blocks-wrapper
         display: flex
@@ -22,24 +27,24 @@ section.deposits
             align-items: center
             justify-content: space-between
             padding: 0 34px 0 34px
-            border: 1px solid #eecee0
+            border: 1px solid
             background-color: #fff
 
             &.active
-                border-color: #5a78db
+                border-color: #e62d93
+
                 .status
-                    color: #5a78db
+                    color: #e62d93
 
             &.ready
-                border-color: #10dd51
+                border-color: #a5c2ff
+
                 .status
-                    color: #10dd51
+                    color: #a5c2ff
 
             &.closed
-                border-color: #afadad
-                background-color: #fbfbfb
-                .status
-                    color: black
+                border-color: #A4A9B8
+                background-color: #fff
 
             .data
                 height: 100%
@@ -63,10 +68,11 @@ section.deposits
                 background-color: transparent
                 font-weight: 200
                 font-size: 13px
-                border: 1px solid #10dd51
+                border: 1px solid #a6e1ff
                 border-radius: 4px
                 cursor: pointer
                 box-shadow: none
+                color: #000
 
                 &:hover
                     border: 1px solid #e62d93
