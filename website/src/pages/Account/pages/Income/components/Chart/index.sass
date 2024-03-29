@@ -37,17 +37,17 @@
                 align-items: center
                 padding-left: 16px
 
-                span
-                    color: #e62d93
-                    font-weight: 400
-                    margin-left: 8px
+                &::after
+                    content: ""
+                    top: -16px
+                    right: 65px
+                    transform: rotate(-28deg)
+                    position: absolute
+                    width: 1px
+                    height: 280px
+                    background-color: #e62d93
 
-        &:after
-            content: ""
-            top: 59px
-            right: -280px
-            transform: rotate(-28deg)
-            position: absolute
-            width: 1px
-            height: 280px
-            background-color: #e62d93
+            span
+                color: #e62d93
+                font-weight: 400
+                margin-left: 8px

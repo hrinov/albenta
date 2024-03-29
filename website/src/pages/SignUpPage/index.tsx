@@ -103,7 +103,7 @@ const SignupPage: FC = () => {
 const AnimatedTitle: FC<{ loading: boolean }> = ({ loading }) => {
   const changeColor = () => {
     const baseColor = "#db5aa1";
-    const animationColor = "#4096ff";
+    const animationColor = "#000";
     const baseTransform = "translateY(0)";
     const animatedTransform = "translateY(-4px)";
 

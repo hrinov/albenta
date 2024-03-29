@@ -103,7 +103,7 @@ const Chart: FC<ChartInterface> = ({ loading, filters, monthIncome }) => {
           ) : (
             <>
               <Line data={lineData} options={lineOptions as any} />
-              <div className="total-average">
+              <div className={`total-average ${!loading && "loaded"}`}>
                 <div className="total">
                   Total {filters.selectedMonth} income:
                   <span children={`$${monthIncome?.total}`} />

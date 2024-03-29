@@ -76,8 +76,8 @@ const getIncomeHistory = async (req, res) => {
     }
 
     const monthData = sumDuplicateDays(monthIncome)
-    const totalIncome = monthData.reduce((acc, income) => acc + income.amount, 0)
-    const averageIncome = totalIncome / daysInMonth
+    const totalIncome = monthData.reduce((acc, income) => acc + income.amount, 0).toFixed(2)
+    const averageIncome = (totalIncome / daysInMonth).toFixed(2)
 
     return res.status(200).json({ success: !!monthIncome, data: sumDuplicateDays(monthIncome), total: totalIncome, average: averageIncome });
 

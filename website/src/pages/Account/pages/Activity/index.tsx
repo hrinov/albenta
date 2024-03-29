@@ -75,12 +75,7 @@ const Activity: FC = () => {
             .fill(null)
             ?.map((item, i) => (
               <div className="activity" key={"skeleton" + i}>
-                <div className="block skeleton square" />
-                <div className="block skeleton square" />
-                <div className="block skeleton square" />
-                <div className="block skeleton square" />
-                <div className="block skeleton square" />
-                <div className="block skeleton square" />
+                <div className="block skeleton" />
               </div>
             ))}
       </div>
