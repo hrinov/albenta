@@ -4,6 +4,7 @@ import { requestHandler } from "../../../../../utils";
 import { useDispatch } from "react-redux";
 import { updateDeposits, updateUser } from "../../../../../../redux/slice";
 import { MeResponse } from "../../../../../../types";
+import "./index.sass";
 
 interface PropsInterface {
   depositsLimit: number;
@@ -66,7 +67,7 @@ const WithdrawModalWindow: FC<PropsInterface> = ({
 
   return (
     <Modal
-      title="Withdrow"
+      title="Withdraw"
       open={isWithdrawModalOpen.type}
       onOk={() => handleOk(isWithdrawModalOpen.depositId!)}
       okText="withdraw"
