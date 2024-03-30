@@ -11,6 +11,7 @@
 
     display: flex
     align-items: center
+
     &:hover
       background-color: #677685
       color: white
@@ -30,13 +31,13 @@
     svg
       fill: #e62d93
 
-    &:not(.active):hover
+    &:hover
       svg
         fill: white !important
 
-    &.active
-      background-color: #F6F6F8
-      color: black
+    &.active.profile
+      svg
+        fill: white
 
     .label-wrapper
       img

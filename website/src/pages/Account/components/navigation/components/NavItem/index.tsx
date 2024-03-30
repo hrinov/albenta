@@ -59,7 +59,7 @@ const NavItem: FC<NavItemInterface> = ({
   return (
     <div className={"wrapper"} style={isOpen ? { height: blockHeight } : {}}>
       <div
-        className={`nav-item ${isOpen && "active"}`}
+        className={`nav-item ${isOpen && "active"} ${name.toLowerCase()}`}
         onClick={handleElementClick}
         ref={navItemRef}
         style={handleStyle()}
