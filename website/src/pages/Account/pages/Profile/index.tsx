@@ -22,11 +22,7 @@ const Profile: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPasVisible, setIsPasVisible] = useState<boolean>(false);
 
-  const handleUserUpdate = async (
-    name: string | undefined,
-    email: string | undefined,
-    password: string | undefined
-  ) => {
+  const handleUserUpdate = async () => {
     setLoading(true);
     setError("");
     if (!name && !email && !password) {
@@ -80,6 +76,9 @@ const Profile: FC = () => {
             value={password || ""}
             type={isPasVisible ? "text" : "password"}
           />
+          <div className="ok-btn" onClick={handleUserUpdate}>
+            SAVE
+          </div>
           <img
             src={!isPasVisible ? eye : eye_off}
             onClick={() => setIsPasVisible(!isPasVisible)}
