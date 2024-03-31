@@ -47,9 +47,10 @@ const getIncomeHistory = async (req, res) => {
 
     // get withdraw activity
     const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month - 1, 31);
+    const endDate = new Date(year, month <= 11 ? month : 0, 1);
 
     let activity = await getAllUserActivity(user.id, 0, startDate, endDate)
+    console.log(startDate, endDate)
 
     // convert activity in month income
     monthIncome = activity?.data.map(item => ({

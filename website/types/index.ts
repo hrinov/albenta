@@ -52,6 +52,7 @@ export interface MonthIncomeInterface {
   data: { day: number; amount: number }[];
   total: number;
   average: number;
+  daysInMonth: number;
 }
 
 export interface IncomeFilterProps {

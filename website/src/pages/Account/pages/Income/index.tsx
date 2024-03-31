@@ -19,6 +19,7 @@ const Income: FC = () => {
   );
 
   const currentMonth = new Date().getMonth();
+
   let monthOptions = Array.from({ length: 12 }, (_, index) => {
     return {
       value: new Date(currentYear, index).toLocaleString("default", {
@@ -48,6 +49,7 @@ const Income: FC = () => {
 
   const getIncome = async () => {
     setLoading(true);
+
     try {
       const response: any = await requestHandler(
         `income?month=${getMonthNumber(filters.selectedMonth)}&year=${
@@ -60,6 +62,9 @@ const Income: FC = () => {
           data: response.data,
           total: response.total,
           average: response.average,
+          daysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][
+            currentMonth
+          ],
         });
       }
     } catch (error) {

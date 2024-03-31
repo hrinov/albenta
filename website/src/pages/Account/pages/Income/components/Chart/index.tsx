@@ -77,13 +77,13 @@ const Chart: FC<ChartInterface> = ({ loading, filters, monthIncome }) => {
   };
 
   const lineData = {
-    labels: Array.from({ length: 30 }, (_, i) => i),
+    labels: Array.from({ length: monthIncome?.daysInMonth + 1 }, (_, i) => i),
     datasets: [
       ...createLineData(
         "#e62d93",
         "rgba(230, 45, 147, 0.25)",
         Array.from(
-          { length: 30 },
+          { length: monthIncome?.daysInMonth + 1 },
           (_, i) =>
             monthIncome?.data?.find((income: any) => income?.day == i)
               ?.amount || 0
