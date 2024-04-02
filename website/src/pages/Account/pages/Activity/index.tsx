@@ -73,9 +73,9 @@ const Activity: FC = () => {
         {!activity &&
           Array(10)
             .fill(null)
-            ?.map((item, i) => (
+            ?.map((_, i) => (
               <div className="activity" key={"skeleton" + i}>
-                <div className="block skeleton" />
+                <div className="block skeleton squared" />
               </div>
             ))}
       </div>

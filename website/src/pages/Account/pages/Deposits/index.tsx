@@ -121,7 +121,6 @@ const Deposits: FC<PropsInterface> = ({
                 <div className="block ready" key={deposit.created_at + "-" + i}>
                   {createDepositData(deposit)}
                   <div className="data">
-                    <span>DEPOSIT STATUS</span>
                     <button
                       onClick={() =>
                         handleWithdrawModal(true, deposit.total_sum, deposit.id)
