@@ -2,8 +2,7 @@ import { FC } from "react";
 import { Modal } from "antd";
 import { requestHandler } from "../../../../../utils";
 import { useDispatch } from "react-redux";
-import { updateDeposits, updateUser } from "../../../../../../redux/slice";
-import { MeResponse } from "../../../../../../types";
+import { updateDeposits, updateUser } from "../../../../../redux/slice";
 import "./index.sass";
 
 interface PropsInterface {

@@ -6,10 +6,8 @@ import "./index.sass";
 import { requestHandler } from "../../../../utils";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { updateDeposits, updateUser } from "../../../../../redux/slice";
-import { RootStateInterface } from "../../../../../redux/slice";
+import { updateDeposits, updateUser } from "../../../../redux/slice";
 import loadingAnimation from "../../../../icons/deposit-loading.svg";
-import { MeResponse } from "../../../../../types";
 const url = import.meta.env.VITE_URL;
 
 ChartJS.register(ArcElement, Tooltip, Legend);

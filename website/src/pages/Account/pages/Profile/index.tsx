@@ -1,9 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import "./index.sass";
 import { useSelector } from "react-redux";
-import { RootStateInterface, updateUser } from "../../../../../redux/slice";
+import { updateUser } from "../../../../redux/slice";
 import { requestHandler } from "../../../../utils";
-import { MeResponse } from "../../../../../types";
 import { useDispatch } from "react-redux";
 import AvatarUpload from "./components/imageLoader";
 import loadingAnimation from "../../../../icons/loading.svg";

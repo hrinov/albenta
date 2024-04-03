@@ -2,7 +2,6 @@ import "./index.sass";
 import { FC } from "react";
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { IncomeFilterProps } from "../../../../../../../types";
 
 const Filter: FC<IncomeFilterProps> = ({
   filters,

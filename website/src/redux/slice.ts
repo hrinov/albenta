@@ -1,20 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DepositInterface } from "../types";
-
-export interface RootStateInterface {
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    balance: number;
-    avatar: string;
-  } | null;
-  deposits: {
-    active: DepositInterface[] | [];
-    ready: DepositInterface[] | [];
-    closed: DepositInterface[] | [];
-  } | null;
-}
 
 const initialState: RootStateInterface = {
   user: null,

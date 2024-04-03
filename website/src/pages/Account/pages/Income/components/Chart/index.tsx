@@ -2,7 +2,6 @@ import { FC } from "react";
 import { Line } from "react-chartjs-2";
 import "./index.sass";
 import { Spin } from "antd";
-import { ChartInterface } from "../../../../../../../types";
 import {
   ArcElement,
   CategoryScale,

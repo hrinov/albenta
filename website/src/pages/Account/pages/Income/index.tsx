@@ -2,7 +2,6 @@ import "./index.sass";
 import Filter from "./components/Filter";
 import { FC, useEffect, useState } from "react";
 import { requestHandler } from "../../../../utils";
-import { MonthIncomeInterface } from "../../../../../types";
 import Chart from "./components/Chart";
 
 const Income: FC = () => {

@@ -3,12 +3,12 @@ import Header from "./components/header";
 import Plans from "./pages/Plans";
 import { requestHandler } from "../../utils";
 import { useDispatch } from "react-redux";
-import { updateDeposits } from "../../../redux/slice";
+import { updateDeposits } from "../../redux/slice";
 import "./index.sass";
 import Deposits from "./pages/Deposits";
 import WithdrawModalWindow from "./components/modal/withdraw";
 import Navigation from "./components/navigation";
-import { AccountProps } from "../../../types";
+
 import Activity from "./pages/Activity";
 import Profile from "./pages/Profile";
 import Income from "./pages/Income";

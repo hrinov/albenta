@@ -1,6 +1,18 @@
-import { ReactNode, SetStateAction } from "react";
-
-export interface MeResponse {
+interface RootStateInterface {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    balance: number;
+    avatar: string;
+  } | null;
+  deposits: {
+    active: DepositInterface[] | [];
+    ready: DepositInterface[] | [];
+    closed: DepositInterface[] | [];
+  } | null;
+}
+interface MeResponse {
   success?: boolean;
   message?: string;
   data?: {
@@ -14,7 +26,7 @@ export interface MeResponse {
   };
 }
 
-export interface DepositInterface {
+interface DepositInterface {
   amount: number;
   created_at: string;
   end_date: string;
@@ -27,7 +39,7 @@ export interface DepositInterface {
   closed: boolean;
 }
 
-export interface ActivityInterface {
+interface ActivityInterface {
   ip: number;
   country: string;
   device: string;
@@ -36,7 +48,7 @@ export interface ActivityInterface {
   type: string;
 }
 
-export interface NavItemInterface {
+interface NavItemInterface {
   name: string;
   label: ReactNode;
   children?: ReactNode;
@@ -44,18 +56,18 @@ export interface NavItemInterface {
   setOpenedElement?: React.Dispatch<SetStateAction<string | undefined>>;
 }
 
-export interface AccountProps {
+interface AccountProps {
   type: string;
 }
 
-export interface MonthIncomeInterface {
+interface MonthIncomeInterface {
   data: { day: number; amount: number }[];
   total: number;
   average: number;
   daysInMonth: number;
 }
 
-export interface IncomeFilterProps {
+interface IncomeFilterProps {
   filters: { [key: string]: string };
   setFilters: React.Dispatch<SetStateAction<{ [key: string]: string }>>;
   yearOptions: { value?: string; label: string; key: number }[];
@@ -65,7 +77,7 @@ export interface IncomeFilterProps {
   currentMonthName: string;
 }
 
-export interface ChartInterface {
+interface ChartInterface {
   loading: boolean;
   filters: { [key: string]: string };
   monthIncome: MonthIncomeInterface;

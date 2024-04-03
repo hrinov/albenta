@@ -1,15 +1,10 @@
 import { FC, useEffect } from "react";
-import {
-  RouterProvider,
-  createBrowserRouter,
-  useNavigate,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { guestRoutes, accountRoutes } from "./pages/routes";
 import { Provider } from "react-redux";
-import store from "../redux/store";
-import { MeResponse } from "../types";
+import store from "./redux/store";
 import { useDispatch } from "react-redux";
-import { RootStateInterface, updateUser } from "../redux/slice";
+import { updateUser } from "./redux/slice";
 import { requestHandler } from "./utils";
 import { useSelector } from "react-redux";
 

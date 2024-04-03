@@ -3,12 +3,8 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import profileDefaultImg from "../../../../../../images/profile.png";
 import { requestHandler } from "../../../../../../utils";
 import { useSelector } from "react-redux";
-import {
-  RootStateInterface,
-  updateUser,
-} from "../../../../../../../redux/slice";
+import { updateUser } from "../../../../../../redux/slice";
 import { useDispatch } from "react-redux";
-import { MeResponse } from "../../../../../../../types";
 
 const AvatarUpload: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);

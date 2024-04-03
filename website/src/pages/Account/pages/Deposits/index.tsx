@@ -1,8 +1,6 @@
 import React, { FC, SetStateAction } from "react";
 import "./index.sass";
-import { RootStateInterface } from "../../../../../redux/slice";
 import { useSelector } from "react-redux";
-import { DepositInterface } from "../../../../../types";
 
 interface PropsInterface {
   handleWithdrawModal: (
