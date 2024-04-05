@@ -3,10 +3,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { guestRoutes, accountRoutes } from "./pages/routes";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { useDispatch } from "react-redux";
-import { updateUser } from "./redux/slice";
-import { requestHandler } from "./utils";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "./redux/slice";
+import { Dispatch } from "@reduxjs/toolkit";
 
 const Router: FC = () => {
   const { user } = useSelector(
@@ -14,30 +13,14 @@ const Router: FC = () => {
   );
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  const dispatch = useDispatch();
+  const dispatch: Dispatch<any> = useDispatch();
   let routes;
   routes = accessToken && refreshToken ? accountRoutes : guestRoutes;
   const router = createBrowserRouter(routes!);
 
-  const handleUserUpdate = async () => {
-    const response: MeResponse = await requestHandler("me", "GET");
-    if (response?.success) {
-      const { avatar, id, email, name, balance } = response?.data!;
-      dispatch(
-        updateUser({
-          id,
-          email,
-          name,
-          balance,
-          avatar,
-        })
-      );
-    }
-  };
-
   useEffect(() => {
     if (accessToken && refreshToken && !user) {
-      handleUserUpdate();
+      dispatch(fetchUser());
     }
   }, [user, accessToken, refreshToken]);
 

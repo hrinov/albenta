@@ -1,4 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { requestHandler } from "../utils";
+
+export const fetchUser = createAsyncThunk("slice/fetchUser", async () => {
+  const userData = await requestHandler("me", "GET");
+  if (userData?.success) {
+    return userData?.data!;
+  }
+});
 
 const initialState: RootStateInterface = {
   user: null,
@@ -42,6 +50,12 @@ const slice = createSlice({
     ) => {
       state.deposits = action.payload;
     },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
   },
 });
 

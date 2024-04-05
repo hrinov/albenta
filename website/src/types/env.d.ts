@@ -80,5 +80,5 @@ interface IncomeFilterProps {
 interface ChartInterface {
   loading: boolean;
   filters: { [key: string]: string };
-  monthIncome: MonthIncomeInterface;
+  monthIncome: MonthIncomeInterface | undefined;
 }
