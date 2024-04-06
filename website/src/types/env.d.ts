@@ -12,6 +12,11 @@ interface RootStateInterface {
     closed: DepositInterface[] | [];
   } | null;
 }
+
+interface PayloadInterface {
+  [key: string]: any;
+}
+
 interface MeResponse {
   success?: boolean;
   message?: string;
@@ -81,4 +86,10 @@ interface ChartInterface {
   loading: boolean;
   filters: { [key: string]: string };
   monthIncome: MonthIncomeInterface | undefined;
+}
+
+interface ModalWindowOptionsInterface {
+  type: boolean;
+  amount: number | null;
+  depositId: number | null;
 }

@@ -1,4 +1,5 @@
 const url = import.meta.env.VITE_URL;
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const requestHandler = async (
   path: string,
@@ -6,8 +7,28 @@ export const requestHandler = async (
   body?: any
 ) => {
   const makeRequest: () => any = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
+    const { accessToken, refreshToken } = localStorage;
+
+    const handleRefreshToken = async () => {
+      let refreshResponseJSON = await fetch(`${url}/api/refreshToken`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refreshToken }),
+      });
+      const refreshResponse = await refreshResponseJSON.json();
+      if (refreshResponse?.success) {
+        const { access_token, refresh_token } = response?.data;
+
+        window.localStorage.setItem("accessToken", access_token);
+        window.localStorage.setItem("refreshToken", refresh_token);
+
+        return makeRequest();
+      } else {
+        handleLogout();
+      }
+    };
 
     const handleLogout = () => {
       window.location.href = window.location.origin + "/login";
@@ -28,36 +49,37 @@ export const requestHandler = async (
 
     switch (response?.message) {
       case "token has expired":
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        let refreshResponseJSON = await fetch(`${url}/api/refreshToken`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refreshToken: refreshToken }),
-        });
-        const refreshResponse = await refreshResponseJSON.json();
-        if (refreshResponse?.success) {
-          const { access_token, refresh_token } = response?.data;
-          window.localStorage.setItem("accessToken", access_token);
-          window.localStorage.setItem("refreshToken", refresh_token);
-          return makeRequest();
-        } else {
-          handleLogout();
+        {
+          localStorage.clear();
+          await handleRefreshToken();
         }
         break;
 
-      case "wrong token":
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        handleLogout();
-        break;
-
       default:
-        return response;
+        localStorage.clear();
+        handleLogout();
     }
   };
 
   return makeRequest();
 };
+
+export const fetchUser = createAsyncThunk("slice/fetchUser", async () => {
+  const userData = await requestHandler("me", "GET");
+  if (userData?.success) {
+    return userData?.data!;
+  }
+});
+
+export const getDeposits = createAsyncThunk(
+  "slice/getDeposits",
+  async (depositsLimit: number) => {
+    let response = await requestHandler(
+      `deposit?limit=${depositsLimit + 1}`,
+      "GET"
+    );
+    if (response?.success) {
+      return response.data;
+    }
+  }
+);

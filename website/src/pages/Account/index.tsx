@@ -1,76 +1,74 @@
-import { FC, useEffect, useState } from "react";
-import Header from "./components/header";
-import Plans from "./pages/Plans";
-import { requestHandler } from "../../utils";
-import { useDispatch } from "react-redux";
-import { updateDeposits } from "../../redux/slice";
 import "./index.sass";
-import Deposits from "./pages/Deposits";
-import WithdrawModalWindow from "./components/modal/withdraw";
-import Navigation from "./components/navigation";
-
-import Activity from "./pages/Activity";
-import Profile from "./pages/Profile";
+import Plans from "./pages/Plans";
 import Income from "./pages/Income";
+import Profile from "./pages/Profile";
+import Activity from "./pages/Activity";
+import Deposits from "./pages/Deposits";
+import Header from "./components/header";
+import { useDispatch } from "react-redux";
+import { getDeposits } from "../../utils";
+import { Dispatch } from "@reduxjs/toolkit";
+import { FC, useEffect, useState } from "react";
+import Navigation from "./components/navigation";
+import WithdrawModalWindow from "./components/modal/withdraw";
 
 const Account: FC<AccountProps> = ({ type }) => {
-  const dispatch = useDispatch();
+  const dispatch: Dispatch<any> = useDispatch();
+
   const [depositsLimit, setDepositsLimit] = useState<number>(5);
-  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState<{
-    type: boolean;
-    amount: number | null;
-    depositId: number | null;
-  }>({ type: false, amount: null, depositId: null });
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] =
+    useState<ModalWindowOptionsInterface>({
+      type: false,
+      amount: null,
+      depositId: null,
+    });
 
   const handleWithdrawModal = (
-    type: boolean,
-    amount: number | null,
-    depositId: number | null
+    type: ModalWindowOptionsInterface["type"],
+    amount: ModalWindowOptionsInterface["amount"],
+    depositId: ModalWindowOptionsInterface["depositId"]
   ) => {
     setIsWithdrawModalOpen({
-      type: type,
+      type,
       amount: amount || null,
       depositId: depositId || null,
     });
   };
 
-  const getDeposits = async () => {
-    let response = await requestHandler(
-      `deposit?limit=${depositsLimit + 1}`,
-      "GET"
-    );
-    if (response?.success) {
-      const deposits = response.data;
-      dispatch(updateDeposits(deposits));
-    }
-  };
-
   useEffect(() => {
-    getDeposits();
+    dispatch(getDeposits(depositsLimit));
   }, [depositsLimit]);
+
+  let content;
+  switch (type) {
+    case "plans":
+      content = <Plans />;
+      break;
+    case "deposits":
+      content = (
+        <Deposits
+          {...{ depositsLimit, setDepositsLimit, handleWithdrawModal }}
+        />
+      );
+      break;
+    case "activity-log":
+      content = <Activity />;
+      break;
+    case "profile":
+      content = <Profile />;
+      break;
+    case "income":
+      content = <Income />;
+  }
 
   return (
     <>
       <Navigation />
       <Header />
       <main className="main-page">
-        <div className="container">
-          {type == "plans" && <Plans />}
-          {type == "deposits" && (
-            <Deposits
-              handleWithdrawModal={handleWithdrawModal}
-              depositsLimit={depositsLimit}
-              setDepositsLimit={setDepositsLimit}
-            />
-          )}
-          {type == "activity-log" && <Activity />}
-          {type == "profile" && <Profile />}
-          {type == "income" && <Income />}
-        </div>
+        <div className="container" children={content} />
         <WithdrawModalWindow
-          isWithdrawModalOpen={isWithdrawModalOpen}
-          handleWithdrawModal={handleWithdrawModal}
-          depositsLimit={depositsLimit}
+          {...{ depositsLimit, isWithdrawModalOpen, handleWithdrawModal }}
         />
       </main>
     </>

@@ -1,12 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { requestHandler } from "../utils";
-
-export const fetchUser = createAsyncThunk("slice/fetchUser", async () => {
-  const userData = await requestHandler("me", "GET");
-  if (userData?.success) {
-    return userData?.data!;
-  }
-});
+import { fetchUser, getDeposits } from "../utils";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: RootStateInterface = {
   user: null,
@@ -20,32 +13,16 @@ const slice = createSlice({
     updateUser: (
       state,
       action: {
-        payload: {
-          id: number;
-          name: string;
-          email: string;
-          balance: number;
-          avatar: string;
-        };
+        payload: RootStateInterface["user"];
       }
     ) => {
-      state.user = {
-        id: action.payload.id,
-        name: action.payload.name,
-        email: action.payload.email,
-        balance: action.payload.balance,
-        avatar: action.payload.avatar,
-      };
+      state.user = action.payload;
     },
 
     updateDeposits: (
       state,
       action: {
-        payload: {
-          active: DepositInterface[] | [];
-          ready: DepositInterface[] | [];
-          closed: DepositInterface[] | [];
-        };
+        payload: RootStateInterface["deposits"];
       }
     ) => {
       state.deposits = action.payload;
@@ -56,9 +33,12 @@ const slice = createSlice({
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.user = action.payload;
     });
+
+    builder.addCase(getDeposits.fulfilled, (state, action) => {
+      state.deposits = action.payload;
+    });
   },
 });
 
-const { actions, reducer } = slice;
-export default reducer;
-export const { updateUser, updateDeposits } = actions;
+export default slice.reducer;
+export const { updateUser, updateDeposits } = slice.actions;

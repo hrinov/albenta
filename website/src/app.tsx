@@ -1,38 +1,29 @@
-import { FC, useEffect } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { guestRoutes, accountRoutes } from "./pages/routes";
-import { Provider } from "react-redux";
 import store from "./redux/store";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUser } from "./redux/slice";
+import { fetchUser } from "./utils";
+import { FC, useEffect } from "react";
+import { Provider } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { guestRoutes, accountRoutes } from "./pages/routes";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const Router: FC = () => {
+  const dispatch: Dispatch<any> = useDispatch();
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-  const dispatch: Dispatch<any> = useDispatch();
-  let routes;
-  routes = accessToken && refreshToken ? accountRoutes : guestRoutes;
-  const router = createBrowserRouter(routes!);
+
+  const router = createBrowserRouter(
+    localStorage.getItem("refreshToken") ? accountRoutes : guestRoutes
+  );
 
   useEffect(() => {
-    if (accessToken && refreshToken && !user) {
-      dispatch(fetchUser());
-    }
-  }, [user, accessToken, refreshToken]);
+    localStorage.getItem("refreshToken") && !user && dispatch(fetchUser());
+  }, [user]);
 
   return <RouterProvider router={router} />;
 };
 
-const App: FC = () => {
-  return (
-    <Provider store={store}>
-      <Router />
-    </Provider>
-  );
-};
+const App: FC = () => <Provider store={store} children={<Router />} />;
 
 export default App;
