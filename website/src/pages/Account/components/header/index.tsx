@@ -1,21 +1,23 @@
-const url = import.meta.env.VITE_URL;
-import { FC, useEffect, useState } from "react";
 import "./index.sass";
-import { RootStateInterface } from "../../../../../redux/slice";
+const url = import.meta.env.VITE_URL;
 import { useSelector } from "react-redux";
-import profileDefaultImg from "../../../../images/profile.png";
 import { useLocation } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import profileDefaultImg from "../../../../images/profile.png";
 
 const Header: FC = () => {
-  const [avatar, setAvatar] = useState<string>();
+  const { pathname } = useLocation();
   const { user } = useSelector(
     (state: { slice: RootStateInterface }) => state.slice
   );
-  const { pathname } = useLocation();
+
+  const [avatar, setAvatar] = useState<string>();
+
   const pathElements = pathname.split("/");
-  const pathIdentifier = pathElements[pathElements.length - 1]
-    .toUpperCase()
-    .replace("-", " ");
+  const pathIdentifier = pathname
+    .split("/")
+    [pathElements.length - 1].replace("-", " ")
+    .toUpperCase();
 
   useEffect(() => {
     setAvatar(
@@ -26,31 +28,29 @@ const Header: FC = () => {
   }, [user]);
 
   return (
-    <>
-      <header>
-        <div className={"content-wrapper"}>
-          {pathIdentifier}
+    <header>
+      <div className={"content-wrapper"}>
+        {pathIdentifier}
+        <div
+          className={`info-block ${
+            user?.balance == undefined ? "transparent" : ""
+          }`}
+        >
+          <img
+            src={avatar}
+            className={`${user?.balance == undefined ? "hide" : ""}`}
+          />
+          <div className={"name"}>{user?.name || ""}</div>
           <div
-            className={`info-block ${
+            className={`balance ${
               user?.balance == undefined ? "transparent" : ""
             }`}
           >
-            <img
-              src={avatar}
-              className={`${user?.balance == undefined ? "hide" : ""}`}
-            />
-            <div className={"name"}>{user?.name || ""}</div>
-            <div
-              className={`balance ${
-                user?.balance == undefined ? "transparent" : ""
-              }`}
-            >
-              Balance: <span children={`${user?.balance || ""}$`} />
-            </div>
+            Balance: <span children={`${user?.balance || ""}$`} />
           </div>
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 };
 

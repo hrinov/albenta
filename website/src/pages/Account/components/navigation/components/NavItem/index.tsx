@@ -1,20 +1,20 @@
-import React, { FC, useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
-import Chevron from "../../../../../../icons/chevron_down.svg?react";
 import "./index.sass";
-import { NavItemInterface } from "../../../../../../../types";
+import { useLocation, useNavigate } from "react-router";
+import React, { FC, useEffect, useRef, useState } from "react";
+import Chevron from "../../../../../../icons/chevron_down.svg?react";
 
 const NavItem: FC<NavItemInterface> = ({
   name,
   label,
+  children,
   openedElement,
   setOpenedElement,
-  children,
 }) => {
   const { pathname } = useLocation();
-  const [blockHeight, setBlockHeight] = useState<number>();
-  const navItemRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const navItemRef = useRef<HTMLDivElement>(null);
+
+  const [blockHeight, setBlockHeight] = useState<number>();
 
   const handleElementClick = () => {
     if (children && openedElement !== name.toLowerCase()) {
@@ -24,10 +24,10 @@ const NavItem: FC<NavItemInterface> = ({
       setOpenedElement!(undefined);
       return;
     }
+
     switch (name) {
       case "Log out":
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        localStorage.clear();
         window.location.href = window.location.origin + "/login";
         break;
       default:
@@ -35,12 +35,10 @@ const NavItem: FC<NavItemInterface> = ({
     }
   };
 
-  const handleStyle = () => {
-    if (pathname.includes(`/account/${name.toLowerCase()}`) && !children) {
-      return { backgroundColor: "#677685", color: "#fff" };
-    }
-    return {};
-  };
+  const handleStyle = () =>
+    pathname.includes(`/account/${name.toLowerCase()}`) && !children
+      ? { backgroundColor: "#677685", color: "#fff" }
+      : {};
 
   const isOpen =
     (!openedElement && pathname?.includes(`/account/${name.toLowerCase()}`)) ||
@@ -59,13 +57,16 @@ const NavItem: FC<NavItemInterface> = ({
   return (
     <div className={"wrapper"} style={isOpen ? { height: blockHeight } : {}}>
       <div
-        className={`nav-item ${isOpen && "active"} ${name.toLowerCase()}`}
-        onClick={handleElementClick}
         ref={navItemRef}
         style={handleStyle()}
+        onClick={handleElementClick}
+        className={`nav-item ${isOpen && "active"} ${name.toLowerCase()}`}
       >
         <div className={"description"}>
-          <div className={`label-wrapper ${isOpen && "open"}`}>{label}</div>
+          <div
+            className={`label-wrapper ${isOpen && "open"}`}
+            children={label}
+          />
           {name}
         </div>
         {children && (

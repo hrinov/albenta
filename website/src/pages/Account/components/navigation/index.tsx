@@ -1,16 +1,17 @@
+import "./index.sass";
 import { FC, useState } from "react";
 import NavItem from "./components/NavItem";
+import Logout from "../../../../icons/logout.svg?react";
 import { useNavigate, useLocation } from "react-router";
 import Activity from "../../../../icons/timer.svg?react";
-import Deposits from "../../../../icons/deposits.svg?react";
 import Profile from "../../../../icons/profile.svg?react";
-import Logout from "../../../../icons/logout.svg?react";
-import "./index.sass";
+import Deposits from "../../../../icons/deposits.svg?react";
 
 const Navigation: FC = () => {
   const navigate = useNavigate();
-  const [openedElement, setOpenedElement] = useState<string>();
   const { pathname } = useLocation();
+
+  const [openedElement, setOpenedElement] = useState<string>();
 
   const handleElementClick = (parent: string, child: string) => {
     navigate(`/account/${parent}/${child}`);
@@ -25,7 +26,8 @@ const Navigation: FC = () => {
 
   return (
     <section className={"navigation"}>
-      <div className={"logo"}>ALBENTA</div>
+      <div className={"logo"} children={"ALBENTA"} />
+
       <nav className={"first-menu"}>
         <NavItem
           name={"Deposits"}
@@ -35,19 +37,19 @@ const Navigation: FC = () => {
         >
           <div
             className={"nav-subitem"}
-            onClick={() => handleElementClick("deposits", "plans")}
             style={handleStyle("deposits", "plans")}
-          >
-            Plans
-          </div>
+            onClick={() => handleElementClick("deposits", "plans")}
+            children={"Plans"}
+          />
+
           <div
             className={"nav-subitem"}
-            onClick={() => handleElementClick("deposits", "your-deposits")}
             style={handleStyle("deposits", "your-deposits")}
-          >
-            Your Deposits
-          </div>
+            onClick={() => handleElementClick("deposits", "your-deposits")}
+            children={"Your Deposits"}
+          />
         </NavItem>
+
         <NavItem
           name={"History"}
           label={<Activity />}
@@ -58,18 +60,18 @@ const Navigation: FC = () => {
             className={"nav-subitem"}
             onClick={() => handleElementClick("history", "activity-log")}
             style={handleStyle("history", "activity-log")}
-          >
-            Activity Log
-          </div>
+            children={"Activity Log"}
+          />
+
           <div
             className={"nav-subitem"}
             onClick={() => handleElementClick("history", "income")}
             style={handleStyle("history", "income")}
-          >
-            Income
-          </div>
+            children={"Income"}
+          />
         </NavItem>
       </nav>
+
       <nav className={"second-menu"}>
         <NavItem name={"Profile"} label={<Profile />} />
         <NavItem name={"Log out"} label={<Logout />} />

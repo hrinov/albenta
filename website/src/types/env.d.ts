@@ -93,3 +93,17 @@ interface ModalWindowOptionsInterface {
   amount: number | null;
   depositId: number | null;
 }
+
+interface ModalWindowInterface {
+  depositsLimit: number;
+  isWithdrawModalOpen: {
+    type: boolean;
+    amount: number | null;
+    depositId: number | null;
+  };
+  handleWithdrawModal: (
+    type: boolean,
+    amount: number | null,
+    depositId: number | null
+  ) => void;
+}

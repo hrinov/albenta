@@ -1,20 +1,21 @@
 import "./index.sass";
-import notFoundImage from "../../images/404.webp";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import notFoundImage from "../../images/404.webp";
+
 const NotFoundPage: FC = () => {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-  const isUserAuthorized = accessToken && refreshToken;
-  const handleClick = () =>
-    navigate(`${isUserAuthorized ? "/account/deposits/plans" : "/login"}`);
+  const isUserAuthorized = localStorage.getItem("refreshToken");
+
   return (
     <section className="not-found-page">
-      <div className="image-holder">
-        <img src={notFoundImage} />
-      </div>
-      <div className="btn" onClick={handleClick}>
+      <div className="image-holder" children={<img src={notFoundImage} />} />
+      <div
+        className="btn"
+        onClick={() =>
+          navigate(`${isUserAuthorized ? "/account/deposits/plans" : "/login"}`)
+        }
+      >
         BACK TO {isUserAuthorized ? "ACCOUNT PAGE" : "LOGIN PAGE"}
       </div>
     </section>

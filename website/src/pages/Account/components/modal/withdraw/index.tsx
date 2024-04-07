@@ -1,46 +1,17 @@
+import "./index.sass";
 import { FC } from "react";
 import { Modal } from "antd";
-import { requestHandler } from "../../../../../utils";
 import { useDispatch } from "react-redux";
-import { updateDeposits, updateUser } from "../../../../../redux/slice";
-import "./index.sass";
+import { Dispatch } from "@reduxjs/toolkit";
+import { updateDeposits } from "../../../../../redux/slice";
+import { fetchUser, requestHandler } from "../../../../../utils";
 
-interface PropsInterface {
-  depositsLimit: number;
-  isWithdrawModalOpen: {
-    type: boolean;
-    amount: number | null;
-    depositId: number | null;
-  };
-  handleWithdrawModal: (
-    type: boolean,
-    amount: number | null,
-    depositId: number | null
-  ) => void;
-}
-
-const WithdrawModalWindow: FC<PropsInterface> = ({
+const WithdrawModalWindow: FC<ModalWindowInterface> = ({
+  depositsLimit,
   isWithdrawModalOpen,
   handleWithdrawModal,
-  depositsLimit,
 }) => {
-  const dispatch = useDispatch();
-
-  const handleUserUpdate = async () => {
-    const response: MeResponse = await requestHandler("me", "GET");
-    if (response?.success) {
-      const { avatar, id, email, name, balance } = response?.data;
-      dispatch(
-        updateUser({
-          id,
-          email,
-          name,
-          balance,
-          avatar,
-        })
-      );
-    }
-  };
+  const dispatch: Dispatch<any> = useDispatch();
 
   const getDeposits = async () => {
     let response = await requestHandler(
@@ -56,11 +27,7 @@ const WithdrawModalWindow: FC<PropsInterface> = ({
   const handleOk = async (depositId: number) => {
     await requestHandler("withdraw", "POST", { depositId });
     await getDeposits();
-    await handleUserUpdate();
-    handleWithdrawModal(false, null, null);
-  };
-
-  const handleCancel = () => {
+    dispatch(fetchUser());
     handleWithdrawModal(false, null, null);
   };
 
@@ -70,7 +37,7 @@ const WithdrawModalWindow: FC<PropsInterface> = ({
       open={isWithdrawModalOpen.type}
       onOk={() => handleOk(isWithdrawModalOpen.depositId!)}
       okText="withdraw"
-      onCancel={handleCancel}
+      onCancel={() => handleWithdrawModal(false, null, null)}
     >
       <p>
         Are you sure you want to withdraw {isWithdrawModalOpen.amount}$ to your
