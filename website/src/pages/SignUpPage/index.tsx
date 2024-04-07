@@ -1,49 +1,38 @@
-import { FC, useState } from "react";
 import "./index.sass";
-import { useNavigate } from "react-router-dom";
+import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../../redux/slice";
-import { useSpring, animated } from "react-spring";
 import { requestHandler } from "../../utils";
+import { updateUser } from "../../redux/slice";
+import { useNavigate } from "react-router-dom";
+import { useSpring, animated, SpringValue } from "react-spring";
 import loadingAnimation from "../../icons/loading.svg";
 
 const SignupPage: FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const registerUser = async () => {
     setError("");
     setLoading(true);
-    const data = {
-      name: name,
-      email: email,
-      password: password,
-    };
+    const data = { name, email, password };
 
     const response: MeResponse = await requestHandler("signup", "POST", data);
 
     if (response?.success) {
       const { avatar, access_token, refresh_token, id, email, name, balance } =
-        response?.data!;
+        response.data!;
 
       window.localStorage.setItem("accessToken", access_token);
       window.localStorage.setItem("refreshToken", refresh_token);
 
       setTimeout(() => {
-        dispatch(
-          updateUser({
-            id,
-            email,
-            name,
-            balance,
-            avatar,
-          })
-        );
+        dispatch(updateUser({ id, email, name, balance, avatar }));
         setLoading(false);
         navigate("/account/deposits/plans");
       }, 3500);
@@ -55,9 +44,11 @@ const SignupPage: FC = () => {
     }
   };
 
-  const handleClick = () => {
-    registerUser();
-  };
+  const createInput = (
+    value: string,
+    placeholder: string,
+    onChange: (e: any) => void
+  ) => <input {...{ value, placeholder, onChange }} />;
 
   return (
     <section className="signup-page">
@@ -68,32 +59,25 @@ const SignupPage: FC = () => {
         <h1>
           <AnimatedTitle loading={loading} />
         </h1>
-        <input
-          value={name}
-          placeholder="name"
-          onChange={(e) => setName(e.target.value)}
+
+        {createInput(name, "name", (e) => setName(e.target.value))}
+        {createInput(email, "email", (e) => setEmail(e.target.value))}
+        {createInput(password, "password", (e) => setPassword(e.target.value))}
+
+        <div
+          className="ok-btn"
+          onClick={() => registerUser()}
+          children={"NEXT"}
         />
-        <input
-          value={email}
-          placeholder="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          value={password}
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className="ok-btn" onClick={handleClick}>
-          NEXT
-        </div>
         <img
           src={loadingAnimation}
           className="loading"
           style={{ opacity: loading ? 1 : 0 }}
         />
-        <div className={`error-message ${!error && "transparent"}`}>
-          {error}
-        </div>
+        <div
+          className={`error-message ${!error && "transparent"}`}
+          children={error}
+        />
       </div>
     </section>
   );
@@ -138,81 +122,57 @@ const AnimatedTitle: FC<{ loading: boolean }> = ({ loading }) => {
     });
   };
 
+  const createAnimatedElement = (
+    letter: string,
+    color: SpringValue<string>,
+    transform: SpringValue<string>
+  ) => (
+    <animated.div
+      children={letter}
+      style={
+        loading
+          ? {
+              color: color,
+              transform: transform,
+            }
+          : {}
+      }
+    />
+  );
+
   return (
     <div className="title-wrapper">
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color1,
-                transform: changeColor().transform1,
-              }
-            : {}
-        }
-      >
-        S
-      </animated.div>
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color2,
-                transform: changeColor().transform2,
-              }
-            : {}
-        }
-      >
-        i
-      </animated.div>
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color3,
-                transform: changeColor().transform3,
-              }
-            : {}
-        }
-      >
-        g
-      </animated.div>
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color4,
-                transform: changeColor().transform4,
-              }
-            : {}
-        }
-      >
-        n
-      </animated.div>
+      {createAnimatedElement(
+        "S",
+        changeColor().color1,
+        changeColor().transform1
+      )}
+      {createAnimatedElement(
+        "i",
+        changeColor().color2,
+        changeColor().transform2
+      )}
+      {createAnimatedElement(
+        "g",
+        changeColor().color3,
+        changeColor().transform3
+      )}
+      {createAnimatedElement(
+        "n",
+        changeColor().color4,
+        changeColor().transform4
+      )}
       <div className="space" />
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color5,
-                transform: changeColor().transform5,
-              }
-            : {}
-        }
-      >
-        U
-      </animated.div>
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color6,
-                transform: changeColor().transform6,
-              }
-            : {}
-        }
-      >
-        p
-      </animated.div>
+      {createAnimatedElement(
+        "U",
+        changeColor().color5,
+        changeColor().transform5
+      )}
+      {createAnimatedElement(
+        "p",
+        changeColor().color6,
+        changeColor().transform6
+      )}
     </div>
   );
 };

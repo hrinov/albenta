@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Redirect = () => {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-  const isUserAuthorized = accessToken && refreshToken;
+  const isUserAuthorized = localStorage.getItem("refreshToken");
 
   useEffect(() => {
     if (isUserAuthorized) {

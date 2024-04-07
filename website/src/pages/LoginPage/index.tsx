@@ -1,45 +1,36 @@
-import { FC, useState } from "react";
 import "./index.sass";
-import { useNavigate } from "react-router-dom";
+import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../../redux/slice";
-import { useSpring, animated } from "react-spring";
 import { requestHandler } from "../../utils";
+import { useNavigate } from "react-router-dom";
+import { updateUser } from "../../redux/slice";
 import loadingAnimation from "../../icons/loading.svg";
+import { useSpring, animated, SpringValue } from "react-spring";
 
 const LoginPage: FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const dispatch = useDispatch();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const navigate = useNavigate();
 
   const loginUser = async () => {
     setError("");
     setLoading(true);
-    const data = {
-      email: email,
-      password: password,
-    };
+    const data = { email, password };
 
     const response: MeResponse = await requestHandler("login", "POST", data);
     if (response?.success) {
       const { avatar, access_token, refresh_token, id, email, name, balance } =
-        response?.data!;
+        response.data!;
 
       setTimeout(() => {
         window.localStorage.setItem("accessToken", access_token);
         window.localStorage.setItem("refreshToken", refresh_token);
-        dispatch(
-          updateUser({
-            id,
-            email,
-            name,
-            balance,
-            avatar,
-          })
-        );
+
+        dispatch(updateUser({ id, email, name, balance, avatar }));
         setLoading(false);
         navigate("/account/deposits/plans");
       }, 3000);
@@ -51,38 +42,39 @@ const LoginPage: FC = () => {
     }
   };
 
+  const createInput = (
+    value: string,
+    placeholder: string,
+    onChange: (e: any) => void
+  ) => <input {...{ value, placeholder, onChange }} />;
+
   return (
-    <>
-      <section className="login-page">
-        <button className={"signup-btn"} onClick={() => navigate("/signup")}>
-          Sign Up
-        </button>
-        <div className="inputs-wrapper">
-          <AnimatedTitle loading={loading} />
-          <input
-            value={email}
-            placeholder="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            value={password}
-            placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div className="ok-btn" onClick={loginUser}>
-            NEXT
-          </div>
-          <img
-            src={loadingAnimation}
-            className="loading"
-            style={{ opacity: loading ? 1 : 0 }}
-          />
-          <div className={`error-message ${!error && "transparent"}`}>
-            {error}
-          </div>
-        </div>
-      </section>
-    </>
+    <section className="login-page">
+      <button
+        children={"Sign Up"}
+        className={"signup-btn"}
+        onClick={() => navigate("/signup")}
+      />
+
+      <div className="inputs-wrapper">
+        <AnimatedTitle loading={loading} />
+
+        {createInput(email, "email", (e) => setEmail(e.target.value))}
+        {createInput(password, "password", (e) => setPassword(e.target.value))}
+
+        <div className="ok-btn" onClick={loginUser} children={"NEXT"} />
+
+        <img
+          className="loading"
+          src={loadingAnimation}
+          style={{ opacity: loading ? 1 : 0 }}
+        />
+        <div
+          className={`error-message ${!error && "transparent"}`}
+          children={error}
+        />
+      </div>
+    </section>
   );
 };
 
@@ -123,68 +115,51 @@ const AnimatedTitle: FC<{ loading: boolean }> = ({ loading }) => {
     });
   };
 
+  const createAnimatedElement = (
+    letter: string,
+    color: SpringValue<string>,
+    transform: SpringValue<string>
+  ) => (
+    <animated.div
+      children={letter}
+      style={
+        loading
+          ? {
+              color: color,
+              transform: transform,
+            }
+          : {}
+      }
+    />
+  );
+
   return (
     <div className="title-wrapper">
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color1,
-                transform: changeColor().transform1,
-              }
-            : {}
-        }
-      >
-        L
-      </animated.div>
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color2,
-                transform: changeColor().transform2,
-              }
-            : {}
-        }
-      >
-        o
-      </animated.div>
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color3,
-                transform: changeColor().transform3,
-              }
-            : {}
-        }
-      >
-        g
-      </animated.div>
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color4,
-                transform: changeColor().transform4,
-              }
-            : {}
-        }
-      >
-        i
-      </animated.div>
-      <animated.div
-        style={
-          loading
-            ? {
-                color: changeColor().color5,
-                transform: changeColor().transform5,
-              }
-            : {}
-        }
-      >
-        n
-      </animated.div>
+      {createAnimatedElement(
+        "L",
+        changeColor().color1,
+        changeColor().transform1
+      )}
+      {createAnimatedElement(
+        "o",
+        changeColor().color2,
+        changeColor().transform2
+      )}
+      {createAnimatedElement(
+        "g",
+        changeColor().color3,
+        changeColor().transform3
+      )}
+      {createAnimatedElement(
+        "i",
+        changeColor().color4,
+        changeColor().transform4
+      )}
+      {createAnimatedElement(
+        "n",
+        changeColor().color5,
+        changeColor().transform5
+      )}
     </div>
   );
 };
