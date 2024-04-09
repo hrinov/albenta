@@ -1,27 +1,12 @@
-import { FC, useEffect, useState } from "react";
 import "./index.sass";
-import { requestHandler } from "../../../../utils";
 import { Pagination } from "antd";
+import { FC, useEffect, useState } from "react";
+import { formatDate, requestHandler } from "../../../../utils";
 
 const Activity: FC = () => {
-  const [activity, setActivity] = useState<ActivityInterface[] | null>();
   const [totalItems, setTotalItems] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState<number>(1);
-
-  function formatDate(inputDate: string) {
-    const date = new Date(inputDate);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const formattedDay = day < 10 ? `0${day}` : `${day}`;
-    const formattedMonth = month < 10 ? `0${month}` : `${month}`;
-    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-
-    return `${formattedDay}.${formattedMonth}.${year} ${formattedHours}:${formattedMinutes}`;
-  }
+  const [activity, setActivity] = useState<ActivityInterface[] | null>();
 
   const getActivity = async () => {
     const response: {
@@ -59,6 +44,7 @@ const Activity: FC = () => {
           <div className="block right">COUNTRY</div>
           <div className="block right colored-blue">ACTIVITY</div>
         </div>
+
         {activity?.map((item, i) => (
           <div className="activity" key={item.date}>
             <div className="block colored-pink">{getItemNumber(i)}</div>
@@ -69,20 +55,24 @@ const Activity: FC = () => {
             <div className="block right">{item.type}</div>
           </div>
         ))}
+
         {!activity &&
           Array(10)
             .fill(null)
             ?.map((_, i) => (
-              <div className="activity" key={"skeleton" + i}>
-                <div className="block skeleton squared" />
-              </div>
+              <div
+                className="activity"
+                key={"skeleton" + i}
+                children={<div className="block skeleton squared" />}
+              />
             ))}
       </div>
+
       <div className="footer">
         <Pagination
           simple
-          current={pageNumber}
           total={totalItems}
+          current={pageNumber}
           onChange={(page) => handleChangePage(page)}
         />
       </div>

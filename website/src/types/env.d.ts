@@ -107,3 +107,13 @@ interface ModalWindowInterface {
     depositId: number | null
   ) => void;
 }
+
+interface DepositsInterface {
+  handleWithdrawModal: (
+    type: boolean,
+    amount: number | null,
+    depositId: number
+  ) => void;
+  depositsLimit: number;
+  setDepositsLimit: React.Dispatch<SetStateAction<number>>;
+}
