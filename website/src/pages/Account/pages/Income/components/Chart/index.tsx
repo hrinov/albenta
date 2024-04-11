@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { Line } from "react-chartjs-2";
 import "./index.sass";
+import { FC } from "react";
 import { Spin } from "antd";
+import { Line } from "react-chartjs-2";
 import {
   ArcElement,
   CategoryScale,
@@ -13,31 +13,32 @@ import {
   RadialLinearScale,
   Tooltip,
 } from "chart.js";
+
 ChartJS.register(
-  ArcElement,
+  Filler,
   Tooltip,
-  CategoryScale,
+  ArcElement,
   LinearScale,
-  PointElement,
   LineElement,
-  RadialLinearScale,
-  Filler
+  PointElement,
+  CategoryScale,
+  RadialLinearScale
 );
 
 const Chart: FC<ChartInterface> = ({ loading, filters, monthIncome }) => {
   const createLineData = (color: string, skirtColor: string, data: any) => [
     {
-      lineTension: 0.25,
-      backgroundColor: color,
-      borderColor: color,
       borderWidth: 4,
-      pointBackgroundColor: "transparent",
-      pointBorderColor: "#000",
-      pointBorderWidth: 2,
       pointRadius: 4,
+      lineTension: 0.25,
+      borderColor: color,
+      pointBorderWidth: 2,
       pointHoverRadius: 6,
-      pointHoverBorderColor: "#000",
+      backgroundColor: color,
       pointHoverBorderWidth: 2,
+      pointBorderColor: "#000",
+      pointHoverBorderColor: "#000",
+      pointBackgroundColor: "transparent",
       fill: {
         target: "origin",
         above: skirtColor,
@@ -98,7 +99,7 @@ const Chart: FC<ChartInterface> = ({ loading, filters, monthIncome }) => {
     <div>
       <div className={`line-chart`}>
         <div className={"title"}>{filters.selectedMonth} income</div>
-        <div className={"count"}></div>
+        <div className={"count"} />
         <div className={`chart-holder ${loading && "loading"}`}>
           {loading ? (
             <Spin />
@@ -111,7 +112,6 @@ const Chart: FC<ChartInterface> = ({ loading, filters, monthIncome }) => {
                   <span children={`$${monthIncome?.total}`} />
                 </div>
                 <div className="average">
-                  {" "}
                   Average {filters.selectedMonth} per day income:
                   <span children={`$${monthIncome?.average}`} />
                 </div>

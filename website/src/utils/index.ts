@@ -98,3 +98,41 @@ export const formatDate = (inputDate: string) => {
 
   return `${formattedDay}.${formattedMonth}.${year} ${formattedHours}:${formattedMinutes}`;
 };
+
+export const getDataOptions = () => {
+  const currentYear = new Date().getFullYear();
+  const yearOptions = Array.from(
+    { length: currentYear - 2023 + 1 },
+    (_, i) => ({
+      value: String(currentYear - i),
+      label: String(currentYear - i),
+      key: i,
+    })
+  );
+  const currentMonth = new Date().getMonth();
+  const monthOptions = Array.from({ length: 12 }, (_, index) => {
+    return {
+      value: new Date(currentYear, index).toLocaleString("default", {
+        month: "long",
+      }),
+      label: new Date(currentYear, index).toLocaleString("default", {
+        month: "long",
+      }),
+      key: index,
+    };
+  });
+  const currentMonthName = monthOptions?.find(
+    (option) => +option.key === currentMonth
+  )!.label;
+
+  return {
+    currentYear,
+    yearOptions,
+    currentMonth,
+    monthOptions,
+    currentMonthName,
+  };
+};
+
+export const getDaysInMonth = (month: number) =>
+  [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];

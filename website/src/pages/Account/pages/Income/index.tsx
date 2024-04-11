@@ -1,53 +1,34 @@
 import "./index.sass";
+import Chart from "./components/Chart";
 import Filter from "./components/Filter";
 import { FC, useEffect, useState } from "react";
-import { requestHandler } from "../../../../utils";
-import Chart from "./components/Chart";
+import {
+  getDataOptions,
+  getDaysInMonth,
+  requestHandler,
+} from "../../../../utils";
 
 const Income: FC = () => {
+  const {
+    currentYear,
+    yearOptions,
+    currentMonth,
+    monthOptions,
+    currentMonthName,
+  } = getDataOptions();
+
   const [loading, setLoading] = useState<boolean>(true);
-
-  const currentYear = new Date().getFullYear();
-  const yearOptions = Array.from(
-    { length: currentYear - 2023 + 1 },
-    (_, i) => ({
-      value: String(currentYear - i),
-      label: String(currentYear - i),
-      key: i,
-    })
-  );
-
-  const currentMonth = new Date().getMonth();
-
-  let monthOptions = Array.from({ length: 12 }, (_, index) => {
-    return {
-      value: new Date(currentYear, index).toLocaleString("default", {
-        month: "long",
-      }),
-      label: new Date(currentYear, index).toLocaleString("default", {
-        month: "long",
-      }),
-      key: index,
-    };
-  });
-
-  const getMonthNumber = (month: string) => {
-    return +monthOptions?.find((option) => option.label === month)!.key + 1;
-  };
-
-  const currentMonthName = monthOptions?.find(
-    (option) => +option.key === currentMonth
-  )!.label;
-
+  const [monthIncome, setMonthIncome] = useState<MonthIncomeInterface>();
   const [filters, setFilters] = useState<{ [key: string]: string }>({
     selectedMonth: currentMonthName!,
     selectedYear: String(currentYear),
   });
 
-  const [monthIncome, setMonthIncome] = useState<MonthIncomeInterface>();
-
   const getIncome = async () => {
     setLoading(true);
+    const getMonthNumber = (month: string) => {
+      return +monthOptions?.find((option) => option.label === month)!.key + 1;
+    };
 
     try {
       const response: any = await requestHandler(
@@ -56,15 +37,11 @@ const Income: FC = () => {
         }`,
         "GET"
       );
+
       if (response.success) {
-        setMonthIncome({
-          data: response.data,
-          total: response.total,
-          average: response.average,
-          daysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][
-            currentMonth
-          ],
-        });
+        const { data, total, average } = response;
+        const daysInMonth = getDaysInMonth(currentMonth);
+        setMonthIncome({ data, total, average, daysInMonth });
       }
     } catch (error) {
       setLoading(false);
