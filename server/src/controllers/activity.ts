@@ -1,8 +1,10 @@
+import { Request, Response } from "express";
+
 import { getAllUserActivity } from "../db/queries/activityQueries";
 import { getUserByEmail } from "../db/queries/userQueries";
 const jwt = require("jsonwebtoken");
 
-const getActivity = async (req: any, res: any) => {
+const getActivity = async (req: Request, res: Response) => {
   const page = req.query.page;
   if (!page) {
     // handle not all parametres
@@ -16,7 +18,7 @@ const getActivity = async (req: any, res: any) => {
     decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
   } catch (error) {
     // handle wrong or expired token error
-    if ((error as any).message == "jwt expired") {
+    if ((error as Error).message == "jwt expired") {
       return res.status(400).json({ message: "token has expired" });
     }
     return res.status(400).json({ message: "wrong token" });
@@ -42,7 +44,7 @@ const getActivity = async (req: any, res: any) => {
     return res.status(400).json({ message: "wrong token" });
   }
 
-  const startIndex = (page - 1) * 10;
+  const startIndex = (+page - 1) * 10;
 
   const activity = await getAllUserActivity(user.id, startIndex);
 

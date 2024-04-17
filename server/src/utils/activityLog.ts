@@ -7,7 +7,7 @@ const handleUserActivity = async (
   user_id: number,
   type: string
 ) => {
-  const convertIPv6toIPv4 = (ip: any) => {
+  const convertIPv6toIPv4 = (ip: string) => {
     if (ip.startsWith("::ffff:")) {
       const ipv4Part = ip.split(":").pop();
       return ipv4Part;
@@ -16,7 +16,7 @@ const handleUserActivity = async (
   };
 
   const date = new Date();
-  const ip = convertIPv6toIPv4(userIp);
+  const ip = convertIPv6toIPv4(String(userIp));
   const geo = geoip.lookup(ip);
   const country = geo?.country || "Undefined";
   const browser = userAgent?.browser || "Undefined";

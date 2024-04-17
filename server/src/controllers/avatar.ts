@@ -1,6 +1,11 @@
+import { Request, Response } from "express";
 const path = require("path");
 const jwt = require("jsonwebtoken");
 const fs = require("fs").promises;
+
+interface CustomRequest extends Request {
+  useragent: { [key: string]: string };
+}
 
 import { handleUserActivity } from "../utils/activityLog";
 import {
@@ -8,7 +13,7 @@ import {
   getUserByEmail,
 } from "../db/queries/userQueries";
 
-const getAvatar = async (req: any, res: any) => {
+const getAvatar = async (req: CustomRequest, res: Response) => {
   const filename = req.query?.filename;
   const filePath =
     filename && path.join(__dirname, "..", "..", "uploads", filename);
@@ -23,7 +28,7 @@ const getAvatar = async (req: any, res: any) => {
   }
 };
 
-const deleteAvatar = async (req: any, res: any) => {
+const deleteAvatar = async (req: CustomRequest, res: Response) => {
   const filename = req.query?.filename;
   const filePath =
     filename && path.join(__dirname, "..", "..", "uploads", filename);
@@ -34,7 +39,7 @@ const deleteAvatar = async (req: any, res: any) => {
     decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
   } catch (error) {
     // handle wrong or expired token error
-    if ((error as any).message == "jwt expired") {
+    if ((error as Error).message == "jwt expired") {
       return res.status(400).json({ message: "token has expired" });
     }
     return res.status(400).json({ message: "wrong token" });
@@ -68,11 +73,11 @@ const deleteAvatar = async (req: any, res: any) => {
 
     const result = await updateUserQuery(data);
 
-    if (result) {
+    if (result && req?.ip && req?.useragent) {
       //handle activity
       try {
         await handleUserActivity(
-          req.ip,
+          +req.ip,
           req.useragent,
           user.id,
           "update profile"
