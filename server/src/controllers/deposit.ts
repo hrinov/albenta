@@ -1,12 +1,17 @@
+import { Request, Response } from "express";
 const { getUserByEmail, updateUser } = require("../db/queries/userQueries");
 const { handleUserActivity } = require("../utils/activityLog");
 const { open, findAll } = require("../db/queries/depositQueries");
 const jwt = require("jsonwebtoken");
 
-const openDeposit = async (req: any, res: any) => {
+interface CustomRequest extends Request {
+  useragent: { [key: string]: string };
+}
+
+const openDeposit = async (req: CustomRequest, res: Response) => {
   const { amount, hours, percent } = req.body;
   if (!amount || !hours || !percent) {
-    // handle not all parametres
+    // handle not all arguments
     return res
       .status(400)
       .json({ message: "amount, hours and percent are required" });
@@ -43,7 +48,7 @@ const openDeposit = async (req: any, res: any) => {
     decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
   } catch (error) {
     // handle wrong or expired token error
-    if ((error as any).message == "jwt expired") {
+    if ((error as Error).message == "jwt expired") {
       return res.status(400).json({ message: "token has expired" });
     }
     return res.status(400).json({ message: "wrong token" });
@@ -110,7 +115,7 @@ const openDeposit = async (req: any, res: any) => {
     .json({ success: true, data: { user: updatedUser, deposit: newDeposit } });
 };
 
-const getDeposits = async (req: any, res: any) => {
+const getDeposits = async (req: Request, res: Response) => {
   const access_token = req?.headers?.authorization?.substring(7);
   let decodedToken;
 
@@ -118,7 +123,7 @@ const getDeposits = async (req: any, res: any) => {
     decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
   } catch (error) {
     // handle wrong or expired token error
-    if ((error as any).message == "jwt expired") {
+    if ((error as Error).message == "jwt expired") {
       return res.status(400).json({ message: "token has expired" });
     }
     return res.status(400).json({ message: "wrong token" });
@@ -146,7 +151,7 @@ const getDeposits = async (req: any, res: any) => {
 
   let deposits = await findAll(user.id);
   //create deposits info
-  deposits = deposits.map((deposit: any) => ({
+  deposits = deposits.map((deposit: Deposit) => ({
     ...deposit,
     profit: (
       (+deposit.amount / 100) *
@@ -165,7 +170,7 @@ const getDeposits = async (req: any, res: any) => {
   //check deposit types
   const currendDate = new Date();
 
-  const activeDeposits = deposits.filter((deposit: any) => {
+  const activeDeposits = deposits.filter((deposit: Deposit) => {
     const createdAt = new Date(deposit.created_at);
     const endDate = new Date(
       createdAt.getTime() + deposit.hours * 60 * 60 * 1000
@@ -173,7 +178,7 @@ const getDeposits = async (req: any, res: any) => {
     return endDate.getTime() > currendDate.getTime();
   });
 
-  const expiredDeposits = deposits.filter((deposit: any) => {
+  const expiredDeposits = deposits.filter((deposit: Deposit) => {
     const createdAt = new Date(deposit.created_at);
     const endDate = new Date(
       createdAt.getTime() + deposit.hours * 60 * 60 * 1000
@@ -182,10 +187,10 @@ const getDeposits = async (req: any, res: any) => {
   });
 
   const readyDeposits = expiredDeposits.filter(
-    (deposit: any) => !deposit.closed
+    (deposit: Deposit) => !deposit.closed
   );
 
-  const closedDeposits = deposits.filter((deposit: any) => deposit.closed);
+  const closedDeposits = deposits.filter((deposit: Deposit) => deposit.closed);
 
   const limit = req.query.limit;
 
@@ -193,15 +198,16 @@ const getDeposits = async (req: any, res: any) => {
     success: true,
     data: {
       active: activeDeposits.filter(
-        (item: any, i: any) => !limit || i + 1 <= limit
+        (_: Deposit, i: number) => !limit || i + 1 <= +limit
       ),
       ready: readyDeposits.filter(
-        (item: any, i: any) => !limit || i + 1 <= limit - activeDeposits.length
+        (_: Deposit, i: number) =>
+          !limit || i + 1 <= +limit - activeDeposits.length
       ),
       closed: closedDeposits.filter(
-        (item: any, i: any) =>
+        (_: Deposit, i: number) =>
           !limit ||
-          i + 1 <= limit - activeDeposits.length - readyDeposits.length
+          i + 1 <= +limit - activeDeposits.length - readyDeposits.length
       ),
     },
   });
