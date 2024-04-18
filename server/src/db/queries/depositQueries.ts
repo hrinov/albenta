@@ -1,6 +1,6 @@
 import { db } from "../knex.ts";
 
-const open = async (data: any) => {
+const open = async (data: Deposit) => {
   try {
     const insertedDeposit = await db("deposits").insert(data).returning("*");
     return insertedDeposit[0];
@@ -9,7 +9,7 @@ const open = async (data: any) => {
   }
 };
 
-const findAll = async (userId: any) => {
+const findAll = async (userId: number) => {
   try {
     const deposits = db("deposits")
       .select(
@@ -29,7 +29,7 @@ const findAll = async (userId: any) => {
   }
 };
 
-const getActiveDeposit = async (depositId: any, userId: any) => {
+const getActiveDeposit = async (depositId: number, userId: number) => {
   try {
     const deposit = db("deposits")
       .select("*")
@@ -43,7 +43,7 @@ const getActiveDeposit = async (depositId: any, userId: any) => {
   }
 };
 
-const closeDeposit = async (deposit: any) => {
+const closeDeposit = async (deposit: Deposit) => {
   try {
     let closedDeposit = deposit;
     closedDeposit.closed = true;

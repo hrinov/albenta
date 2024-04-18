@@ -76,7 +76,7 @@ const withdrawDeposit = async (req: CustomRequest, res: Response) => {
 
   //handle activity
   handleUserActivity(
-    req.ip,
+    +req.ip!,
     req.useragent,
     user.id,
     `withdraw ${totalDepositSum}$`

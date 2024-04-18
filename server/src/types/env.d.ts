@@ -3,6 +3,7 @@ interface WebSocketRequest extends IncomingMessage {
 }
 
 interface Deposit {
+  id?: number;
   created_at: string;
   hours: number;
   percent: number;
@@ -15,8 +16,18 @@ interface Activity {
   country: string;
   date: Date;
   device: string;
-  id: number;
+  id?: number;
   ip: number;
   type: string;
   user_id: number;
+}
+
+interface User {
+  id?: number;
+  email?: string;
+  password?: string;
+  access_token?: string;
+  refresh_token?: string;
+  name?: string;
+  balance?: number;
 }

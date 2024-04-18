@@ -1,5 +1,5 @@
 import { db } from "../knex";
-const getUserByEmail = async (email: any) => {
+const getUserByEmail = async (email: string) => {
   try {
     const user = db("users").select("*").where("email", email).first();
     return user;
@@ -8,7 +8,7 @@ const getUserByEmail = async (email: any) => {
   }
 };
 
-const createUser = async (data: any) => {
+const createUser = async (data: User) => {
   try {
     const insertedUser = await db("users").insert(data).returning("*");
     return insertedUser[0];
@@ -17,7 +17,7 @@ const createUser = async (data: any) => {
   }
 };
 
-const updateUser = async (newData: any) => {
+const updateUser = async (newData: User) => {
   try {
     const updatedUser = await db("users")
       .where("id", newData.id)
