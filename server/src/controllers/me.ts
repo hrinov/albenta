@@ -1,14 +1,15 @@
+import { Request, Response } from "express";
 import { getUserByEmail } from "../db/queries/userQueries";
 const jwt = require("jsonwebtoken");
 
-const getUser = async (req: any, res: any) => {
+const getUser = async (req: Request, res: Response) => {
   const access_token = req?.headers?.authorization?.substring(7);
   let decodedToken;
   try {
     decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
   } catch (error) {
     // handle wrong or expired token error
-    if ((error as any).message == "jwt expired") {
+    if ((error as Error).message == "jwt expired") {
       return res.status(400).json({ message: "token has expired" });
     }
     return res.status(400).json({ message: "wrong token" });

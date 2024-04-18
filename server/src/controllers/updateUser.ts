@@ -1,4 +1,5 @@
 require("dotenv").config();
+import { Request, Response } from "express";
 const fs = require("fs").promises;
 const path = require("path");
 const bcrypt = require("bcrypt");
@@ -7,7 +8,12 @@ import { getUserByEmail } from "../db/queries/userQueries";
 import { handleUserActivity } from "../utils/activityLog";
 import { updateUser as updateUserQuery } from "../db/queries/userQueries";
 
-const updateUser = async (req: any, res: any) => {
+interface CustomRequest extends Request {
+  useragent: { [key: string]: string };
+  file: { filename: string };
+}
+
+const updateUser = async (req: CustomRequest, res: Response) => {
   let { name, email, password } = req.body;
   const avatar = req?.file?.filename;
 
@@ -24,7 +30,7 @@ const updateUser = async (req: any, res: any) => {
     decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
   } catch (error) {
     // handle wrong or expired token error
-    if ((error as any).message == "jwt expired") {
+    if ((error as Error).message == "jwt expired") {
       return res.status(400).json({ message: "token has expired" });
     }
     return res.status(400).json({ message: "wrong token" });
@@ -59,7 +65,7 @@ const updateUser = async (req: any, res: any) => {
 
   //validate password
   if (password) {
-    const validatePassword = (password: any) => {
+    const validatePassword = (password: string) => {
       const disallowedSymbolsAndSpaces = /[!@#$%^&*()_+={}[\]\\|:;"'<>,.?/~\s]/;
       return password.length >= 8 && !disallowedSymbolsAndSpaces.test(password);
     };

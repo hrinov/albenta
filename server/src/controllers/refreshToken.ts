@@ -1,8 +1,9 @@
+import { Request, Response } from "express";
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 import { getUserByEmail, updateUser } from "../db/queries/userQueries";
 
-const updateTokens = async (req: any, res: any) => {
+const updateTokens = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
   let decodedToken;
 
@@ -10,7 +11,7 @@ const updateTokens = async (req: any, res: any) => {
     decodedToken = jwt.verify(refreshToken, process.env.TOKEN_SECRET);
   } catch (error) {
     // handle wrong or expired token error
-    if ((error as any).message == "jwt expired") {
+    if ((error as Error).message == "jwt expired") {
       return res.status(400).json({ message: "token has expired" });
     }
     return res.status(400).json({ message: "wrong token" });

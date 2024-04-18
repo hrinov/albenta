@@ -1,10 +1,16 @@
 import { getUserByEmail, updateUser } from "../db/queries/userQueries";
 import { getActiveDeposit, closeDeposit } from "../db/queries/depositQueries";
 import { handleUserActivity } from "../utils/activityLog";
+import { Request, Response } from "express";
 
 const jwt = require("jsonwebtoken");
 
-const withdrawDeposit = async (req: any, res: any) => {
+interface CustomRequest extends Request {
+  useragent: { [key: string]: string };
+  file: { filename: string };
+}
+
+const withdrawDeposit = async (req: CustomRequest, res: Response) => {
   const { depositId } = req.body;
   if (!depositId) {
     // handle not all arguments
@@ -18,7 +24,7 @@ const withdrawDeposit = async (req: any, res: any) => {
     decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
   } catch (error) {
     // handle wrong or expired token error
-    if ((error as any).message == "jwt expired") {
+    if ((error as Error).message == "jwt expired") {
       return res.status(400).json({ message: "token has expired" });
     }
     return res.status(400).json({ message: "wrong token" });

@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -5,7 +6,11 @@ const jwt = require("jsonwebtoken");
 import { handleUserActivity } from "../utils/activityLog";
 import { getUserByEmail, updateUser } from "../db/queries/userQueries";
 
-const auth = async (req: any, res: any) => {
+interface CustomRequest extends Request {
+  useragent: { [key: string]: string };
+}
+
+const auth = async (req: CustomRequest, res: Response) => {
   let { email, password } = req.body;
 
   if (!email || !password) {

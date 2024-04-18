@@ -1,10 +1,15 @@
+import { Request, Response } from "express";
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 import { getUserByEmail, createUser } from "../db/queries/userQueries";
 import { handleUserActivity } from "../utils/activityLog";
 
-const addUser = async (req: any, res: any) => {
+interface CustomRequest extends Request {
+  useragent: { [key: string]: string };
+}
+
+const addUser = async (req: CustomRequest, res: Response) => {
   let { name, email, password } = req.body;
 
   if (!name || !email || !password) {
@@ -26,7 +31,7 @@ const addUser = async (req: any, res: any) => {
   }
 
   //validate password
-  const validatePassword = (password: any) => {
+  const validatePassword = (password: string) => {
     const disallowedSymbolsAndSpaces = /[!@#$%^&*()_+={}[\]\\|:;"'<>,.?/~\s]/;
     return password.length >= 8 && !disallowedSymbolsAndSpaces.test(password);
   };
