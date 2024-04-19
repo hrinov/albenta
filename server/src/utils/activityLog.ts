@@ -16,7 +16,7 @@ const handleUserActivity = async (
   };
 
   const date = new Date();
-  const ip = convertIPv6toIPv4(String(userIp));
+  const ip = +convertIPv6toIPv4(String(userIp))!;
   const geo = geoip.lookup(ip);
   const country = geo?.country || "Undefined";
   const browser = userAgent?.browser || "Undefined";

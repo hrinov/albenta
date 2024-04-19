@@ -1,5 +1,4 @@
-import path from "path";
-import { useWS } from "./ws";
+/// <reference path="types/env.d.ts" />
 import {
   me,
   login,
@@ -12,26 +11,27 @@ import {
   updateUser,
   refreshToken,
 } from "./routes";
+import { useWS } from "./ws";
 import { Server as WebSocketServer } from "ws";
 
-const PORT = 3000;
+const path = require("path");
 const cors = require("cors");
 const http = require("http");
 const WebSocket = require("ws");
 const express = require("express");
+const apiRouter = express.Router();
 const cookieParser = require("cookie-parser");
 const useragent = require("express-useragent");
 
 const app = express();
 
-const apiRouter = express.Router();
-app.use(useragent.express());
 app.use("/api", apiRouter);
+app.use(useragent.express());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 apiRouter.use(cors());
 apiRouter.use(cookieParser());
 apiRouter.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 apiRouter.use("/me", me);
 apiRouter.use("/login", login);
@@ -49,4 +49,4 @@ const wss: WebSocketServer = new WebSocket.Server({ server });
 
 useWS(wss);
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(3000, () => console.log(`Server running on port 3000`));

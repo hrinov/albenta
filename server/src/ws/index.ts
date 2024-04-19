@@ -5,7 +5,7 @@ const useWS = (wss: WebSocketServer) => {
   wss.on("connection", async (ws: WebSocketType, req: WebSocketRequest) => {
     const userId = req.url?.split("?userId=")[1];
     if (!userId) return;
-    let deposits: Deposit[] = await findAll(userId);
+    let deposits: Deposit[] = await findAll(+userId);
 
     const getData = async () => {
       const currentDate = new Date();

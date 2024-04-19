@@ -22,7 +22,7 @@ interface Activity {
   user_id: number;
 }
 
-interface User {
+interface UserData {
   id?: number;
   email?: string;
   password?: string;

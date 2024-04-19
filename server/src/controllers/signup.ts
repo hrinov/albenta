@@ -86,7 +86,7 @@ const addUser = async (req: CustomRequest, res: Response) => {
 
       //handle activity
       try {
-        await handleUserActivity(req.ip, req.useragent, user.id, "login");
+        await handleUserActivity(+req.ip!, req.useragent, user.id, "login");
       } catch (error) {
         console.log(error);
       }

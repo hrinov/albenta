@@ -131,7 +131,7 @@ const updateUser = async (req: CustomRequest, res: Response) => {
       //handle activity
       try {
         await handleUserActivity(
-          req.ip,
+          +req.ip!,
           req.useragent,
           user.id,
           "update profile"
