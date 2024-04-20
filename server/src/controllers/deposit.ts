@@ -154,36 +154,36 @@ const getDeposits = async (req: Request, res: Response) => {
   deposits = deposits.map((deposit: Deposit) => ({
     ...deposit,
     profit: (
-      (+deposit.amount / 100) *
-      +deposit.percent *
-      +deposit.hours
+      (+deposit.amount! / 100) *
+      +deposit.percent! *
+      +deposit.hours!
     ).toFixed(2),
     total_sum: (
-      (+deposit.amount / 100) * +deposit.percent * +deposit.hours +
-      +deposit.amount
+      (+deposit.amount! / 100) * +deposit.percent! * +deposit.hours! +
+      +deposit.amount!
     ).toFixed(2),
     end_date: new Date(
-      new Date(deposit.created_at).getTime() + deposit.hours * 60 * 60 * 1000
+      new Date(deposit.created_at!).getTime() + deposit.hours! * 60 * 60 * 1000
     ),
   }));
 
   //check deposit types
-  const currendDate = new Date();
+  const currentDate = new Date();
 
   const activeDeposits = deposits.filter((deposit: Deposit) => {
-    const createdAt = new Date(deposit.created_at);
+    const createdAt = new Date(deposit.created_at!);
     const endDate = new Date(
-      createdAt.getTime() + deposit.hours * 60 * 60 * 1000
+      createdAt.getTime() + deposit.hours! * 60 * 60 * 1000
     );
-    return endDate.getTime() > currendDate.getTime();
+    return endDate.getTime() > currentDate.getTime();
   });
 
   const expiredDeposits = deposits.filter((deposit: Deposit) => {
-    const createdAt = new Date(deposit.created_at);
+    const createdAt = new Date(deposit.created_at!);
     const endDate = new Date(
-      createdAt.getTime() + deposit.hours * 60 * 60 * 1000
+      createdAt.getTime() + deposit.hours! * 60 * 60 * 1000
     );
-    return endDate.getTime() < currendDate.getTime();
+    return endDate.getTime() < currentDate.getTime();
   });
 
   const readyDeposits = expiredDeposits.filter(

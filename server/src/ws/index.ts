@@ -1,5 +1,5 @@
-import { Server as WebSocketServer, WebSocket as WebSocketType } from "ws";
 import { findAll } from "../db/queries/depositQueries";
+import { Server as WebSocketServer, WebSocket as WebSocketType } from "ws";
 
 const useWS = (wss: WebSocketServer) => {
   wss.on("connection", async (ws: WebSocketType, req: WebSocketRequest) => {
@@ -10,10 +10,10 @@ const useWS = (wss: WebSocketServer) => {
     const getData = async () => {
       const currentDate = new Date();
 
-      let activeDeposits: any = deposits.filter((deposit: Deposit) => {
-        const createdAt = new Date(deposit.created_at);
+      let activeDeposits = deposits.filter((deposit: Deposit) => {
+        const createdAt = new Date(deposit.created_at!);
         const endDate = new Date(
-          createdAt.getTime() + deposit.hours * 60 * 60 * 1000
+          createdAt.getTime() + deposit.hours! * 60 * 60 * 1000
         );
         return endDate.getTime() > currentDate.getTime();
       });
@@ -31,8 +31,8 @@ const useWS = (wss: WebSocketServer) => {
 
       activeDeposits = activeDeposits.map((deposit: Deposit) => {
         const endDate = new Date(
-          new Date(deposit.created_at).getTime() +
-            deposit.hours * 60 * 60 * 1000
+          new Date(deposit.created_at!).getTime() +
+            deposit.hours! * 60 * 60 * 1000
         );
         return {
           percent: deposit.percent,

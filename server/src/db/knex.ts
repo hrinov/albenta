@@ -1,5 +1,5 @@
-const knex = require("knex");
 require("dotenv").config();
+const knex = require("knex");
 
 const db = knex({
   client: "postgres",

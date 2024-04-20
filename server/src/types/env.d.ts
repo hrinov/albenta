@@ -4,11 +4,11 @@ interface WebSocketRequest extends IncomingMessage {
 
 interface Deposit {
   id?: number;
-  created_at: string;
-  hours: number;
-  percent: number;
-  amount: number;
-  closed: boolean;
+  created_at?: string;
+  hours?: number;
+  percent?: number;
+  amount?: number;
+  closed?: boolean;
 }
 
 interface Activity {

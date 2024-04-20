@@ -17,6 +17,7 @@ const getAllUserActivity = async (
   try {
     let data;
     let count;
+
     if (!startDate && !endDate) {
       data = (await db("activity")
         .select("*")
@@ -43,6 +44,7 @@ const getAllUserActivity = async (
         .andWhere("type", "like", "%withdraw%")
         .first()) as { total: number };
     }
+
     return { data, total: count.total };
   } catch (error) {
     throw error;

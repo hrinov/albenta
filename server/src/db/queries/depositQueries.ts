@@ -14,12 +14,12 @@ const findAll = async (userId: number) => {
     const deposits = db("deposits")
       .select(
         "id",
-        "user_id",
-        "amount",
-        "percent",
         "hours",
-        "created_at",
-        "closed"
+        "amount",
+        "closed",
+        "user_id",
+        "percent",
+        "created_at"
       )
       .where("user_id", userId);
 
