@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/avatar.ts");
+import { validateToken } from "../middlewares/validateToken";
 
-router.route("/").get(controller.getAvatar).delete(controller.deleteAvatar);
+router.route("/").get(controller.getAvatar);
+router.delete("/", validateToken, controller.deleteAvatar);
 
 export { router };

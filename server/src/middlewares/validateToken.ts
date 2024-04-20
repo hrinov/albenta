@@ -31,7 +31,6 @@ const validateToken = async (
   }
 
   const userEmail = decodedToken.email;
-
   const user = await getUserByEmail(userEmail);
 
   if (!user) {

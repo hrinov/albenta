@@ -24,10 +24,9 @@ const cookieParser = require("cookie-parser");
 const useragent = require("express-useragent");
 
 const app = express();
-
-app.use("/api", apiRouter);
 app.use(useragent.express());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api", apiRouter);
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 apiRouter.use(cors());
 apiRouter.use(cookieParser());

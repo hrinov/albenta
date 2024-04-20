@@ -30,4 +30,5 @@ interface UserData {
   refresh_token?: string;
   name?: string;
   balance?: number;
+  avatar?: string;
 }

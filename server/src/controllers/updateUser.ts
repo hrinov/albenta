@@ -118,7 +118,13 @@ const updateUser = async (req: CustomRequest, res: Response) => {
     if (avatar) {
       try {
         const previousAvatar = user?.avatar;
-        const filePath = path.join(__dirname, "..", "uploads", previousAvatar);
+        const filePath = path.join(
+          __dirname,
+          "..",
+          "..",
+          "uploads",
+          previousAvatar
+        );
         previousAvatar && (await fs.unlink(filePath));
       } catch (error) {
         console.log(error);
