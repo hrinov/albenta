@@ -112,7 +112,7 @@ const Plans: FC = () => {
               }`}
               disabled={!!time}
               min={10}
-              max={100000}
+              max={user?.balance || 0}
               value={+openDeposits[i]?.amount || +values[i]?.amount}
               onChange={(value) => updateValues(+value!, i, true)}
             />

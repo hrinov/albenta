@@ -25,7 +25,6 @@ const Income: FC = () => {
   });
 
   const getIncome = async () => {
-    setLoading(true);
     const getMonthNumber = (month: string) => {
       return +monthOptions?.find((option) => option.label === month)!.key + 1;
     };
@@ -59,6 +58,7 @@ const Income: FC = () => {
         <Filter
           {...{
             filters,
+            setLoading,
             setFilters,
             yearOptions,
             currentYear,

@@ -2,6 +2,7 @@ import { Empty } from "antd";
 import "./index.sass";
 import { FC } from "react";
 import { useSelector } from "react-redux";
+import { formatDate } from "../../../../utils";
 
 const Deposits: FC<DepositsInterface> = ({
   handleWithdrawModal,
@@ -41,8 +42,8 @@ const Deposits: FC<DepositsInterface> = ({
         {createData("Total Sum", deposit.total_sum, "$")}
         {createData("Hours", deposit.hours, "")}
         {createData("Percent", deposit.percent, "%")}
-        {createData("Open Date", deposit.created_at, "")}
-        {createData("End Date", deposit.end_date, "")}
+        {createData("Open Date", formatDate(deposit.created_at), "")}
+        {createData("End Date", formatDate(deposit.end_date), "")}
         <div className="data">
           {type !== "ready" ? (
             <>

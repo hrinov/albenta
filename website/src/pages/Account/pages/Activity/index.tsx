@@ -14,6 +14,7 @@ const Activity: FC = () => {
       data: ActivityInterface[];
       total: number;
     } = await requestHandler(`activity?page=${pageNumber}`, "GET");
+
     if (response.success) {
       setActivity(response.data);
       setTotalItems(response.total || 1);

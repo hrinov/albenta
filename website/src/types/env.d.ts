@@ -74,6 +74,7 @@ interface MonthIncomeInterface {
 
 interface IncomeFilterProps {
   filters: { [key: string]: string };
+  setLoading: React.Dispatch<SetStateAction<boolean>>;
   setFilters: React.Dispatch<SetStateAction<{ [key: string]: string }>>;
   yearOptions: { value?: string; label: string; key: number }[];
   currentYear: number;

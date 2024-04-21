@@ -5,6 +5,7 @@ import { DownOutlined } from "@ant-design/icons";
 
 const Filter: FC<IncomeFilterProps> = ({
   filters,
+  setLoading,
   setFilters,
   yearOptions,
   currentYear,
@@ -19,6 +20,19 @@ const Filter: FC<IncomeFilterProps> = ({
   const isCurrentMonthInFilter =
     filters.selectedMonth !== currentMonthName ||
     +filters.selectedYear !== currentYear;
+
+  const handleFilterChange = (
+    filterName: string,
+    options: any,
+    index: number
+  ) => {
+    setLoading(true);
+    setFilters({
+      ...filters,
+      ...(filterName === "selectedYear" ? { selectedMonth: "January" } : {}),
+      [filterName]: options?.find((item: any) => +item.key == index)!.label,
+    });
+  };
 
   const createFilter = (options: any, filterName: string) => {
     const isActive =
@@ -38,16 +52,7 @@ const Filter: FC<IncomeFilterProps> = ({
             label: (
               <a
                 className={filters[filterName] == item.label ? "active" : ""}
-                onClick={() =>
-                  setFilters({
-                    ...filters,
-                    ...(filterName === "selectedYear"
-                      ? { selectedMonth: "January" }
-                      : {}),
-                    [filterName]: options?.find((item: any) => +item.key === i)!
-                      .label,
-                  })
-                }
+                onClick={() => handleFilterChange(filterName, options, i)}
                 children={item.label}
               />
             ),
