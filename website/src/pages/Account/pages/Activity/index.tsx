@@ -1,5 +1,5 @@
 import "./index.sass";
-import { Pagination } from "antd";
+import { Empty, Pagination } from "antd";
 import { FC, useEffect, useState } from "react";
 import { formatDate, requestHandler } from "../../../../utils";
 
@@ -66,6 +66,8 @@ const Activity: FC = () => {
                 children={<div className="block skeleton squared" />}
               />
             ))}
+
+        {activity?.length == 0 && <Empty />}
       </div>
 
       <div className="footer">

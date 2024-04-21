@@ -21,7 +21,7 @@ const addUser = async (req: CustomRequest, res: Response) => {
   //validate name
   name = name.trim();
   const validateName = () => {
-    return name.length < 3 && /^[a-zA-Z\s]+$/.test(name);
+    return name.length >= 3 && /^[a-zA-Z\s]+$/.test(name);
   };
 
   if (!validateName()) {

@@ -54,10 +54,21 @@ export const requestHandler = async (
           await handleRefreshToken();
         }
         break;
+      case "wrong token":
+        {
+          localStorage.clear();
+          handleLogout();
+        }
+        break;
+      case "user not found":
+        {
+          localStorage.clear();
+          handleLogout();
+        }
+        break;
 
       default:
-        localStorage.clear();
-        handleLogout();
+        return;
     }
   };
 

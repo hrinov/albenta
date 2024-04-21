@@ -1,3 +1,4 @@
+import { Empty } from "antd";
 import "./index.sass";
 import { FC } from "react";
 import { useSelector } from "react-redux";
@@ -62,6 +63,11 @@ const Deposits: FC<DepositsInterface> = ({
     );
   };
 
+  const noDeposits =
+    deposits?.active?.length == 0 &&
+    deposits?.ready?.length == 0 &&
+    deposits?.closed?.length == 0;
+
   return (
     <section className="deposits">
       <div className="blocks-wrapper">
@@ -69,6 +75,8 @@ const Deposits: FC<DepositsInterface> = ({
           [0, 1, 2].map((_, i) => (
             <div className="block skeleton" key={"deposit-skeleton-" + i} />
           ))}
+
+        {noDeposits && <Empty />}
 
         {deposits?.active &&
           deposits.active.map(
