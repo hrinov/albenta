@@ -1,62 +1,36 @@
 require("dotenv").config();
-import { Request, Response } from "express";
-const fs = require("fs").promises;
 const path = require("path");
 const bcrypt = require("bcrypt");
+const fs = require("fs").promises;
 const jwt = require("jsonwebtoken");
-import { getUserByEmail } from "../db/queries/userQueries";
+import { Request, Response } from "express";
 import { handleUserActivity } from "../utils/activityLog";
 import { updateUser as updateUserQuery } from "../db/queries/userQueries";
 
 interface CustomRequest extends Request {
   useragent: { [key: string]: string };
   file: { filename: string };
+  user: UserData;
 }
 
 const updateUser = async (req: CustomRequest, res: Response) => {
   let { name, email, password } = req.body;
   const avatar = req?.file?.filename;
 
+  // handle not all arguments
   if (!name && !email && !password && !avatar) {
     return res
       .status(400)
       .json({ message: "name, email, avatar or password is required" });
   }
 
-  const access_token = req?.headers?.authorization?.substring(7);
-
-  let decodedToken;
-  try {
-    decodedToken = jwt.verify(access_token, process.env.TOKEN_SECRET);
-  } catch (error) {
-    // handle wrong or expired token error
-    if ((error as Error).message == "jwt expired") {
-      return res.status(400).json({ message: "token has expired" });
-    }
-    return res.status(400).json({ message: "wrong token" });
-  }
-
-  const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-
-  if (decodedToken.exp < currentTime) {
-    // handle expired token error
-    return res.status(400).json({ message: "token has expired" });
-  }
-
-  const userCurrentEmail = decodedToken.email;
-  const user = await getUserByEmail(userCurrentEmail);
-
-  if (!user) {
-    return res.status(400).json({ message: "user not found" });
-  }
-
   //validate name
   if (name) {
     name = name.trim();
-    const matchRegExp = () => {
-      return /^[a-zA-Z\s]+$/.test(name);
+    const validateEmail = () => {
+      return name.length >= 3 && /^[a-zA-Z\s]+$/.test(name);
     };
-    if (!name || !matchRegExp() || name.length < 3) {
+    if (!validateEmail() || name.length < 3) {
       return res.status(400).json({
         message: "invalid name, name should contain at list 3 letters",
       });
@@ -82,14 +56,14 @@ const updateUser = async (req: CustomRequest, res: Response) => {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
 
-    if (!email || !validateEmail()) {
+    if (!validateEmail()) {
       return res.status(400).json({ message: "invalid email" });
     }
   }
 
   //create tokens
   function generateAccessToken() {
-    return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: "15m" });
+    return jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: "5m" });
   }
 
   function generateRefreshToken() {
@@ -99,7 +73,7 @@ const updateUser = async (req: CustomRequest, res: Response) => {
   //update user
   try {
     const data = {
-      ...user,
+      ...req.user,
       ...(name ? { name: name } : {}),
       ...(email
         ? {
@@ -117,7 +91,7 @@ const updateUser = async (req: CustomRequest, res: Response) => {
     // delete the avatar in case of updating it
     if (avatar) {
       try {
-        const previousAvatar = user?.avatar;
+        const previousAvatar = req.user?.avatar;
         const filePath = path.join(
           __dirname,
           "..",
@@ -139,7 +113,7 @@ const updateUser = async (req: CustomRequest, res: Response) => {
         await handleUserActivity(
           +req.ip!,
           req.useragent,
-          user.id,
+          req.user.id!,
           "update profile"
         );
       } catch (error) {
@@ -148,7 +122,7 @@ const updateUser = async (req: CustomRequest, res: Response) => {
 
       return res.status(200).json({ success: true, data: result });
     } else {
-      return res.status(500).json({ success: false });
+      throw Error;
     }
   } catch (error) {
     return res.status(500).json({ success: false });

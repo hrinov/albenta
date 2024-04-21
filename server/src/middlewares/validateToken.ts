@@ -30,8 +30,7 @@ const validateToken = async (
     return res.status(400).json({ message: "token has expired" });
   }
 
-  const userEmail = decodedToken.email;
-  const user = await getUserByEmail(userEmail);
+  const user = await getUserByEmail(decodedToken.email);
 
   if (!user) {
     // handle user not found error
@@ -42,6 +41,8 @@ const validateToken = async (
     // handle wrong token error
     return res.status(400).json({ message: "wrong token" });
   }
+
+  delete user.password;
 
   //adding user information to req object
   req.user = user;

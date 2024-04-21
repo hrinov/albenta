@@ -1,8 +1,7 @@
-import { Request, Response } from "express";
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+import { Request, Response } from "express";
 import { handleUserActivity } from "../utils/activityLog";
 import { getUserByEmail, updateUser } from "../db/queries/userQueries";
 
@@ -34,24 +33,26 @@ const auth = async (req: CustomRequest, res: Response) => {
   //generate new tokens
   function generateAccessToken() {
     return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, {
-      expiresIn: "15m",
+      expiresIn: "5m",
     });
   }
+
   function generateRefreshToken() {
     return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, {
       expiresIn: "30d",
     });
   }
+
   const data = {
     ...user,
     access_token: generateAccessToken(),
     refresh_token: generateRefreshToken(),
   };
+
   //update user
   try {
     const result = await updateUser(data);
     if (result) {
-      delete result.id;
       delete result.password;
 
       //handle activity
@@ -63,7 +64,7 @@ const auth = async (req: CustomRequest, res: Response) => {
 
       return res.status(200).json({ success: true, data: result });
     } else {
-      return res.status(500).json({ success: false });
+      throw Error;
     }
   } catch (error) {
     return res.status(500).json({ success: false });

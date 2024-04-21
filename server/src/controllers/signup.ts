@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-const bcrypt = require("bcrypt");
 require("dotenv").config();
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-import { getUserByEmail, createUser } from "../db/queries/userQueries";
+import { Request, Response } from "express";
 import { handleUserActivity } from "../utils/activityLog";
+import { getUserByEmail, createUser } from "../db/queries/userQueries";
 
 interface CustomRequest extends Request {
   useragent: { [key: string]: string };
@@ -20,11 +20,11 @@ const addUser = async (req: CustomRequest, res: Response) => {
 
   //validate name
   name = name.trim();
-  const matchRegExp = () => {
-    return /^[a-zA-Z\s]+$/.test(name);
+  const validateName = () => {
+    return name.length < 3 && /^[a-zA-Z\s]+$/.test(name);
   };
-  if (!name || !matchRegExp() || name.length < 3) {
-    console.log(!matchRegExp());
+
+  if (!validateName()) {
     return res
       .status(400)
       .json({ message: "name should contain at list 3 letters (latin)" });
@@ -49,7 +49,7 @@ const addUser = async (req: CustomRequest, res: Response) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  if (!email || !validateEmail()) {
+  if (!validateEmail()) {
     return res.status(400).json({ message: "invalid email" });
   }
 
@@ -93,7 +93,7 @@ const addUser = async (req: CustomRequest, res: Response) => {
 
       return res.status(200).json({ success: true, data: result });
     } else {
-      return res.status(500).json({ success: false });
+      throw Error;
     }
   } catch (error) {
     return res.status(500).json({ success: false });

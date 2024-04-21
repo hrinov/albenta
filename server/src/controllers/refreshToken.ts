@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+import { Request, Response } from "express";
 import { getUserByEmail, updateUser } from "../db/queries/userQueries";
 
 const updateTokens = async (req: Request, res: Response) => {
@@ -22,8 +22,8 @@ const updateTokens = async (req: Request, res: Response) => {
     // handle expired token error
     return res.status(400).json({ message: "token has expired" });
   }
-  const userEmail = decodedToken.email;
-  const user = await getUserByEmail(userEmail);
+
+  const user = await getUserByEmail(decodedToken.email);
 
   if (!user) {
     // handle user not found error
@@ -38,14 +38,16 @@ const updateTokens = async (req: Request, res: Response) => {
   //generate new tokens
   function generateAccessToken() {
     return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, {
-      expiresIn: "15m",
+      expiresIn: "5m",
     });
   }
+
   function generateRefreshToken() {
     return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, {
       expiresIn: "1d",
     });
   }
+
   const data = {
     ...user,
     access_token: generateAccessToken(),
@@ -55,10 +57,10 @@ const updateTokens = async (req: Request, res: Response) => {
   try {
     const result = await updateUser(data);
     if (result) {
-      delete result.id;
+      delete result.password;
       return res.status(200).json({ success: true, data: result });
     } else {
-      return res.status(500).json({ success: false });
+      throw Error;
     }
   } catch (error) {
     return res.status(500).json({ success: false });

@@ -1,9 +1,12 @@
 const multer = require("multer");
 import { Request } from "express";
 const express = require("express");
-const controller = require("../controllers/updateUser.ts");
+const controller = require("../controllers/updateUser");
+import { validateToken } from "../middlewares/validateToken";
 
 const router = express.Router();
+
+router.use(validateToken);
 
 const storage = multer.diskStorage({
   destination: "uploads/",
