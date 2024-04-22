@@ -6,8 +6,7 @@ const db = knex({
   connection: {
     host: "ep-patient-mountain-45778944.us-east-2.aws.neon.tech",
     user: "ruslan.hrinov",
-    password: "wgX0xen2NuGD",
-    // password: process.env.DB_PASSWORD,
+    password: process.env.DB_PASSWORD,
     port: 5432,
     database: "dafault",
     ssl: "true",
