@@ -1,4 +1,4 @@
-const url = import.meta.env.VITE_URL;
+const url = import.meta.env.SERVER_URL;
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const requestHandler = async (
