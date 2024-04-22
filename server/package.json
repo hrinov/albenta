@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "tsc && nodemon ./src/index.ts",
+    "start": "tsc && node src/index.ts",
     "build": "npm install"
   },
   "author": "",
