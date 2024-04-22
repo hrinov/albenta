@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "npm run build && concurrently \"cd ./server && npm run start\" \"cd ./website && npm run dev\"",
-    "build": "cd server && npm run build && cd ../website && npm run build"
+    "build": "cd server && npm run start && cd ../website && npm run build"
   },
   "author": "",
   "license": "ISC",
