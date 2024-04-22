@@ -4,13 +4,12 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "cd server && npm run start",
-    "build": "npm install && cd server && npm install && npm run build && cd ../website &&npm install && npm run build"
+    "start-server": "cd server && npm run start",
+    "build-server": "cd server && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.2",
     "prettier": "3.1.0"
   },
   "dependencies": {

@@ -31,4 +31,4 @@ apiRouter.use("/refreshToken", routes_1.refreshToken);
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 (0, ws_1.useWS)(wss);
-server.listen(3000, () => console.log(`Server running on port 3000`));
+server.listen(10000, () => console.log(`Server running on port 10000`));
