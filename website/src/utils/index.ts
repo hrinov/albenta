@@ -1,4 +1,4 @@
-const url = import.meta.env.VITE_SERVER_URL;
+const url = import.meta.env.VITE_SERVER_URL || "https://albenta.onrender.com";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
