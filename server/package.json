@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "npm run build && nodemon ./src/index.ts",
-    "build": "tsc"
+    "build": "npm install && tsc"
   },
   "author": "",
   "license": "ISC",
