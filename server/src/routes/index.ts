@@ -1,13 +1,13 @@
-import { router as me } from "./me.ts";
-import { router as login } from "./login.ts";
-import { router as avatar } from "./avatar.ts";
-import { router as signup } from "./signup.ts";
-import { router as income } from "./income.ts";
-import { router as deposit } from "./deposit.ts";
-import { router as withdraw } from "./withdraw.ts";
-import { router as activity } from "./activity.ts";
-import { router as updateUser } from "./updateUser.ts";
-import { router as refreshToken } from "./refreshToken.ts";
+import { router as me } from "./me";
+import { router as login } from "./login";
+import { router as avatar } from "./avatar";
+import { router as signup } from "./signup";
+import { router as income } from "./income";
+import { router as deposit } from "./deposit";
+import { router as withdraw } from "./withdraw";
+import { router as activity } from "./activity";
+import { router as updateUser } from "./updateUser";
+import { router as refreshToken } from "./refreshToken";
 
 export {
   me,

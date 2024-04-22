@@ -1,8 +1,8 @@
-import { validateToken } from "../middlewares/validateToken.ts";
+import { validateToken } from "../middlewares/validateToken";
 
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers/activity.ts");
+const controller = require("../controllers/activity");
 
 router.use(validateToken).route("/").get(controller.getActivity);
 

@@ -4,7 +4,7 @@ exports.router = void 0;
 const express = require("express");
 const router = express.Router();
 exports.router = router;
-const controller = require("../controllers/deposit.ts");
+const controller = require("../controllers/deposit");
 const validateToken_1 = require("../middlewares/validateToken");
 router
     .use(validateToken_1.validateToken)

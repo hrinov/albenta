@@ -4,5 +4,5 @@ exports.router = void 0;
 const express = require("express");
 const router = express.Router();
 exports.router = router;
-const controller = require("../controllers/signup.ts");
+const controller = require("../controllers/signup");
 router.route("/").post(controller.addUser);

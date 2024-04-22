@@ -3,15 +3,14 @@
         "target": "ES2016",
         "module": "commonjs",
         "moduleResolution": "node",
-        "outDir": "./dist",
+        "outDir": "dist",
         "rootDir": "src",
         "baseUrl": ".",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "allowImportingTsExtensions": true,
-        "noEmit": true,
-        "forceConsistentCasingInFileNames": true,
+        "noEmit": false,
+        "forceConsistentCasingInFileNames": true
     },
     "include": [
         "src/**/*.ts"

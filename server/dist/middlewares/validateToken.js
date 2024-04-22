@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateToken = void 0;
 const jwt = require("jsonwebtoken");
-const userQueries_ts_1 = require("../db/queries/userQueries.ts");
+const userQueries_1 = require("../db/queries/userQueries");
 const validateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const access_token = (_b = (_a = req === null || req === void 0 ? void 0 : req.headers) === null || _a === void 0 ? void 0 : _a.authorization) === null || _b === void 0 ? void 0 : _b.substring(7);
@@ -31,7 +31,7 @@ const validateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         // handle expired token error
         return res.status(400).json({ message: "token has expired" });
     }
-    const user = yield (0, userQueries_ts_1.getUserByEmail)(decodedToken.email);
+    const user = yield (0, userQueries_1.getUserByEmail)(decodedToken.email);
     if (!user) {
         // handle user not found error
         return res.status(400).json({ message: "user not found" });

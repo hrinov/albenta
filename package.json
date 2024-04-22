@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "concurrently \"cd ./server && npm run start\" \"cd ./website && npm run dev\"",
-    "build": "npm install && cd server && npm run build && cd ../website && npm run build"
+    "start": "cd server && npm run start",
+    "build": "npm install && cd server && npm install && npm run build && cd ../website &&npm install && npm run build"
   },
   "author": "",
   "license": "ISC",

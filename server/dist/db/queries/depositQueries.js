@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.closeDeposit = exports.getActiveDeposit = exports.findAll = exports.open = void 0;
-const knex_ts_1 = require("../knex.ts");
+const knex_1 = require("../knex");
 const open = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const insertedDeposit = yield (0, knex_ts_1.db)("deposits").insert(data).returning("*");
+        const insertedDeposit = yield (0, knex_1.db)("deposits").insert(data).returning("*");
         return insertedDeposit[0];
     }
     catch (error) {
@@ -23,7 +23,7 @@ const open = (data) => __awaiter(void 0, void 0, void 0, function* () {
 exports.open = open;
 const findAll = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const deposits = (0, knex_ts_1.db)("deposits")
+        const deposits = (0, knex_1.db)("deposits")
             .select("id", "hours", "amount", "closed", "user_id", "percent", "created_at")
             .where("user_id", userId);
         return deposits;
@@ -35,7 +35,7 @@ const findAll = (userId) => __awaiter(void 0, void 0, void 0, function* () {
 exports.findAll = findAll;
 const getActiveDeposit = (depositId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const deposit = (0, knex_ts_1.db)("deposits")
+        const deposit = (0, knex_1.db)("deposits")
             .select("*")
             .where("id", depositId)
             .where("closed", false)
@@ -51,7 +51,7 @@ const closeDeposit = (deposit) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         let closedDeposit = deposit;
         closedDeposit.closed = true;
-        const updatedDeposit = yield (0, knex_ts_1.db)("deposits")
+        const updatedDeposit = yield (0, knex_1.db)("deposits")
             .where("id", deposit.id)
             .update(closedDeposit)
             .returning("*");

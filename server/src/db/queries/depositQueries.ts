@@ -1,4 +1,4 @@
-import { db } from "../knex.ts";
+import { db } from "../knex";
 
 const open = async (data: Deposit) => {
   try {

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 import { Request, Response, NextFunction } from "express";
-import { getUserByEmail } from "../db/queries/userQueries.ts";
+import { getUserByEmail } from "../db/queries/userQueries";
 
 interface CustomRequest extends Request {
   user: UserData;

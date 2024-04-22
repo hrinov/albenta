@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers/deposit.ts");
+const controller = require("../controllers/deposit");
 import { validateToken } from "../middlewares/validateToken";
 
 router
