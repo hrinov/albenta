@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-   "start": "npm run build && nodemon ./src/index.ts",
-   "build": "tsc"
+    "start": "npm run build && nodemon ./src/index.ts",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +28,7 @@
     "ws": "^8.15.1"
   },
   "devDependencies": {
+    "@types/node": "^20.12.7",
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
