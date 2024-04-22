@@ -5,7 +5,7 @@ import eye_off from "../../../../icons/eye-off.svg";
 import AvatarUpload from "./components/imageLoader";
 import { updateUser } from "../../../../redux/slice";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch, FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import loadingAnimation from "../../../../icons/loading.svg";
 
 const Profile: FC = () => {

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon ./src/index.ts",
-    "build": "tsc"
+   "start": "npm run build && nodemon ./src/index.ts",
+   "build": "tsc"
   },
   "author": "",
   "license": "ISC",
