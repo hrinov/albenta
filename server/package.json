@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "npm run build && nodemon ./src/index.ts",
-    "build": "npm install && tsc"
+    "start": "tsc && nodemon ./src/index.ts",
+    "build": "npm install"
   },
   "author": "",
   "license": "ISC",
