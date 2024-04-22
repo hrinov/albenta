@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "tsc && node src/index.ts",
-    "build": "npm install"
+    "start": "node dist/index.ts",
+    "build": "nom install && tsc"
   },
   "author": "",
   "license": "ISC",
