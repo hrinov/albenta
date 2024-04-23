@@ -132,7 +132,7 @@ const Plans: FC = () => {
           </div>
           <Doughnut
             data={charts[i]}
-            className={`${deposits ? "" : "skeleton"}`}
+            className={`${deposits ? "" : "transparent"}`}
           />
           <button
             disabled={!!time || !deposits}
@@ -145,6 +145,7 @@ const Plans: FC = () => {
             src={loadingAnimation}
             style={{ opacity: loading == i ? 0.8 : 0 }}
           />
+          <div className={`skeleton-circle ${deposits ? "hide" : ""}`} />
           <div className={`white-circle ${deposits ? "" : "hide"}`} />
           {time && <div className="timer">{time}h</div>}
         </div>
