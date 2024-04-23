@@ -31,16 +31,12 @@ const SignupPage: FC = () => {
       window.localStorage.setItem("accessToken", access_token);
       window.localStorage.setItem("refreshToken", refresh_token);
 
-      setTimeout(() => {
-        dispatch(updateUser({ id, email, name, balance, avatar }));
-        setLoading(false);
-        navigate("/account/deposits/plans");
-      }, 3500);
+      dispatch(updateUser({ id, email, name, balance, avatar }));
+      setLoading(false);
+      navigate("/account/deposits/plans");
     } else {
-      setTimeout(() => {
-        setLoading(false);
-        response?.message && setError(response?.message);
-      }, 3500);
+      setLoading(false);
+      response?.message && setError(response?.message);
     }
   };
 

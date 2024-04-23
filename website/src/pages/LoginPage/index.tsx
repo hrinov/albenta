@@ -26,19 +26,15 @@ const LoginPage: FC = () => {
       const { avatar, access_token, refresh_token, id, email, name, balance } =
         response.data!;
 
-      setTimeout(() => {
-        window.localStorage.setItem("accessToken", access_token);
-        window.localStorage.setItem("refreshToken", refresh_token);
+      window.localStorage.setItem("accessToken", access_token);
+      window.localStorage.setItem("refreshToken", refresh_token);
 
-        dispatch(updateUser({ id, email, name, balance, avatar }));
-        setLoading(false);
-        navigate("/account/deposits/plans");
-      }, 3000);
+      dispatch(updateUser({ id, email, name, balance, avatar }));
+      setLoading(false);
+      navigate("/account/deposits/plans");
     } else {
-      setTimeout(() => {
-        setLoading(false);
-        response?.message && setError(response?.message);
-      }, 3000);
+      setLoading(false);
+      response?.message && setError(response?.message);
     }
   };
 
