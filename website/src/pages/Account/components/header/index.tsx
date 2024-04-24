@@ -1,5 +1,5 @@
 import "./index.sass";
-const url = import.meta.env.VITE_URL;
+const url = import.meta.env.VITE_SERVER_URL;
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { FC, useEffect, useState } from "react";

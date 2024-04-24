@@ -1,4 +1,4 @@
-const url = import.meta.env.VITE_URL;
+const url = import.meta.env.VITE_SERVER_URL;
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import profileDefaultImg from "../../../../../../images/profile.png";
