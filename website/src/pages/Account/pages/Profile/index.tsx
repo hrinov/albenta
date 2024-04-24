@@ -6,7 +6,6 @@ import AvatarUpload from "./components/imageLoader";
 import { updateUser } from "../../../../redux/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { FC, useEffect, useState } from "react";
-import loadingAnimation from "../../../../icons/loading.svg";
 import { Spin } from "antd";
 
 const Profile: FC = () => {
