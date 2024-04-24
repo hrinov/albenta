@@ -1,6 +1,6 @@
 import "./index.sass";
 import { InputNumber } from "antd";
-const url = import.meta.env.VITE_URL;
+const url = import.meta.env.VITE_SERVER_URL;
 import { Doughnut } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import { updateDeposits } from "../../../../redux/slice";
