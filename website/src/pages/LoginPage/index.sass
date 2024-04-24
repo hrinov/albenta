@@ -35,11 +35,12 @@ section.login-page
         position: absolute
         height: 26px
         bottom: -34px
-        transition-duration: 400ms
+        transition-duration: 250ms
         color: #db5aa1
         font-weight: 300
 
     .inputs-wrapper
+        transition-duration: 250ms
         position: relative
         display: flex
         flex-direction: column
@@ -47,11 +48,8 @@ section.login-page
         align-items: center
         gap: 24px
         width: 350px
-        height: 300px
+        height: 320px
         border-radius: 5%
-        border: 1px solid black
-        &:hover
-            border: 1px solid #db5aa1
 
         input
             width: 80%
@@ -59,9 +57,10 @@ section.login-page
             margin: 0 auto
             padding: 14px
             outline: unset
-            border: 1px solid black
+            border: 1px solid transparent
             box-shadow: unset
             border-radius: 3px
+            border: 1px solid #000
         ::placeholder
             font-weight: 300
 
@@ -70,7 +69,7 @@ section.login-page
             margin: 0
             color: #db5aa1
             font-weight: 200
-            font-size: 30px
+            font-size: 38px
 
         .ok-btn
             height: 38px
@@ -82,17 +81,20 @@ section.login-page
             color: #db5aa1
             font-weight: 300
             font-size: 18px
-            border: 2px solid white
             border-radius: 3px
             cursor: pointer
-            border: 1px solid black
+            border: 1px solid #000
             margin-bottom: 8px
+            background-color: #fff
             &:hover
                 border: 1px solid #db5aa1
+                background-color: #db5aa1
+                color: #fff
 
-    .loading
+    .spin-wrapper
+        z-index: 100
         position: absolute
-        width: 40px
-        height: 40px
-        bottom: 27px
-        right: 52px
+        .ant-spin
+            scale: 1.5
+            .ant-spin-dot-item
+                background-color: #000
