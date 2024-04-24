@@ -1,15 +1,23 @@
 import "./index.sass";
-import { FC, useState } from "react";
+import { Spin } from "antd";
 import { useDispatch } from "react-redux";
+import { useSpring, a } from "react-spring";
+import styles from "./animation.module.sass";
 import { requestHandler } from "../../utils";
 import { updateUser } from "../../redux/slice";
 import { useNavigate } from "react-router-dom";
-import { useSpring, animated, SpringValue } from "react-spring";
-import loadingAnimation from "../../icons/loading.svg";
+import { FC, useEffect, useState } from "react";
 
 const SignupPage: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [flipped, setFlipped] = useState(false);
+  const { transform, opacity } = useSpring({
+    opacity: flipped ? 1 : 0,
+    transform: `perspective(600px) rotateX(${flipped ? 180 : 0}deg)`,
+    config: { mass: 5, tension: 500, friction: 80 },
+  });
 
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -24,20 +32,29 @@ const SignupPage: FC = () => {
 
     const response: MeResponse = await requestHandler("signup", "POST", data);
 
-    if (response?.success) {
-      const { avatar, access_token, refresh_token, id, email, name, balance } =
-        response.data!;
+    setTimeout(() => {
+      if (response?.success) {
+        const {
+          avatar,
+          access_token,
+          refresh_token,
+          id,
+          email,
+          name,
+          balance,
+        } = response.data!;
 
-      window.localStorage.setItem("accessToken", access_token);
-      window.localStorage.setItem("refreshToken", refresh_token);
+        window.localStorage.setItem("accessToken", access_token);
+        window.localStorage.setItem("refreshToken", refresh_token);
 
-      dispatch(updateUser({ id, email, name, balance, avatar }));
-      setLoading(false);
-      navigate("/account/deposits/plans");
-    } else {
-      setLoading(false);
-      response?.message && setError(response?.message);
-    }
+        dispatch(updateUser({ id, email, name, balance, avatar }));
+        setLoading(false);
+        navigate("/account/deposits/plans");
+      } else {
+        setLoading(false);
+        response?.message && setError(response?.message);
+      }
+    }, 1000);
   };
 
   const createInput = (
@@ -46,130 +63,59 @@ const SignupPage: FC = () => {
     onChange: (e: any) => void
   ) => <input {...{ value, placeholder, onChange }} />;
 
+  useEffect(() => {
+    setFlipped((state) => !state);
+  }, [loading]);
+
+  const isFormNotFilled = !name || !email || !password;
+
   return (
     <section className="signup-page">
       <button className={"login-btn"} onClick={() => navigate("/login")}>
         Login
       </button>
-      <div className="inputs-wrapper">
-        <h1>
-          <AnimatedTitle loading={loading} />
-        </h1>
 
-        {createInput(name, "name", (e) => setName(e.target.value))}
-        {createInput(email, "email", (e) => setEmail(e.target.value))}
-        {createInput(password, "password", (e) => setPassword(e.target.value))}
+      <div className={styles.container}>
+        <a.div
+          className={`${styles.c} ${styles.back}`}
+          style={{ opacity: opacity.to((o) => 1 - o), transform }}
+        />
 
         <div
-          className="ok-btn"
-          onClick={() => registerUser()}
-          children={"NEXT"}
-        />
-        <img
-          src={loadingAnimation}
-          className="loading"
-          style={{ opacity: loading ? 1 : 0 }}
-        />
-        <div
-          className={`error-message ${!error && "transparent"}`}
-          children={error}
+          className="inputs-wrapper"
+          style={{ zIndex: loading ? 0 : 100, opacity: loading ? 0 : 1 }}
+        >
+          <div className="title-wrapper" children={"Sign Up"} />
+
+          {createInput(name, "name", (e) => setName(e.target.value))}
+          {createInput(email, "email", (e) => setEmail(e.target.value))}
+          {createInput(password, "password", (e) =>
+            setPassword(e.target.value)
+          )}
+
+          <div
+            className="ok-btn"
+            onClick={() => !isFormNotFilled && registerUser()}
+            children={"NEXT"}
+          />
+          <div
+            className={`error-message ${!error && "transparent"}`}
+            children={error}
+          />
+        </div>
+
+        {loading && <div className="spin-wrapper" children={<Spin />} />}
+
+        <a.div
+          className={`${styles.c} ${styles.front}`}
+          style={{
+            opacity,
+            transform,
+            rotateX: "180deg",
+          }}
         />
       </div>
     </section>
-  );
-};
-
-const AnimatedTitle: FC<{ loading: boolean }> = ({ loading }) => {
-  const changeColor = () => {
-    const baseColor = "#db5aa1";
-    const animationColor = "#000";
-    const baseTransform = "translateY(0)";
-    const animatedTransform = "translateY(-4px)";
-
-    return useSpring({
-      from: {
-        color1: baseColor,
-        transform1: baseTransform,
-        color2: baseColor,
-        transform2: baseTransform,
-        color3: baseColor,
-        transform3: baseTransform,
-        color4: baseColor,
-        transform4: baseTransform,
-        color5: baseColor,
-        transform5: baseTransform,
-        color6: baseColor,
-        transform6: baseTransform,
-      },
-      to: async (next) => {
-        for (let i = 1; i <= 6; i++) {
-          await next({
-            [`color${i}`]: animationColor,
-            [`transform${i}`]: animatedTransform,
-          });
-          await next({
-            [`color${i}`]: baseColor,
-            [`transform${i}`]: baseTransform,
-          });
-        }
-      },
-      loop: { reverse: true },
-      config: { duration: 300 },
-    });
-  };
-
-  const createAnimatedElement = (
-    letter: string,
-    color: SpringValue<string>,
-    transform: SpringValue<string>
-  ) => (
-    <animated.div
-      children={letter}
-      style={
-        loading
-          ? {
-              color: color,
-              transform: transform,
-            }
-          : {}
-      }
-    />
-  );
-
-  return (
-    <div className="title-wrapper">
-      {createAnimatedElement(
-        "S",
-        changeColor().color1,
-        changeColor().transform1
-      )}
-      {createAnimatedElement(
-        "i",
-        changeColor().color2,
-        changeColor().transform2
-      )}
-      {createAnimatedElement(
-        "g",
-        changeColor().color3,
-        changeColor().transform3
-      )}
-      {createAnimatedElement(
-        "n",
-        changeColor().color4,
-        changeColor().transform4
-      )}
-      <div className="space" />
-      {createAnimatedElement(
-        "U",
-        changeColor().color5,
-        changeColor().transform5
-      )}
-      {createAnimatedElement(
-        "p",
-        changeColor().color6,
-        changeColor().transform6
-      )}
-    </div>
   );
 };
 

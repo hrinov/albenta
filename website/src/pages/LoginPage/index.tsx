@@ -12,7 +12,7 @@ const LoginPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [flipped, set] = useState(false);
+  const [flipped, setFlipped] = useState(false);
   const { transform, opacity } = useSpring({
     opacity: flipped ? 1 : 0,
     transform: `perspective(600px) rotateX(${flipped ? 180 : 0}deg)`,
@@ -63,8 +63,10 @@ const LoginPage: FC = () => {
   ) => <input {...{ value, placeholder, onChange }} />;
 
   useEffect(() => {
-    set((state) => !state);
+    setFlipped((state) => !state);
   }, [loading]);
+
+  const isFormNotFilled = !email || !password;
 
   return (
     <section className="login-page">
@@ -89,7 +91,11 @@ const LoginPage: FC = () => {
           {createInput(password, "password", (e) =>
             setPassword(e.target.value)
           )}
-          <div className="ok-btn" onClick={loginUser} children={"NEXT"} />
+          <div
+            className="ok-btn"
+            onClick={() => !isFormNotFilled && loginUser()}
+            children={"NEXT"}
+          />
           <div
             className={`error-message ${!error && "transparent"}`}
             children={error}

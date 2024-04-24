@@ -40,6 +40,7 @@ section.signup-page
         font-weight: 300
 
     .inputs-wrapper
+        transition-duration: 250ms
         position: relative
         display: flex
         flex-direction: column
@@ -49,11 +50,6 @@ section.signup-page
         width: 350px
         height: 380px
         border-radius: 5%
-        border: 1px solid black
-        padding-bottom: 16px
-
-        &:hover
-            border: 1px solid #db5aa1
 
         input
             width: 80%
@@ -73,10 +69,10 @@ section.signup-page
 
         .title-wrapper
             display: flex
-            transform: translateY(10px)
+            margin: 0
             color: #db5aa1
             font-weight: 200
-            font-size: 30px
+            font-size: 38px
 
         .ok-btn
             height: 38px
@@ -88,18 +84,20 @@ section.signup-page
             color: #db5aa1
             font-weight: 300
             font-size: 18px
-            border: 2px solid white
             border-radius: 3px
             cursor: pointer
-            border: 1px solid black
+            border: 1px solid #000
             margin-bottom: 8px
-
+            background-color: #fff
             &:hover
                 border: 1px solid #db5aa1
+                background-color: #db5aa1
+                color: #fff
 
-    .loading
+    .spin-wrapper
+        z-index: 100
         position: absolute
-        width: 40px
-        height: 40px
-        bottom: 27px
-        right: 52px
+        .ant-spin
+            scale: 1.5
+            .ant-spin-dot-item
+                background-color: #000
