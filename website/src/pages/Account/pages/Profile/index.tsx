@@ -7,6 +7,7 @@ import { updateUser } from "../../../../redux/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { FC, useEffect, useState } from "react";
 import loadingAnimation from "../../../../icons/loading.svg";
+import { Spin } from "antd";
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -69,23 +70,16 @@ const Profile: FC = () => {
             type={isPasVisible ? "text" : "password"}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <div
-            children={"SAVE"}
-            className="ok-btn"
-            onClick={handleUserUpdate}
-          />
+          <div className="ok-btn" onClick={handleUserUpdate}>
+            SAVE
+            <Spin style={{ opacity: loading ? 1 : 0 }} className="loading" />
+          </div>
           <img
             src={!isPasVisible ? eye : eye_off}
             onClick={() => setIsPasVisible(!isPasVisible)}
           />
         </div>
       </form>
-
-      <img
-        className="loading"
-        src={loadingAnimation}
-        style={{ opacity: loading ? 1 : 0 }}
-      />
 
       <div className={`error ${error && "active"}`}>{error}</div>
     </div>

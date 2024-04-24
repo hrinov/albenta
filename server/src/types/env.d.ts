@@ -13,11 +13,10 @@ interface Deposit {
 
 interface Activity {
   browser: string;
-  country: string;
   date: Date;
   device: string;
   id?: number;
-  ip: number;
+  ip: string;
   type: string;
   user_id: number;
 }

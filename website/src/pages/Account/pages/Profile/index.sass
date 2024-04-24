@@ -37,13 +37,16 @@
         border: 1px solid #d9d9d9
         object-fit: cover
 
-    img.loading
+    .ant-spin.loading
         height: 40px
         border: unset
         position: absolute
-        bottom: 16px
-        right: 242px
+        top: 9px
+        right: 24px
         transition-duration: 300ms
+
+        .ant-spin-dot-item
+            background-color: #000
 
     form
         display: flex
@@ -90,6 +93,7 @@
                     padding-right: 34px
 
         .ok-btn
+            position: relative
             box-sizing: border-box
             height: 40px
             width: 100%
