@@ -33,7 +33,7 @@ const auth = async (req: CustomRequest, res: Response) => {
   //generate new tokens
   function generateAccessToken() {
     return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, {
-      expiresIn: "10s",
+      expiresIn: "15m",
     });
   }
 
