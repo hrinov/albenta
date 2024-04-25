@@ -20,10 +20,9 @@ export const requestHandler = async (
       });
       const refreshResponse = await refreshResponseJSON.json();
       if (refreshResponse?.success) {
-        const { access_token, refresh_token } = refreshResponse?.data;
+        const { access_token } = refreshResponse?.data;
 
         window.localStorage.setItem("accessToken", access_token);
-        window.localStorage.setItem("refreshToken", refresh_token);
 
         return makeRequest();
       } else {
@@ -47,12 +46,9 @@ export const requestHandler = async (
     const response = await responseJSON.json();
 
     switch (response?.message) {
-      case "token has expired":
-        {
-          localStorage.clear();
-          await handleRefreshToken();
-        }
-        break;
+      case "token has expired": {
+        return await handleRefreshToken();
+      }
       case "wrong token":
         {
           localStorage.clear();

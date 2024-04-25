@@ -33,7 +33,7 @@ const auth = async (req: CustomRequest, res: Response) => {
   //generate new tokens
   function generateAccessToken() {
     return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, {
-      expiresIn: "15m",
+      expiresIn: "10s",
     });
   }
 
@@ -54,7 +54,6 @@ const auth = async (req: CustomRequest, res: Response) => {
     const result = await updateUser(data);
     if (result) {
       delete result.password;
-      console.log(req);
       //handle activity
       try {
         await handleUserActivity(req.useragent, user.id, "login");

@@ -15,7 +15,7 @@ const Activity: FC = () => {
       total: number;
     } = await requestHandler(`activity?page=${pageNumber}`, "GET");
 
-    if (response.success) {
+    if (response?.success) {
       setActivity(response.data);
       setTotalItems(response.total || 1);
     }

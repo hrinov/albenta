@@ -42,16 +42,9 @@ const updateTokens = async (req: Request, res: Response) => {
     });
   }
 
-  function generateRefreshToken() {
-    return jwt.sign({ email: user.email }, process.env.TOKEN_SECRET, {
-      expiresIn: "1d",
-    });
-  }
-
   const data = {
     ...user,
     access_token: generateAccessToken(),
-    refresh_token: generateRefreshToken(),
   };
   //update user
   try {

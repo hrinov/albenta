@@ -37,7 +37,7 @@ const Income: FC = () => {
         "GET"
       );
 
-      if (response.success) {
+      if (response?.success) {
         const { data, total, average } = response;
         const daysInMonth = getDaysInMonth(currentMonth);
         setMonthIncome({ data, total, average, daysInMonth });
