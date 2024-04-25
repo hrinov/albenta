@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { updateUser } from "../db/queries/userQueries";
 import { handleUserActivity } from "../utils/activityLog";
 import { getActiveDeposit, closeDeposit } from "../db/queries/depositQueries";
-import { convertIPv6ToIPv4 } from "../utils/ipConverter";
 
 interface CustomRequest extends Request {
   useragent: { [key: string]: string };
@@ -43,7 +42,6 @@ const withdrawDeposit = async (req: CustomRequest, res: Response) => {
 
   //handle activity
   handleUserActivity(
-    convertIPv6ToIPv4(req.ip!),
     req.useragent,
     req.user.id!,
     `withdraw ${totalDepositSum}$`

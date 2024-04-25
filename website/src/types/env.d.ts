@@ -45,7 +45,7 @@ interface DepositInterface {
 }
 
 interface ActivityInterface {
-  ip: number;
+  platform: string;
   country: string;
   device: string;
   browser: string;

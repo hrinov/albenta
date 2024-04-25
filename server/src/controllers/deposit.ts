@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { convertIPv6ToIPv4 } from "../utils/ipConverter";
 const { updateUser } = require("../db/queries/userQueries");
 const { handleUserActivity } = require("../utils/activityLog");
 const { open, findAll } = require("../db/queries/depositQueries");
@@ -71,7 +70,6 @@ const openDeposit = async (req: CustomRequest, res: Response) => {
 
   try {
     await handleUserActivity(
-      convertIPv6ToIPv4(req.ip!),
       req.useragent,
       req.user.id,
       `open ${percent}% deposit`

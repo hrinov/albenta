@@ -16,7 +16,7 @@ interface Activity {
   date: Date;
   device: string;
   id?: number;
-  ip: string;
+  platform: string;
   type: string;
   user_id: number;
 }

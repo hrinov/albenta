@@ -2,7 +2,6 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 import { Request, Response } from "express";
-import { convertIPv6ToIPv4 } from "../utils/ipConverter";
 import { handleUserActivity } from "../utils/activityLog";
 import { getUserByEmail, updateUser } from "../db/queries/userQueries";
 
@@ -55,15 +54,10 @@ const auth = async (req: CustomRequest, res: Response) => {
     const result = await updateUser(data);
     if (result) {
       delete result.password;
-
+      console.log(req);
       //handle activity
       try {
-        await handleUserActivity(
-          convertIPv6ToIPv4(req.ip!),
-          req.useragent,
-          user.id,
-          "login"
-        );
+        await handleUserActivity(req.useragent, user.id, "login");
       } catch (error) {
         console.log(error);
       }

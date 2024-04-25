@@ -3,7 +3,6 @@ const fs = require("fs").promises;
 import { Request, Response } from "express";
 import { handleUserActivity } from "../utils/activityLog";
 import { updateUser as updateUserQuery } from "../db/queries/userQueries";
-import { convertIPv6ToIPv4 } from "../utils/ipConverter";
 
 interface CustomRequest extends Request {
   useragent: { [key: string]: string };
@@ -48,12 +47,7 @@ const deleteAvatar = async (req: CustomRequest, res: Response) => {
     if (result && req?.ip && req?.useragent) {
       // handle activity
       try {
-        await handleUserActivity(
-          convertIPv6ToIPv4(req.ip!),
-          req.useragent,
-          req.user.id!,
-          "update profile"
-        );
+        await handleUserActivity(req.useragent, req.user.id!, "update profile");
       } catch (error) {
         console.log(error);
       }

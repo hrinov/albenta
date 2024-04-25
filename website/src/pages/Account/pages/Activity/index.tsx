@@ -42,7 +42,7 @@ const Activity: FC = () => {
           <div className="block">DATE</div>
           <div className="block right">DEVICE</div>
           <div className="block right">BROWSER</div>
-          <div className="block right">USER IP</div>
+          <div className="block right">PLATFORM</div>
           <div className="block right colored-blue">ACTIVITY</div>
         </div>
 
@@ -52,7 +52,7 @@ const Activity: FC = () => {
             <div className="block">{formatDate(item.date)}</div>
             <div className="block right">{item.device}</div>
             <div className="block right">{item.browser}</div>
-            <div className="block right">{item.ip}</div>
+            <div className="block right">{item.platform}</div>
             <div className="block right">{item.type}</div>
           </div>
         ))}

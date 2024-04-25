@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 import { Request, Response } from "express";
 import { handleUserActivity } from "../utils/activityLog";
 import { getUserByEmail, createUser } from "../db/queries/userQueries";
-import { convertIPv6ToIPv4 } from "../utils/ipConverter";
 
 interface CustomRequest extends Request {
   useragent: { [key: string]: string };
@@ -87,12 +86,7 @@ const addUser = async (req: CustomRequest, res: Response) => {
 
       //handle activity
       try {
-        await handleUserActivity(
-          convertIPv6ToIPv4(req.ip!),
-          req.useragent,
-          user.id,
-          "login"
-        );
+        await handleUserActivity(req.useragent, user.id, "login");
       } catch (error) {
         console.log(error);
       }
