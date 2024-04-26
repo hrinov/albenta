@@ -8,6 +8,7 @@ import { handleUserActivity } from "../utils/activityLog";
 import { updateUser as updateUserQuery } from "../db/queries/userQueries";
 
 interface CustomRequest extends Request {
+  uploadedFilename: string;
   useragent: { [key: string]: string };
   file: { filename: string };
   user: UserData;
@@ -15,7 +16,7 @@ interface CustomRequest extends Request {
 
 const updateUser = async (req: CustomRequest, res: Response) => {
   let { name, email, password } = req.body;
-  const avatar = req?.file?.filename;
+  const avatar = req?.uploadedFilename;
 
   // handle not all arguments
   if (!name && !email && !password && !avatar) {
@@ -74,7 +75,7 @@ const updateUser = async (req: CustomRequest, res: Response) => {
   try {
     const data = {
       ...req.user,
-      ...(name ? { name: name } : {}),
+      ...(name ? { name } : {}),
       ...(email
         ? {
             email: email,
@@ -82,8 +83,8 @@ const updateUser = async (req: CustomRequest, res: Response) => {
             refresh_token: generateRefreshToken(),
           }
         : {}),
-      ...(password ? { password: password } : {}),
-      ...(avatar ? { avatar: avatar } : {}),
+      ...(password ? { password } : {}),
+      ...(avatar ? { avatar } : {}),
     };
 
     const result = await updateUserQuery(data);

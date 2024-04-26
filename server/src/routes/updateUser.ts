@@ -1,8 +1,13 @@
 const multer = require("multer");
 import { Request } from "express";
 const express = require("express");
+const { v4: uuidv4 } = require("uuid");
 const controller = require("../controllers/updateUser");
 import { validateToken } from "../middlewares/validateToken";
+
+interface CustomRequest extends Request {
+  uploadedFilename: string;
+}
 
 const router = express.Router();
 
@@ -11,11 +16,16 @@ router.use(validateToken);
 const storage = multer.diskStorage({
   destination: "uploads/",
   filename: function (
-    _: Request,
+    req: CustomRequest,
     file: { originalname: string },
     cb: (error: Error | null, filename: string) => void
   ) {
-    cb(null, file.originalname);
+    const fileId = uuidv4();
+    const fileExtension = file.originalname.split(".").pop();
+
+    const newFilename = `${fileId}.${fileExtension}`;
+    req.uploadedFilename = newFilename;
+    cb(null, newFilename);
   },
 });
 
