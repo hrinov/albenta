@@ -2,11 +2,13 @@ import "./index.sass";
 import { Spin } from "antd";
 import { useDispatch } from "react-redux";
 import { useSpring, a } from "react-spring";
+import eye from "../../icons/eye.svg";
 import { requestHandler } from "../../utils";
 import styles from "./animation.module.sass";
 import { useNavigate } from "react-router-dom";
 import { updateUser } from "../../redux/slice";
 import { FC, useEffect, useState } from "react";
+import eye_off from "../../icons/eye-off.svg";
 
 const LoginPage: FC = () => {
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ const LoginPage: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [isPasVisible, setIsPasVisible] = useState<boolean>(false);
 
   const loginUser = async () => {
     setError("");
@@ -60,7 +63,18 @@ const LoginPage: FC = () => {
     value: string,
     placeholder: string,
     onChange: (e: any) => void
-  ) => <input {...{ value, placeholder, onChange }} />;
+  ) => (
+    <>
+      <input
+        {...{ value, placeholder, onChange }}
+        type={isPasVisible || placeholder == "email" ? "text" : "password"}
+      />
+      <img
+        src={!isPasVisible ? eye : eye_off}
+        onClick={() => setIsPasVisible(!isPasVisible)}
+      />
+    </>
+  );
 
   useEffect(() => {
     setFlipped((state) => !state);

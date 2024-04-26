@@ -1,9 +1,11 @@
 import "./index.sass";
 import { Spin } from "antd";
+import eye from "../../icons/eye.svg";
 import { useDispatch } from "react-redux";
 import { useSpring, a } from "react-spring";
 import styles from "./animation.module.sass";
 import { requestHandler } from "../../utils";
+import eye_off from "../../icons/eye-off.svg";
 import { updateUser } from "../../redux/slice";
 import { useNavigate } from "react-router-dom";
 import { FC, useEffect, useState } from "react";
@@ -24,6 +26,7 @@ const SignupPage: FC = () => {
   const [error, setError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [isPasVisible, setIsPasVisible] = useState<boolean>(false);
 
   const registerUser = async () => {
     setError("");
@@ -61,7 +64,18 @@ const SignupPage: FC = () => {
     value: string,
     placeholder: string,
     onChange: (e: any) => void
-  ) => <input {...{ value, placeholder, onChange }} />;
+  ) => (
+    <>
+      <input
+        {...{ value, placeholder, onChange }}
+        type={isPasVisible || placeholder == "email" ? "text" : "password"}
+      />
+      <img
+        src={!isPasVisible ? eye : eye_off}
+        onClick={() => setIsPasVisible(!isPasVisible)}
+      />
+    </>
+  );
 
   useEffect(() => {
     setFlipped((state) => !state);

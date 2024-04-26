@@ -31,6 +31,7 @@ export const requestHandler = async (
     };
 
     const handleLogout = () => {
+      localStorage.clear();
       window.location.href = window.location.origin + "/login";
     };
 
@@ -51,7 +52,6 @@ export const requestHandler = async (
       }
       case "wrong token":
         {
-          localStorage.clear();
           handleLogout();
         }
         break;
