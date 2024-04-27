@@ -10,7 +10,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the server directory to the working directory
-COPY server ./server
+COPY albenta ./
 
 # Build the server
 RUN npm run build-server
