@@ -3,14 +3,11 @@ FROM node:18.16.0
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy all files and folders to the working directory
+COPY . .
 
 # Install dependencies
 RUN npm install
-
-# Copy the server directory to the working directory
-COPY albenta ./
 
 # Build the server
 RUN npm run build-server
