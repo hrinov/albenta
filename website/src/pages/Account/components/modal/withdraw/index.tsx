@@ -1,6 +1,6 @@
 import "./index.sass";
-import { FC } from "react";
-import { Modal } from "antd";
+import { Modal, Spin } from "antd";
+import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { updateDeposits } from "../../../../../redux/slice";
@@ -12,6 +12,8 @@ const WithdrawModalWindow: FC<ModalWindowInterface> = ({
   handleWithdrawModal,
 }) => {
   const dispatch: Dispatch<any> = useDispatch();
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getDeposits = async () => {
     let response = await requestHandler(
@@ -25,8 +27,10 @@ const WithdrawModalWindow: FC<ModalWindowInterface> = ({
   };
 
   const handleOk = async (depositId: number) => {
+    setLoading(true);
     await requestHandler("withdraw", "POST", { depositId });
     await getDeposits();
+    setLoading(false);
     dispatch(fetchUser());
     handleWithdrawModal(false, null, null);
   };
@@ -43,6 +47,7 @@ const WithdrawModalWindow: FC<ModalWindowInterface> = ({
         Are you sure you want to withdraw {isWithdrawModalOpen.amount}$ to your
         account?
       </p>
+      {loading && <Spin />}
     </Modal>
   );
 };
