@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router";
 import Activity from "../../../../icons/timer.svg?react";
 import Profile from "../../../../icons/profile.svg?react";
 import Deposits from "../../../../icons/deposits.svg?react";
+import Logo from "./../../../../icons/logo.svg?react";
 
 const Navigation: FC = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Navigation: FC = () => {
 
   return (
     <section className={"navigation"}>
-      <div className={"logo"} children={"ALBENTA"} />
+      <div className={"logo"} children={<Logo />} />
 
       <nav className={"first-menu"}>
         <NavItem
