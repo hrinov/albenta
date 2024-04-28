@@ -4,7 +4,7 @@
         color: #e62d93
         font-weight: 300
         text-transform: uppercase
-        padding-left: 80px
+        padding-left: 95px
 
     .chart-holder
         position: relative
@@ -38,7 +38,7 @@
                 font-weight: 200
                 display: flex
                 align-items: center
-                padding-left: 16px
+                padding-left: 24px
 
                 &::after
                     content: ""
@@ -49,6 +49,14 @@
                     width: 1px
                     height: 280px
                     background-color: #dbdbdb
+
+            .total::before, .average::before
+                content: ""
+                width: 7px
+                height: 7px
+                background-color: #15be07
+                border-radius: 100%
+                transform: translateX(-8px)
 
             span
                 color: #e62d93

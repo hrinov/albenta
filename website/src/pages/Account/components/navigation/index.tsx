@@ -28,7 +28,6 @@ const Navigation: FC = () => {
   return (
     <section className={"navigation"}>
       <div className={"logo"} children={<Logo />} />
-
       <nav className={"first-menu"}>
         <NavItem
           name={"Deposits"}
