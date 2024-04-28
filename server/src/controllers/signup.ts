@@ -84,13 +84,6 @@ const addUser = async (req: CustomRequest, res: Response) => {
       delete result.password;
       delete result.id;
 
-      //handle activity
-      try {
-        await handleUserActivity(req.useragent, user.id, "login");
-      } catch (error) {
-        console.log(error);
-      }
-
       return res.status(200).json({ success: true, data: result });
     } else {
       throw Error;
