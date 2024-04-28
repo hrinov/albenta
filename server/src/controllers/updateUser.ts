@@ -8,7 +8,7 @@ import { handleUserActivity } from "../utils/activityLog";
 import { updateUser as updateUserQuery } from "../db/queries/userQueries";
 
 interface CustomRequest extends Request {
-  uploadedFilename: string;
+  uploadedFilePath: string;
   useragent: { [key: string]: string };
   file: { filename: string };
   user: UserData;
@@ -16,9 +16,9 @@ interface CustomRequest extends Request {
 
 const updateUser = async (req: CustomRequest, res: Response) => {
   let { name, email, password } = req.body;
-  const avatar = req?.uploadedFilename;
+  const avatar = req?.uploadedFilePath;
 
-  // handle not all arguments
+  //handle not all arguments
   if (!name && !email && !password && !avatar) {
     return res
       .status(400)
@@ -50,7 +50,7 @@ const updateUser = async (req: CustomRequest, res: Response) => {
     password = bcrypt.hashSync(password, 10);
   }
 
-  // validate email
+  //validate email
   if (email) {
     email = email.trim();
     const validateEmail = () => {
@@ -89,7 +89,7 @@ const updateUser = async (req: CustomRequest, res: Response) => {
 
     const result = await updateUserQuery(data);
 
-    // delete the avatar in case of updating it
+    //delete the avatar in case of updating it
     if (avatar) {
       try {
         const previousAvatar = req.user?.avatar;

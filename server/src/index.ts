@@ -14,7 +14,6 @@ import {
 import { useWS } from "./ws";
 import { Server as WebSocketServer } from "ws";
 
-const path = require("path");
 const cors = require("cors");
 const http = require("http");
 const WebSocket = require("ws");
@@ -26,7 +25,6 @@ const useragent = require("express-useragent");
 const app = express();
 app.use(useragent.express());
 app.use("/api", apiRouter);
-app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 apiRouter.use(cors());
 apiRouter.use(cookieParser());

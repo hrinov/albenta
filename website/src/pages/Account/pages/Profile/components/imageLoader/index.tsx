@@ -32,6 +32,12 @@ const AvatarUpload: React.FC = () => {
 
     if (input.files && input.files[0]) {
       const file = input.files[0];
+
+      if (file.size > 1000000) {
+        setLoading(false);
+        return;
+      }
+
       const formData = new FormData();
       formData.append("file", file);
       await addAvatar(formData, file);
@@ -53,11 +59,7 @@ const AvatarUpload: React.FC = () => {
   };
 
   useEffect(() => {
-    setImagePreview(
-      user?.avatar
-        ? `${url}/api/avatar?filename=${user?.avatar}`
-        : profileDefaultImg
-    );
+    setImagePreview(user?.avatar ? user.avatar : profileDefaultImg);
   }, [user]);
 
   return (
@@ -87,6 +89,10 @@ const AvatarUpload: React.FC = () => {
           </div>
         </div>
       </div>
+      <p>
+        Max size:
+        <span>1 mb</span>
+      </p>
     </div>
   );
 };

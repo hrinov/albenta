@@ -1,41 +1,66 @@
 const multer = require("multer");
-import { Request } from "express";
 const express = require("express");
 const { v4: uuidv4 } = require("uuid");
 const controller = require("../controllers/updateUser");
-import { validateToken } from "../middlewares/validateToken";
+import { Request, Response, NextFunction } from "express";
+const { validateToken } = require("../middlewares/validateToken");
+const { getStorage, ref, uploadBytes } = require("firebase/storage");
+const { initializeFirebase } = require("../utils/initializeFirebase");
+import { deleteObject, getDownloadURL } from "firebase/storage";
 
 interface CustomRequest extends Request {
-  uploadedFilename: string;
+  uploadedFilePath: string;
+  user: UserData;
+  file: {
+    buffer?: Buffer;
+    mimetype?: string;
+  };
 }
 
 const router = express.Router();
+const upload = multer();
+
+const handleFileLoading = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.file) next();
+
+    //initialize Firebase
+    const firebaseApp = initializeFirebase();
+    const storage = getStorage(firebaseApp);
+
+    const currentAvatarUrl = req?.user?.avatar;
+
+    //delete the previous file
+    if (currentAvatarUrl) {
+      const currentFileRef = ref(storage, currentAvatarUrl);
+      await deleteObject(currentFileRef);
+    }
+
+    //create new file ref in Firebase
+    const newFileRef = ref(storage, uuidv4());
+
+    //upload new file
+    await uploadBytes(newFileRef, req.file.buffer, {
+      contentType: req.file.mimetype,
+    });
+
+    //get new file link
+    const downloadURL = await getDownloadURL(newFileRef);
+    req.uploadedFilePath = downloadURL;
+
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "error uploading file" });
+  }
+};
 
 router.use(validateToken);
-
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: function (
-    req: CustomRequest,
-    file: { originalname: string },
-    cb: (error: Error | null, filename: string) => void
-  ) {
-    const fileId = uuidv4();
-    const fileExtension = file.originalname.split(".").pop();
-
-    const newFilename = `${fileId}.${fileExtension}`;
-    req.uploadedFilename = newFilename;
-    cb(null, newFilename);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024,
-  },
-});
-
-router.route("/").put(upload.single("file"), controller.updateUser);
+router.put("/", upload.single("file"), handleFileLoading);
+router.use("/", controller.updateUser);
 
 export { router };

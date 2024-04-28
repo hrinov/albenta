@@ -20,11 +20,7 @@ const Header: FC = () => {
     .toUpperCase();
 
   useEffect(() => {
-    setAvatar(
-      user?.avatar
-        ? `${url}/api/avatar?filename=${user?.avatar}`
-        : profileDefaultImg
-    );
+    setAvatar(user?.avatar ? user?.avatar : profileDefaultImg);
   }, [user]);
 
   return (
