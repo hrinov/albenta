@@ -68,7 +68,7 @@ const SignupPage: FC = () => {
     <>
       <input
         {...{ value, placeholder, onChange }}
-        type={isPasVisible || placeholder == "email" ? "text" : "password"}
+        type={isPasVisible || placeholder == "password" ? "password" : "text"}
       />
       <img
         src={!isPasVisible ? eye : eye_off}
