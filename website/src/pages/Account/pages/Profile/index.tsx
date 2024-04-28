@@ -1,12 +1,12 @@
 import "./index.sass";
+import { Spin } from "antd";
 import eye from "../../../../icons/eye.svg";
+import { FC, useEffect, useState } from "react";
 import { requestHandler } from "../../../../utils";
 import eye_off from "../../../../icons/eye-off.svg";
 import AvatarUpload from "./components/imageLoader";
 import { updateUser } from "../../../../redux/slice";
 import { useDispatch, useSelector } from "react-redux";
-import { FC, useEffect, useState } from "react";
-import { Spin } from "antd";
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
