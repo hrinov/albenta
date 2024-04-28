@@ -67,7 +67,9 @@ const LoginPage: FC = () => {
     <>
       <input
         {...{ value, placeholder, onChange }}
-        type={isPasVisible || placeholder == "email" ? "text" : "password"}
+        type={
+          isPasVisible ? "text" : placeholder == "email" ? "text" : "password"
+        }
       />
       <img
         src={!isPasVisible ? eye : eye_off}
