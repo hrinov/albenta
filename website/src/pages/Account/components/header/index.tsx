@@ -19,7 +19,9 @@ const Header: FC = () => {
     .toUpperCase();
 
   useEffect(() => {
-    setAvatar(user?.avatar ? user?.avatar : profileDefaultImg);
+    if (user?.balance != undefined) {
+      setAvatar(user?.avatar ? user?.avatar : profileDefaultImg);
+    }
   }, [user]);
 
   return (
@@ -33,7 +35,7 @@ const Header: FC = () => {
         >
           <img
             src={avatar}
-            className={`${user?.balance == undefined ? "hide" : ""}`}
+            className={`${user?.balance == undefined ? "transparent" : ""}`}
           />
           <div className={"name"}>{user?.name || ""}</div>
           <div
