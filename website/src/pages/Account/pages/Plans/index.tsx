@@ -103,7 +103,7 @@ const Plans: FC = () => {
           Calculate profit
           <div className={`percent  ${deposits ? "" : "skeleton"}`}>
             {percents[i]}%
-            <span children={"/"} />
+            <span children={"/"} className={`${deposits ? "" : "hide"}`} />
             hour
           </div>
           <div className="configurator">

@@ -57,8 +57,8 @@ const openDeposit = async (req: CustomRequest, res: Response) => {
   const currentDate = new Date();
 
   const depositOptions = {
-    amount: +amount,
-    hours: +hours,
+    amount: Math.floor(+amount),
+    hours: Math.floor(+hours),
     percent: +percent,
     created_at: currentDate,
     user_id: req.user.id,
