@@ -52,7 +52,7 @@ const NavItem: FC<NavItemInterface> = ({
       );
       setBlockHeight((childrenAmount + 1) * navElementHeight);
     }
-  }, [navItemRef]);
+  }, [navItemRef?.current]);
 
   return (
     <div className={"wrapper"} style={isOpen ? { height: blockHeight } : {}}>
