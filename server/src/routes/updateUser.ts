@@ -36,8 +36,12 @@ const handleFileLoading = async (
 
     //delete the previous file
     if (currentAvatarUrl) {
-      const currentFileRef = ref(storage, currentAvatarUrl);
-      await deleteObject(currentFileRef);
+      try {
+        const currentFileRef = ref(storage, currentAvatarUrl);
+        await deleteObject(currentFileRef);
+      } catch (error) {
+        console.group(error);
+      }
     }
 
     //create new file ref in Firebase
