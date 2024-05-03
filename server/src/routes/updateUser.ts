@@ -26,7 +26,7 @@ const handleFileLoading = async (
   next: NextFunction
 ) => {
   try {
-    if (!req?.file) next();
+    if (!req?.file?.buffer || !req?.file?.mimetype) next();
 
     //initialize Firebase
     const firebaseApp = initializeFirebase();
@@ -44,8 +44,8 @@ const handleFileLoading = async (
     const newFileRef = ref(storage, uuidv4());
 
     //upload new file
-    await uploadBytes(newFileRef, req.file?.buffer, {
-      contentType: req.file?.mimetype,
+    await uploadBytes(newFileRef, req.file.buffer, {
+      contentType: req.file.mimetype,
     });
 
     //get new file link
