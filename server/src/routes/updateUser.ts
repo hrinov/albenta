@@ -25,8 +25,9 @@ const handleFileLoading = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req?.file?.buffer || !req?.file?.mimetype) next();
   try {
+    if (!req?.file?.buffer || !req?.file?.mimetype) next();
+
     //initialize Firebase
     const firebaseApp = initializeFirebase();
     const storage = getStorage(firebaseApp);
