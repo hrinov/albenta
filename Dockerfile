@@ -4,7 +4,7 @@ FROM node:18.16.0
 WORKDIR /app
 
 # Copy all files and folders to the working directory
-COPY /server /app
+COPY /dcdcdcplpok /app
 
 # Install dependencies
 RUN npm install
