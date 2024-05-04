@@ -1,4 +1,4 @@
-FROM node:18.16.0
+FROM node:latest
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
