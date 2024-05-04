@@ -13,7 +13,7 @@ RUN npm install
 RUN npm run build-server
 
 # Expose the port your app runs on
-EXPOSE 10000
+EXPOSE 8080
 
 # Command to start your server
 CMD ["npm", "run", "start-server"]
