@@ -1,5 +1,6 @@
 import { router as me } from "./me";
 import { router as login } from "./login";
+import { router as health } from "./health";
 import { router as avatar } from "./avatar";
 import { router as signup } from "./signup";
 import { router as income } from "./income";
@@ -14,6 +15,7 @@ export {
   login,
   signup,
   avatar,
+  health,
   income,
   deposit,
   withdraw,

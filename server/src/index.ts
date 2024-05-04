@@ -4,6 +4,7 @@ import {
   login,
   signup,
   avatar,
+  health,
   income,
   deposit,
   withdraw,
@@ -33,6 +34,7 @@ apiRouter.use(express.json());
 apiRouter.use("/me", me);
 apiRouter.use("/login", login);
 apiRouter.use("/signup", signup);
+apiRouter.use("/health", health);
 apiRouter.use("/avatar", avatar);
 apiRouter.use("/income", income);
 apiRouter.use("/deposit", deposit);
