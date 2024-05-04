@@ -6,8 +6,8 @@ WORKDIR /usr/src/app
 # Copy all files and folders to the working directory
 COPY . .
 
-# # Install dependencies
-# RUN npm install
+# Install dependencies
+RUN npm install
 
 # Build the server
 RUN npm run build-server
