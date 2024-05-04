@@ -3,8 +3,8 @@ FROM node:18.16.0
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy all files and folders to the working directory
-COPY /dcdcdcplpok /app
+# Copy only the 'server' directory from the root directory to the working directory
+COPY server/ .
 
 # Install dependencies
 RUN npm install
