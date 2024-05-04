@@ -1,19 +1,19 @@
-FROM node:18.16.0
+# FROM node:18.16.0
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+# # Set the working directory inside the container
+# WORKDIR /usr/src/app
 
-# Copy all files and folders to the working directory
-COPY . .
+# # Copy all files and folders to the working directory
+# COPY . .
 
-# Install dependencies
-RUN npm install
+# # Install dependencies
+# RUN npm install
 
-# Build the server
-RUN npm run build-server
+# # Build the server
+# RUN npm run build-server
 
-# Expose the port your app runs on
-EXPOSE 10000
+# # Expose the port your app runs on
+# EXPOSE 10000
 
-# Command to start your server
-CMD ["npm", "run", "start-server"]
+# # Command to start your server
+# CMD ["npm", "run", "start-server"]
