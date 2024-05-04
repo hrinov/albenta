@@ -1,7 +1,5 @@
 require("dotenv").config();
-const path = require("path");
 const bcrypt = require("bcrypt");
-const fs = require("fs").promises;
 const jwt = require("jsonwebtoken");
 import { Request, Response } from "express";
 import { handleUserActivity } from "../utils/activityLog";
@@ -88,23 +86,6 @@ const updateUser = async (req: CustomRequest, res: Response) => {
     };
 
     const result = await updateUserQuery(data);
-
-    //delete the avatar in case of updating it
-    if (avatar) {
-      try {
-        const previousAvatar = req.user?.avatar;
-        const filePath = path.join(
-          __dirname,
-          "..",
-          "..",
-          "uploads",
-          previousAvatar
-        );
-        previousAvatar && (await fs.unlink(filePath));
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
     if (result) {
       delete result.password;
