@@ -4,16 +4,16 @@ FROM node:18.16.0
 WORKDIR /app
 
 # Copy all files and folders to the working directory
-COPY . /app
+COPY /server /app
 
 # Install dependencies
 RUN npm install
 
 # Build the server
-RUN npm run build-server
+RUN npm run build
 
 # Expose the port your app runs on
 EXPOSE 8080
 
 # Command to start your server
-CMD ["npm", "run", "start-server"]
+CMD ["npm", "run", "start"]
