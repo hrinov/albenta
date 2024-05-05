@@ -25,9 +25,9 @@ const useragent = require("express-useragent");
 
 const app = express();
 app.use(useragent.express());
+app.use(cors());
 app.use("/api", apiRouter);
 
-apiRouter.use(cors());
 apiRouter.use(cookieParser());
 apiRouter.use(express.json());
 
