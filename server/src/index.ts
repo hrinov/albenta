@@ -1,4 +1,5 @@
 /// <reference path="types/env.d.ts" />
+import path from "path";
 import {
   me,
   login,
@@ -24,6 +25,7 @@ const cookieParser = require("cookie-parser");
 const useragent = require("express-useragent");
 
 const app = express();
+app.use(express.static(path.join(__dirname, "../website/dist")));
 app.use(useragent.express());
 app.use(cors());
 app.use("/api", apiRouter);
