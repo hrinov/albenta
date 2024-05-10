@@ -159,16 +159,13 @@ const Plans: FC = () => {
 
   useEffect(() => {
     if (user?.id) {
+      // Construct WebSocket URL
+      const wsUrl = url.startsWith("https://") ? "wss://" : "ws://";
       const ws = new WebSocket(
-        url.replace("http:", "ws:") + `?userId=${user.id}`
+        wsUrl + url.replace(/^https?:\/\//i, "") + `?userId=${user.id}`
       );
       ws.onmessage = (event) => {
-        setTimeToEnd(
-          JSON.parse(event.data) as {
-            percent: number;
-            timeToEnd: number;
-          }[]
-        );
+        setTimeToEnd(JSON.parse(event.data));
       };
       return () => {
         ws.close();
